@@ -20,6 +20,6 @@ namespace baUHInia.Playground.Model.Resources
         }
 
         public static ResourceHolder Get =>
-            _instance ?? (_instance = new ResourceHolder(ResourceLoader.LoadTileCategories(), null, null));
+            _instance ?? (_instance = new ResourceHolder(ResourceLoader.LoadTileCategories("terrain"), null, null));
     }
 }

@@ -9,12 +9,13 @@ namespace baUHInia.Playground.Logic.Loaders
 {
     public class TileConfigReader
     {
-        private const string ResourceDir = "pack://application:,,,/";
+        private const string ResourceDir = "pack://application:,,,/resources/";
         private readonly string[] _lines;
 
         public TileConfigReader(string configFileName)
         {
-            StreamResourceInfo resourceStream = Application.GetResourceStream(new Uri(ResourceDir + configFileName));
+            StreamResourceInfo resourceStream =
+                Application.GetResourceStream(new Uri(ResourceDir + configFileName));
             using (StreamReader reader = new StreamReader(resourceStream.Stream))
             {
                 _lines = Regex.Split(reader.ReadToEnd(), "\r\n|\r|\n");

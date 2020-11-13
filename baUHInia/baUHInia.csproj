@@ -114,33 +114,34 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\roads\bottom_left\asphalt_bottom_left_line.png" />
-    <Resource Include="resources\roads\bottom_right\asphalt_bottom_right_line.png" />
-    <Resource Include="resources\roads\bottom\asphalt_bottom_line.png" />
-    <Resource Include="resources\roads\double\2_asphalt_double.png" />
-    <Resource Include="resources\roads\double\1_asphalt_double.png" />
-    <Resource Include="resources\roads\top_right\asphalt_top_right_line.png" />
-    <Resource Include="resources\roads\left_right\asphalt_left_right_line.png" />
-    <Resource Include="resources\roads\left\asphalt_left_line.png" />
-    <Resource Include="resources\roads\right\asphalt_right_line.png" />
-    <Resource Include="resources\roads\full\asphalt_full.png" />
-    <Resource Include="resources\roads\top_bottom\asphalt_top_bottom_line.png" />
-    <Resource Include="resources\roads\top_left\asphalt_top_left_line.png" />
-    <Resource Include="resources\roads\top\asphalt_top_line.png" />
-    <Resource Include="resources\roads\triple\3_asphalt_left_line.png" />
-    <Resource Include="resources\roads\triple\2_asphalt_left_right_line.png" />
-    <Resource Include="resources\roads\triple\1_asphalt_right_line.png" />
-    <Resource Include="resources\terrain\dirt\dirt.png" />
-    <Resource Include="resources\terrain\grass\grass.png" />
-    <Resource Include="resources\Test\Tester\oak.png" />
+    <Resource Include="resources\terrain\roads\bottom\asphalt_bottom_line.png" />
+    <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
+    <Resource Include="resources\terrain\roads\bottom_right\asphalt_bottom_right_line.png" />
+    <Resource Include="resources\terrain\roads\double\1_asphalt_double.png" />
+    <Resource Include="resources\terrain\roads\double\2_asphalt_double.png" />
+    <Resource Include="resources\terrain\roads\double\double.txt" />
+    <Resource Include="resources\terrain\roads\full\asphalt_full.png" />
+    <Resource Include="resources\terrain\roads\left\asphalt_left_line.png" />
+    <Resource Include="resources\terrain\roads\left_right\asphalt_left_right_line.png" />
+    <Resource Include="resources\terrain\roads\right\asphalt_right_line.png" />
+    <Resource Include="resources\terrain\roads\top\asphalt_top_line.png" />
+    <Resource Include="resources\terrain\roads\top_bottom\asphalt_top_bottom_line.png" />
+    <Resource Include="resources\terrain\roads\top_left\asphalt_top_left_line.png" />
+    <Resource Include="resources\terrain\roads\top_right\asphalt_top_right_line.png" />
+    <Resource Include="resources\terrain\roads\triple\1_asphalt_right_line.png" />
+    <Resource Include="resources\terrain\roads\triple\2_asphalt_left_right_line.png" />
+    <Resource Include="resources\terrain\roads\triple\3_asphalt_left_line.png" />
+    <Resource Include="resources\terrain\roads\triple\triple.txt" />
+    <Resource Include="resources\terrain\terrain\dirt\dirt.png" />
+    <Resource Include="resources\terrain\terrain\grass\grass.png" />
+    <Resource Include="resources\terrain\Test\Tester\oak.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <Resource Include="resources\roads\triple\triple.txt" />
-    <Resource Include="resources\roads\double\double.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+    <Folder Include="resources\terrain" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

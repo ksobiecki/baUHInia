@@ -12,9 +12,15 @@ namespace baUHInia.Playground.Logic.Utils
         private readonly string[] _imageNames;
 
         private string[] _elementsOfCategory;
+        private string _package;
 
-        public ResourceCollection(string[] resources)
+        public ResourceCollection(string[] resources, string package)
         {
+            _package = package;
+            resources = resources
+                .Where(s => s.StartsWith("resources/" + _package))
+                .Select(s => s.Substring(s.IndexOf('/') + 1))
+                .ToArray();
             _configs = StringUtils.GetConfigs(resources);
             _imageNames = StringUtils.GetImageNames(resources);
             Categories = StringUtils.GetCategories(_imageNames);
@@ -34,14 +40,15 @@ namespace baUHInia.Playground.Logic.Utils
             .Select(str => str.Remove(0, subCategory.Length + 1))
             .ToArray();
 
-        public string GetPossibleConfig(string subCategory) => _configs.FirstOrDefault(str => str.Contains(subCategory));
+        public string GetPossibleConfig(string subCategory) =>
+            _configs.FirstOrDefault(str => str.Contains(subCategory));
 
         public Dictionary<string, BitmapImage> LoadBitmaps(string category, string subCategory, string resourceDir) =>
             _elementsOfCategory
                 .Where(str => str.StartsWith(subCategory + '/'))
                 .ToDictionary(
                     path => path.Substring(path.IndexOf('/') + 1),
-                    path => new BitmapImage(new Uri(resourceDir + "resources/" + category + '/' + path))
+                    path => new BitmapImage(new Uri(resourceDir + "resources/" + _package + '/' + category + '/' + path))
                 );
 
         private void UpdateElementsOfCategory(int categoryIndex)

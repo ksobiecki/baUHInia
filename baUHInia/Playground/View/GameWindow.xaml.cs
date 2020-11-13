@@ -76,7 +76,7 @@ namespace baUHInia.Playground.View
 
         private void Filler_Click(object sender, RoutedEventArgs e)
         {
-            BitmapImage bi = new BitmapImage(new Uri("pack://application:,,,/resources/Test/Tester/oak.png"));
+            BitmapImage bi = new BitmapImage(new Uri("pack://application:,,,/resources/terrain/Test/Tester/oak.png"));
             Image img = new Image {Source = bi, IsHitTestVisible = false};
             Grid.SetRow(img, 5);
             Grid.SetColumn(img, 5);

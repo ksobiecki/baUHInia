@@ -26,9 +26,9 @@ namespace baUHInia.Playground.Logic.Loaders
             }
         }
 
-        public static List<TileCategory> LoadTileCategories()
+        public static List<TileCategory> LoadTileCategories(string package)
         {
-            ResourceCollection resources = new ResourceCollection(GetResourceNames());
+            ResourceCollection resources = new ResourceCollection(GetResourceNames(), package);
             List<TileCategory> tileCategories = new List<TileCategory>();
             for (int i = 0; i < resources.Categories.Length; i++)
             {

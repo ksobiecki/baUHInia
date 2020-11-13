@@ -71,6 +71,7 @@
             this.registerSecondPasswordBox.Name = "registerSecondPasswordBox";
             this.registerSecondPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.registerSecondPasswordBox.TabIndex = 6;
+            this.registerSecondPasswordBox.UseSystemPasswordChar = true;
             // 
             // label5
             // 
@@ -105,6 +106,7 @@
             this.registerPasswordBox.Name = "registerPasswordBox";
             this.registerPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.registerPasswordBox.TabIndex = 5;
+            this.registerPasswordBox.UseSystemPasswordChar = true;
             // 
             // registerLoginBox
             // 
@@ -169,6 +171,7 @@
             this.loginPasswordBox.Name = "loginPasswordBox";
             this.loginPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.loginPasswordBox.TabIndex = 2;
+            this.loginPasswordBox.UseSystemPasswordChar = true;
             // 
             // loginLoginBox
             // 
@@ -190,6 +193,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = global::baUHInia.Properties.Resources.icon;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(510, 310);

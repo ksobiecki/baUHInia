@@ -13,6 +13,7 @@ namespace baUHInia.Authorisation
 {
     public partial class Authorisation : Form
     {
+        public Boolean isMapVisible = false;
         public Authorisation()
         {
             InitializeComponent();
@@ -22,13 +23,18 @@ namespace baUHInia.Authorisation
         {
 
         }
-        //protected override void OnFormClosing(FormClosingEventArgs e)
-        //{
-        //    Application.Exit();
-        //}
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (!isMapVisible)
+            {
+                Application.Exit();
+            }
+
+        }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            isMapVisible = true;
             this.Hide();
             UserGameWindow app = new Playground.View.UserGameWindow();
             app.Show();

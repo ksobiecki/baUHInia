@@ -57,11 +57,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Authorisation\Form1.cs">
+    <Compile Include="Authorisation\Authorisation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Authorisation\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Authorisation\Authorisation.Designer.cs">
+      <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
@@ -97,6 +97,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Authorisation\Authorisation.resx">
+      <DependentUpon>Authorisation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -132,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Resource Include="resources\icon\icon.png" />
     <Resource Include="resources\roads\triple\triple.txt" />
     <Resource Include="resources\roads\double\double.txt" />
   </ItemGroup>

@@ -18,22 +18,18 @@ namespace baUHInia.Authorisation
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Authorisation_Load(object sender, EventArgs e)
         {
 
         }
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            Application.Exit();
-        }
+        //protected override void OnFormClosing(FormClosingEventArgs e)
+        //{
+        //    Application.Exit();
+        //}
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            this.Hide();
             UserGameWindow app = new Playground.View.UserGameWindow();
             app.Show();
         }

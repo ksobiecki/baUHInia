@@ -103,6 +103,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -135,7 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <Resource Include="resources\icon\icon.png" />
     <Resource Include="resources\roads\triple\triple.txt" />
     <Resource Include="resources\roads\double\double.txt" />
   </ItemGroup>

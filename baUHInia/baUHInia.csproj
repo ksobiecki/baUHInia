@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,6 +56,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Authorisation\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authorisation\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
@@ -128,8 +136,7 @@
     <Resource Include="resources\roads\double\double.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Debug" />
-    <Folder Include="Playground" />
+    <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

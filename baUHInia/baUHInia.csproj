@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -63,6 +66,7 @@
     <Compile Include="Authorisation\Authorisation.Designer.cs">
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Authorisation\AuthInfo.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GameGridCreator.cs" />
@@ -138,6 +142,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Resource Include="icon.ico" />
+    <Resource Include="res\icon.ico" />
     <Resource Include="res\icon.png" />
   </ItemGroup>
   <ItemGroup>

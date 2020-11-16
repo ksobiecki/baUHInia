@@ -67,6 +67,9 @@
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
+    <Compile Include="Map\Manager\IGameMapManager.cs" />
+    <Compile Include="Map\Model\Game.cs" />
+    <Compile Include="Map\Model\Map.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GameGridCreator.cs" />
@@ -86,12 +89,16 @@
     <Compile Include="Playground\Model\Tiles\TileObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Playground\View\GameWindow.xaml.cs">
-      <DependentUpon>GameWindow.xaml</DependentUpon>
+    <Compile Include="Playground\View\UserGameWindow.xaml.cs">
+      <DependentUpon>UserGameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playground\View\AdminGameWindow.xaml.cs">
+      <DependentUpon>AdminGameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -157,7 +164,12 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Playground\View\GameWindow.xaml">
+    <Page Include="Playground\View\UserGameWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Playground\View\AdminGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

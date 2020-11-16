@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace baUHInia.Authorisation
 {
-    class LoginData
+    public class LoginData
     {
         private LoginData() { }
         private static LoginData _instance;

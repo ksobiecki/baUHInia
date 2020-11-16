@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using baUHInia.Authorisation;
+using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
@@ -21,6 +24,8 @@ namespace baUHInia.Playground.View
         private GameGridCreator _gameGridCreator;
         private SelectorGridCreator _selectorGridCreator;
 
+        //private IGameGridCreator _gameGridCreator;
+
         public UserGameWindow()
         {
             InitializeComponent();
@@ -33,12 +38,15 @@ namespace baUHInia.Playground.View
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
-
-        //public List<TileCategory> TileCategories { get; private set; }
-
         public Selection Selection { get; private set; }
-
+        //TODO: rest
         public Tile[,] TileGrid { get; private set; }
+        public List<Placement> PlacedObjects { get; }
+        public ScrollViewer GameViewer { get; }
+        public Grid SelectorGrid => UserSelectorGrid;
+        public List<GameObject> AvailableObjects { get; }
+        public LoginData Credentials { get; }
+        public int AvailableFounds { get; }
 
         //============================ PREDEFINED ACTIONS ============================//
 

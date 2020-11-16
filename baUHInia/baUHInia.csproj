@@ -66,7 +66,7 @@
     <Compile Include="Authorisation\Authorisation.Designer.cs">
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Authorisation\AuthInfo.cs" />
+    <Compile Include="Authorisation\LoginData.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GameGridCreator.cs" />

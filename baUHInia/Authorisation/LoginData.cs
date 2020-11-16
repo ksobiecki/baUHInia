@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace baUHInia.Authorisation
 {
-    class AuthInfo
+    class LoginData
     {
-        private AuthInfo() { }
-        private static AuthInfo _instance;
+        private LoginData() { }
+        private static LoginData _instance;
 
         public int UserID { get; set; }
         public String name { get; set; }
@@ -17,11 +17,11 @@ namespace baUHInia.Authorisation
         public Boolean isAdmin { get; set; }
 
 
-        public static AuthInfo GetInstance()
+        public static LoginData GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new AuthInfo();
+                _instance = new LoginData();
             }
             return _instance;
         }

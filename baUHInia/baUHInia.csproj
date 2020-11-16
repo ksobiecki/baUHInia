@@ -67,14 +67,15 @@
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
-    <Compile Include="Map\Manager\IGameMapManager.cs" />
-    <Compile Include="Map\Model\Game.cs" />
-    <Compile Include="Map\Model\Map.cs" />
+    <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
+    <Compile Include="MapLogic\Model\Game.cs" />
+    <Compile Include="MapLogic\Model\Map.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GameGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\IGameGridCreator.cs" />
     <Compile Include="Playground\Logic\Loaders\ResourceLoader.cs" />
     <Compile Include="Playground\Logic\Loaders\TileConfigReader.cs" />
     <Compile Include="Playground\Logic\Utils\ResourceCollection.cs" />

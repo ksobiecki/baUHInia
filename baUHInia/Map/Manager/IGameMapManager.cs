@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace baUHInia.Map.Manager
 {
-    interface Interface1
+    interface IGameMapManager
     {
     }
 }

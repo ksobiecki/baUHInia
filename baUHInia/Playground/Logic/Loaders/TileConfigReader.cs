@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Resources;
+using baUHInia.Playground.Model;
 
 namespace baUHInia.Playground.Logic.Loaders
 {
@@ -22,9 +23,9 @@ namespace baUHInia.Playground.Logic.Loaders
             }
         }
 
-        public (byte index, sbyte x, sbyte y)[] ReadTileIndexesWithOffsets()
+        public Offset[] ReadTileIndexesWithOffsets()
         {
-            var tilesWithOffsets = new List<(byte index, sbyte x, sbyte y)>();
+            var tilesWithOffsets = new List<Offset>();
             if (byte.TryParse(_lines[0], out byte count))
             {
                 for (sbyte i = 1; i <= count; i++)
@@ -37,7 +38,7 @@ namespace baUHInia.Playground.Logic.Loaders
             return tilesWithOffsets.ToArray();
         }
 
-        private static (byte index, sbyte x, sbyte y) LoadTileIndexWithOffsets(string line)
+        private static Offset LoadTileIndexWithOffsets(string line)
         {
             (byte index, sbyte x, sbyte y) tuple = (0, 0, 0);
             try
@@ -53,7 +54,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 throw new FileFormatException();
             }
 
-            return tuple;
+            return new Offset(tuple.index, tuple.x, tuple.y);
         }
     }
 }

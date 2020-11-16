@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace baUHInia.Map.Model
 {
-    class Class1
+    class Game
     {
     }
 }

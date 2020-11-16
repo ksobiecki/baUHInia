@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Resources;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Logic.Utils;
+using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Loaders
@@ -14,17 +15,6 @@ namespace baUHInia.Playground.Logic.Loaders
     public static class ResourceLoader
     {
         private const string ResourceDir = "pack://application:,,,/";
-
-        private static string[] GetResourceNames()
-        {
-            Assembly assembly = Assembly.GetEntryAssembly();
-            string resName = assembly.GetName().Name + ".g.resources";
-            using (Stream stream = assembly.GetManifestResourceStream(resName))
-            using (ResourceReader reader = new ResourceReader(stream ?? throw new NullReferenceException()))
-            {
-                return reader.Cast<DictionaryEntry>().Select(entry => (string) entry.Key).ToArray();
-            }
-        }
 
         public static List<TileCategory> LoadTileCategories(string package)
         {
@@ -48,7 +38,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 string subCategory = subCategories[i];
                 string[] elementsOfSubCategory = resources.ElementsOfSubcategory(subCategory);
                 string config = resources.GetPossibleConfig(subCategory);
-                (byte i, sbyte x, sbyte y)[] offsets = LoadOffsets(config);
+                Offset[] offsets = LoadOffsets(config);
 
                 Dictionary<string, BitmapImage> bitmaps = resources.LoadBitmaps(
                     resources.Categories[index], subCategory, ResourceDir
@@ -61,11 +51,22 @@ namespace baUHInia.Playground.Logic.Loaders
             return tileObjects;
         }
 
-        private static (byte i, sbyte x, sbyte y)[] LoadOffsets(string config)
+        private static Offset[] LoadOffsets(string config)
         {
             if (config == null) return null;
             TileConfigReader tileConfigReader = new TileConfigReader(config);
             return tileConfigReader.ReadTileIndexesWithOffsets();
+        }
+        
+        private static string[] GetResourceNames()
+        {
+            Assembly assembly = Assembly.GetEntryAssembly();
+            string resName = assembly.GetName().Name + ".g.resources";
+            using (Stream stream = assembly.GetManifestResourceStream(resName))
+            using (ResourceReader reader = new ResourceReader(stream ?? throw new NullReferenceException()))
+            {
+                return reader.Cast<DictionaryEntry>().Select(entry => (string) entry.Key).ToArray();
+            }
         }
     }
 }

@@ -107,12 +107,12 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             (sbyte x, sbyte y) = tileObject.Sprite.SpriteMinCoordinates();
             for (int i = 0; i < tileObject.Sprite.Offsets.Length; i++)
             {
-                string element = tileObject.Sprite.Names[tileObject.Sprite.Offsets[i].i];
+                string element = tileObject.Sprite.Names[tileObject.Sprite.Offsets[i].I];
                 Button button = _selectorCreator.CreateSelectorTile(element, tileObject.Sprite.Bitmaps[element], tileObject.Tag);
                 button.Margin = new Thickness(-1);
                 button.Padding = new Thickness(-1.2);
-                Grid.SetColumn(button, tileObject.Sprite.Offsets[i].x - x);
-                Grid.SetRow(button, tileObject.Sprite.Offsets[i].y - y);
+                Grid.SetColumn(button, tileObject.Sprite.Offsets[i].X - x);
+                Grid.SetRow(button, tileObject.Sprite.Offsets[i].Y - y);
                 subGrid.Children.Add(button);
             }
         }

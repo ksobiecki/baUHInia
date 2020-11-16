@@ -11,31 +11,31 @@ namespace baUHInia.Playground.Model.Tiles
 
         public readonly string[] Names;
 
-        public readonly (byte i, sbyte x, sbyte y)[] Offsets;
+        public readonly Offset[] Offsets;
 
         public readonly Dictionary<string, BitmapImage> Bitmaps;
 
         public BitmapImage this[string str] => Bitmaps[str];
 
-        public BitmapImage this[int i] => Bitmaps[Names[Offsets[i].i]];
+        public BitmapImage this[int i] => Bitmaps[Names[Offsets[i].I]];
 
-        public Sprite(string[] names, (byte i, sbyte x, sbyte y)[] offsets, Dictionary<string, BitmapImage> bitmaps)
+        public Sprite(string[] names, Offset[] offsets, Dictionary<string, BitmapImage> bitmaps)
         {
             Names = names;
-            Offsets = offsets ?? new[] {((byte) 0, (sbyte) 0, (sbyte) 0)};
+            Offsets = offsets ?? new[] {new Offset(0, 0, 0)};
             Bitmaps = bitmaps;
         }
 
-        public (sbyte x, sbyte y) SpriteMinCoordinates() => (Offsets.Min(val => val.x), Offsets.Min(val => val.y));
+        public (sbyte x, sbyte y) SpriteMinCoordinates() => (Offsets.Min(val => val.X), Offsets.Min(val => val.Y));
 
         public (byte x, byte y) SpriteWidthHeight() => (
-            (byte) (Offsets.Max(val => val.x) - Offsets.Min(val => val.x)),
-            (byte) (Offsets.Max(val => val.y) - Offsets.Min(val => val.y)));
-        
+            (byte) (Offsets.Max(val => val.X) - Offsets.Min(val => val.X)),
+            (byte) (Offsets.Max(val => val.Y) - Offsets.Min(val => val.Y)));
+
         public string FullNameAtIndex(int i)
         {
             string path = this[i].ToString();
             return path.Substring(path.IndexOf("resources/", StringComparison.Ordinal) + 10);
-        } 
+        }
     }
 }

@@ -77,6 +77,7 @@
     <Compile Include="Playground\Logic\Utils\ResourceCollection.cs" />
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />
+    <Compile Include="Playground\Model\Offset.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
     <Compile Include="Playground\Model\Selection.cs" />
     <Compile Include="Playground\Model\Tiles\Sprite.cs" />

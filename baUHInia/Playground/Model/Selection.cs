@@ -38,8 +38,8 @@ namespace baUHInia.Playground.Model
         private (int x, int y) GetCoords(Tile tileBeforeOffset, int offsetIndex)
         {
             (int x, int y) baseCoords = tileBeforeOffset.GetCoords();
-            (byte _, sbyte xOffset, sbyte yOffset) = TileObject.Sprite.Offsets[offsetIndex];
-            return (baseCoords.x + xOffset, baseCoords.y - yOffset);
+            Offset offset = TileObject.Sprite.Offsets[offsetIndex];
+            return (baseCoords.x + offset.X, baseCoords.y - offset.Y);
         }
 
         private void AddChangedSpriteToList(Tile tileAtCoords, int index)

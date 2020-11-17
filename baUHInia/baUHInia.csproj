@@ -67,9 +67,13 @@
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
+    <Compile Include="MapLogic\Manager\GameMapManager.cs" />
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
     <Compile Include="MapLogic\Model\Game.cs" />
     <Compile Include="MapLogic\Model\Map.cs" />
+    <Compile Include="MapLogic\View\ChoiceWindow.xaml.cs">
+      <DependentUpon>ChoiceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playground\Logic\Creators\ISelectionWindowCreator.cs" />
     <Compile Include="Playground\Logic\Creators\ISelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\AdminSelectorGridCreator.cs" />
@@ -106,7 +110,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -172,6 +175,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MapLogic\View\ChoiceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Playground\View\UserGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

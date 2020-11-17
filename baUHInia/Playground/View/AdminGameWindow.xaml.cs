@@ -34,10 +34,10 @@ namespace baUHInia.Playground.View
         public AdminGameWindow(LoginData credentials)
         {
             InitializeComponent();
-            InitializeSelection();
-            CreateGameBoard();
-            CreateSelectorGrid();
-            FillCardsAndComboBoxWithCategories();
+            //InitializeSelection();
+            //CreateGameBoard();
+            //CreateSelectorGrid();
+            //FillCardsAndComboBoxWithCategories();
             AdjustWindowSizeAndPosition();
 
             Credentials = credentials;
@@ -57,9 +57,7 @@ namespace baUHInia.Playground.View
         public int AvailableFounds { get; }
 
         //============================ PREDEFINED ACTIONS ============================//
-
-        //private void LoadTilesFromResources() => TileCategories = ResourceLoader.LoadTileCategories();
-
+        
         private void InitializeSelection() => Selection = new Selection(
             ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
 
@@ -67,6 +65,14 @@ namespace baUHInia.Playground.View
         {
             Application.Current.MainWindow.WindowState = WindowState.Maximized;
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
+        }
+
+        private void CreateNewMap(Object sender, RoutedEventArgs e)
+        {
+            InitializeSelection();
+            CreateGameBoard();
+            CreateSelectorGrid();
+            FillCardsAndComboBoxWithCategories();
         }
 
         private void CreateGameBoard()

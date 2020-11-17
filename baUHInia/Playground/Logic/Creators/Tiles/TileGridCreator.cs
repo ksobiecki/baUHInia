@@ -11,7 +11,6 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         private readonly int _boardDensity;
 
         private readonly TileCreator _tileCreator;
-        //public Grid _gameGrid;
 
 
         public TileGridCreator(ITileBinder binder, int boardDensity)

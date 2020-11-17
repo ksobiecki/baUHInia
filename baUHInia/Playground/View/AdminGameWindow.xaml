@@ -6,51 +6,75 @@
         xmlns:local="clr-namespace:baUHInia"
         mc:Ignorable="d"
         Title="HeatIsland" Name="Window" Width="800" Height="600">
-    
-    <Grid x:Name="DockPanel" MinHeight="200" Margin="0" MinWidth="100">
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition MaxWidth="140"/>
-        </Grid.ColumnDefinitions>
-        
-        <ScrollViewer Name="GameScroll" DockPanel.Dock="Left" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Left"/>
-        
-        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Top" Width="140">
-            
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="300"/>
-            </Grid.RowDefinitions>
-            
-            <TextBlock Text="TRYB GRY" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
-            
-            <Button Content="Zapisz Grę" Width="75" Grid.Row="1" Height="20" />
-            <Button Content="Wczytaj Grę" Width="75" Grid.Row="2" Height="20"/>
-            <Button Content="Nowa Gra" Width="75" Grid.Row="3" Height="20"/>
-            <Button Content="Od Nowa" Width="75" Grid.Row="4" Height="20"/>
-            <Button Content="Ustawienia" Width="75" Grid.Row="5" Height="20"/>
-            <Button Content="Wyloguj" Width="75" Grid.Row="6" Height="20"/>
-            
-            <ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="7" SelectionChanged="CategorySelector_SelectionChanged"/>
 
-            <ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Top" MinHeight="30">
-                <Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            </ScrollViewer>
-            <Button Name="Filler" Content="Button" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="75" Click="Filler_Click"/>
+	<Grid x:Name="DockPanel" MinHeight="200" Margin="0" MinWidth="100" Background="#404455">
 
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="140"/>
+		</Grid.ColumnDefinitions>
 
+		<ScrollViewer Name="GameScroll" DockPanel.Dock="Left" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch">
 
-        </Grid>
+			<Grid>
+				
 
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-300,0,0,0">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="WCZYTAJ MAPĘ" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
+						<Border BorderBrush="#6688CC" BorderThickness="10" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,230,0,0">
+							<Button Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="75" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
+						</Border>
+						<Grid Name="InitialMapGrid" HorizontalAlignment="Center" Height="170" Margin="00,60,0,0" VerticalAlignment="Top" Width="250" Background="#444444"/>
+					</Grid>
+				</Border>
 
-    </Grid>
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="300,0,0,0">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="NOWA MAPA"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/icon.ico"/>
+						<Border BorderBrush="#6688CC" BorderThickness="10" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,230,0,0">
+							<Button Click="CreateNewMap" Content="UTWÓRZ" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="80" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
+						</Border>
+					</Grid>
+				</Border>
+
+			</Grid>
+		
+		</ScrollViewer>
+
+		<Grid Grid.Column="1" HorizontalAlignment="Left" Height="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Top" Width="140"  MaxWidth="140">
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="300"/>
+			</Grid.RowDefinitions>
+
+			<TextBlock Text="TRYB KREACJI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+
+			<Button Content="Zapisz Grę" Width="75" Grid.Row="1" Height="20" />
+			<Button Content="Wczytaj Grę" Width="75" Grid.Row="2" Height="20"/>
+			<Button Content="Nowa Gra" Width="75" Grid.Row="3" Height="20"/>
+			<Button Content="Od Nowa" Width="75" Grid.Row="4" Height="20"/>
+			<Button Content="Ustawienia" Width="75" Grid.Row="5" Height="20"/>
+			<Button Content="Wyloguj" Width="75" Grid.Row="6" Height="20"/>
+
+			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="7" SelectionChanged="CategorySelector_SelectionChanged"/>
+
+			<ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Top" MinHeight="30" Background="#888888">
+				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			</ScrollViewer>
+			<Button Name="Filler" Content="Button" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="75" Click="Filler_Click"/>
+
+		</Grid>
+
+	</Grid>
 
 </Window>

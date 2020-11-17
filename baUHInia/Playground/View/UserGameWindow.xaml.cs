@@ -35,10 +35,11 @@ namespace baUHInia.Playground.View
         public UserGameWindow()
         {
             InitializeComponent();
-            InitializeSelection();
-            CreateGameBoard();
-            CreateSelectorGrid();
-            FillComboBoxWithCategories();
+            //InitializeSelection();
+            ShowStartupPanel();
+            //CreateGameBoard();
+            //CreateSelectorGrid();
+            //FillComboBoxWithCategories();
             AdjustWindowSizeAndPosition();
         }
 
@@ -64,8 +65,17 @@ namespace baUHInia.Playground.View
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
 
+        //TODO: change!
         private void FillComboBoxWithCategories() =>
             CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
+
+        private void ShowStartupPanel()
+        {
+            Grid loadMapGrid = new Grid{Width = 200, Height = 300};//_manger
+            Grid loadGameGrid = new Grid{Width = 200, Height = 300}; //_manger
+            InitialMapGrid = loadMapGrid;
+            InitialGameGrid = loadGameGrid;
+        }
 
         private void Simulate()
         {

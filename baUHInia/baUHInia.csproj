@@ -70,9 +70,14 @@
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
     <Compile Include="MapLogic\Model\Game.cs" />
     <Compile Include="MapLogic\Model\Map.cs" />
+    <Compile Include="Playground\Logic\Creators\ISelectionWindowCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\ISelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Selector\AdminSelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
-    <Compile Include="Playground\Logic\Creators\Selector\SelectorGridCreator.cs" />
-    <Compile Include="Playground\Logic\Creators\Tiles\GameGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Selector\SelectorGridFiller.cs" />
+    <Compile Include="Playground\Logic\Creators\Selector\UserSelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Selector\VerticalSelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Tiles\TileGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileCreator.cs" />
     <Compile Include="Playground\Logic\Creators\IGameGridCreator.cs" />
@@ -129,20 +134,20 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\terrain\roads\bottom\asphalt_bottom_line.png" />
-    <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
-    <Resource Include="resources\terrain\roads\bottom_right\asphalt_bottom_right_line.png" />
+    <Resource Include="resources\terrain\roads\bottom-single-line\asphalt_bottom_line.png" />
+    <Resource Include="resources\terrain\roads\bottom_left-two-lines\asphalt_bottom_left_line.png" />
+    <Resource Include="resources\terrain\roads\bottom_right-two-lines\asphalt_bottom_right_line.png" />
     <Resource Include="resources\terrain\roads\double\1_asphalt_double.png" />
     <Resource Include="resources\terrain\roads\double\2_asphalt_double.png" />
     <Resource Include="resources\terrain\roads\double\double.txt" />
     <Resource Include="resources\terrain\roads\full\asphalt_full.png" />
-    <Resource Include="resources\terrain\roads\left\asphalt_left_line.png" />
-    <Resource Include="resources\terrain\roads\left_right\asphalt_left_right_line.png" />
-    <Resource Include="resources\terrain\roads\right\asphalt_right_line.png" />
-    <Resource Include="resources\terrain\roads\top\asphalt_top_line.png" />
-    <Resource Include="resources\terrain\roads\top_bottom\asphalt_top_bottom_line.png" />
-    <Resource Include="resources\terrain\roads\top_left\asphalt_top_left_line.png" />
-    <Resource Include="resources\terrain\roads\top_right\asphalt_top_right_line.png" />
+    <Resource Include="resources\terrain\roads\left-single-line\asphalt_left_line.png" />
+    <Resource Include="resources\terrain\roads\left_right-two-lines\asphalt_left_right_line.png" />
+    <Resource Include="resources\terrain\roads\right-single-line\asphalt_right_line.png" />
+    <Resource Include="resources\terrain\roads\top-single-line\asphalt_top_line.png" />
+    <Resource Include="resources\terrain\roads\top_bottom-two-lines\asphalt_top_bottom_line.png" />
+    <Resource Include="resources\terrain\roads\top_left-two-lines\asphalt_top_left_line.png" />
+    <Resource Include="resources\terrain\roads\top_right-two-lines\asphalt_top_right_line.png" />
     <Resource Include="resources\terrain\roads\triple\1_asphalt_right_line.png" />
     <Resource Include="resources\terrain\roads\triple\2_asphalt_left_right_line.png" />
     <Resource Include="resources\terrain\roads\triple\3_asphalt_left_line.png" />

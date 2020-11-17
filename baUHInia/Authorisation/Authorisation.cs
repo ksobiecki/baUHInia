@@ -29,7 +29,8 @@ namespace baUHInia.Authorisation
         {
             isMapVisible = true;
             Hide();
-            UserGameWindow app = new UserGameWindow();
+            //TODO: zmienisz potem :3
+            AdminGameWindow app = new AdminGameWindow(null);
             app.Show();
         }
     }

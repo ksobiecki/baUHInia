@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
+using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Logic.Creators.Tiles;
@@ -21,15 +22,19 @@ namespace baUHInia.Playground.View
     {
         private const byte BoardDensity = 50;
 
-        private GameGridCreator _gameGridCreator;
-        private SelectorGridCreator _selectorGridCreator;
+        //private GameGridCreator _gameGridCreator;
+        //private SelectorGridCreator _selectorGridCreator;
 
-        //private IGameGridCreator _gameGridCreator;
+        private IGameGridCreator _gameGridCreator;
+        private ISelectorGridCreator _selectorGridCreator;
+        private ISelectionWindowCreator _selectionWindowCreator;
+        private IGameMapManager _manger;
+        //private ISimulate _simulator;
 
+        //TODO: add credentials
         public UserGameWindow()
         {
             InitializeComponent();
-            //LoadTilesFromResources();
             InitializeSelection();
             CreateGameBoard();
             CreateSelectorGrid();
@@ -42,16 +47,14 @@ namespace baUHInia.Playground.View
         //TODO: rest
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; }
-        public ScrollViewer GameViewer { get; }
+        public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => UserSelectorGrid;
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
 
         //============================ PREDEFINED ACTIONS ============================//
-
-        //private void LoadTilesFromResources() => TileCategories = ResourceLoader.LoadTileCategories();
-
+        
         private void InitializeSelection() => Selection = new Selection(
             ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
 
@@ -61,17 +64,59 @@ namespace baUHInia.Playground.View
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
 
+        private void FillComboBoxWithCategories() =>
+            CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
+
+        private void Simulate()
+        {
+            //TODO: implement
+        }
+
+        private void LoadMap()
+        {
+            //TODO: implement
+        }
+        
+        private void LoadGame()
+        {
+            //TODO: implement
+        }
+        
+        private void SaveGame()
+        {
+            //TODO: implement
+        }
+        
+        private void SaveStateAsJpg()
+        {
+            //TODO: implement
+        }
+
+        private void GoToAdminMode()
+        {
+            //TODO: implement
+        }
+
+        private void ReturnToLoginWindow()
+        {
+            //TODO: implement
+        }
+
+        //TODO: move to admin
         private void CreateGameBoard()
         {
             TileGrid = new Tile[BoardDensity, BoardDensity];
-            _gameGridCreator = new GameGridCreator(this, BoardDensity);
-            _gameGridCreator.CreateGameGridInWindow(TileGrid, GameScroll);
+            _gameGridCreator = new TileGridCreator(this, BoardDensity);
+            _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
         }
 
-        private void CreateSelectorGrid() => _selectorGridCreator = new SelectorGridCreator(this, SelectorGrid);
+        private void CreateSelectorGrid() => _selectorGridCreator = new UserSelectorGridCreator(this);
 
-        private void FillComboBoxWithCategories() =>
-            CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
+        private void UpdateSelectionWindow()
+        {
+            //TODO: implement
+        }
+
 
         //============================ ELEMENTS BEHAVIOUR =============================//
 
@@ -79,7 +124,7 @@ namespace baUHInia.Playground.View
         {
             ComboBox comboBox = sender as ComboBox;
             string item = comboBox.SelectedItem as string;
-            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item));
+            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item), this);
         }
 
         private void Filler_Click(object sender, RoutedEventArgs e)
@@ -88,7 +133,7 @@ namespace baUHInia.Playground.View
             Image img = new Image {Source = bi, IsHitTestVisible = false};
             Grid.SetRow(img, 5);
             Grid.SetColumn(img, 5);
-            _gameGridCreator._gameGrid.Children.Add(img);
+            ((Grid) GameViewer.Content).Children.Add(img);
         }
     }
 }

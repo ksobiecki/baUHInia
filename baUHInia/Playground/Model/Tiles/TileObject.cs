@@ -7,10 +7,11 @@ namespace baUHInia.Playground.Model.Tiles
         public readonly (int category, int subCategory) Tag;
 
         public readonly string Name;
-
+        
         public readonly string Group;
-
+        
         public readonly Sprite Sprite;
+        
 
         public BitmapImage this[string str] => Sprite[str];
         public BitmapImage this[int i] => Sprite[i];
@@ -20,6 +21,7 @@ namespace baUHInia.Playground.Model.Tiles
             Name = name;
             Tag = tag;
             Sprite = sprite;
+            if (name.Contains("-")) Group = name.Substring(name.IndexOf('-') + 1).Replace('-', ' ');
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
+using baUHInia.MapLogic.Manager;
+using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
@@ -20,28 +22,35 @@ namespace baUHInia.Playground.View
     {
         private const byte BoardDensity = 50;
 
-        private GameGridCreator _gameGridCreator;
-        private SelectorGridCreator _selectorGridCreator;
+        //private GameGridCreator _gameGridCreator;
+        //private SelectorGridCreator _selectorGridCreator;
 
-        public AdminGameWindow()
+        private IGameGridCreator _gameGridCreator;
+        private ISelectorGridCreator _selectorGridCreator;
+
+        private IGameMapManager _manager;
+        //private IAdminSelectorTabCreator _adminCreator;
+
+        public AdminGameWindow(LoginData credentials)
         {
             InitializeComponent();
-            //LoadTilesFromResources();
             InitializeSelection();
             CreateGameBoard();
             CreateSelectorGrid();
-            FillComboBoxWithCategories();
+            FillCardsAndComboBoxWithCategories();
             AdjustWindowSizeAndPosition();
+
+            Credentials = credentials;
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
-        
+
         public Selection Selection { get; private set; }
 
         //TODO: rest
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; }
-        public ScrollViewer GameViewer { get; }
+        public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
@@ -63,14 +72,49 @@ namespace baUHInia.Playground.View
         private void CreateGameBoard()
         {
             TileGrid = new Tile[BoardDensity, BoardDensity];
-            _gameGridCreator = new GameGridCreator(this, BoardDensity);
-            _gameGridCreator.CreateGameGridInWindow(TileGrid, GameScroll);
+            _gameGridCreator = new TileGridCreator(this, BoardDensity);
+            _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
         }
 
-        private void CreateSelectorGrid() => _selectorGridCreator = new SelectorGridCreator(this, SelectorGrid);
+        private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
 
-        private void FillComboBoxWithCategories() =>
+        private void FillCardsAndComboBoxWithCategories() =>
             CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
+        
+        private void UpdateSelectionWindow()
+        {
+            //TODO: implement
+        }
+        
+        private void UpdateComboBox()
+        {
+            //TODO: implement
+        }
+        
+        private void LoadMap()
+        {
+            //TODO: implement
+        }
+        
+        private void SaveMap()
+        {
+            //TODO: implement
+        }
+        
+        private void OpenSelectorTab()
+        {
+            //TODO: implement
+        }
+        
+        private void TestMap()
+        {
+            //TODO: implement
+        }
+        
+        private void ReturnToLoginWindow()
+        {
+            //TODO: implement
+        }
 
         //============================ ELEMENTS BEHAVIOUR =============================//
 
@@ -78,7 +122,7 @@ namespace baUHInia.Playground.View
         {
             ComboBox comboBox = sender as ComboBox;
             string item = comboBox.SelectedItem as string;
-            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item));
+            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item), this);
         }
 
         private void Filler_Click(object sender, RoutedEventArgs e)
@@ -87,7 +131,7 @@ namespace baUHInia.Playground.View
             Image img = new Image {Source = bi, IsHitTestVisible = false};
             Grid.SetRow(img, 5);
             Grid.SetColumn(img, 5);
-            _gameGridCreator._gameGrid.Children.Add(img);
+            ((Grid) GameViewer.Content).Children.Add(img);
         }
     }
 }

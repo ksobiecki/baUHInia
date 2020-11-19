@@ -1,4 +1,5 @@
 ﻿using baUHInia.Playground.View;
+using baUHInia.Database;
 using System;
 using System.Windows.Forms;
 
@@ -6,6 +7,8 @@ namespace baUHInia.Authorisation
 {
     public partial class Authorisation : Form
     {
+        BazaDanych bazaDanych = BazaDanych.GetBazaDanych();
+
         public Boolean isMapVisible = false;
         public Authorisation()
         {

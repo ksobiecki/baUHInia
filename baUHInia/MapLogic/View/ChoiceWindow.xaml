@@ -6,5 +6,8 @@
         xmlns:local="clr-namespace:baUHInia.MapLogic.View"
         mc:Ignorable="d"
         Title="ChoiceWindow" Height="450" Width="307.647">
-    <Grid/>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="TargetGrid">
+    </Grid>
 </Window>
+
+    

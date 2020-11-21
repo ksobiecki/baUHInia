@@ -10,18 +10,38 @@ namespace baUHInia.MapLogic.Manager
 {
     class GameMapManager : IGameMapManager
     {
+        // Logic
         private string Choice;
         private string Keyword;
         private Map[] mockupMaps;
+        private Game[] mockupGames;
+
+        // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
+        private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
+        private Map[] Maps;
+        private Game[] Games;
+
+        // Layout
+        private Grid ContainerGrid;
+        private Grid SearchGrid;
+        private ScrollViewer ListScrollViewer;
+        private Grid ListGrid;
 
         public GameMapManager()
         {
             // Debug purposes, remove later.
-            mockupMaps = new Map[50];
+            Maps = new Map[50];
+            Games = new Game[50];
             for (int i = 0; i < 50; i++)
             {
-                mockupMaps[i] = new Map("Some map nr" + i);
+                Maps[i] = new Map("Some map nr" + i);
+                Games[i] = new Game("Some game nr" + i);
             }
+
+            CreateContainerGrid();
+            CreateSearchGrid();
+            CreateListScrollViewer();
+            CreateListGrid();
 
             this.Choice = "";
             this.Keyword = "";
@@ -29,27 +49,34 @@ namespace baUHInia.MapLogic.Manager
 
         public Grid GetGameLoadGrid()
         {
-            throw new NotImplementedException();
+            // TODO get games from database.
+
+            Mode = 2;
+
+            ContainerGrid.Children.Clear();
+            ContainerGrid.Children.Add(SearchGrid);
+            ContainerGrid.Children.Add(ListScrollViewer);
+            ListScrollViewer.Content = ListGrid;
+
+            PopulateListGrid();
+
+            return ContainerGrid;
         }
 
         public Grid GetMapLoadGrid()
         {
-            Grid containerGrid = new Grid();
-            containerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-            containerGrid.VerticalAlignment = VerticalAlignment.Stretch;
+            // TODO get maps from database.
 
-            ScrollViewer listScrollViewer = new ScrollViewer();
-            listScrollViewer.HorizontalAlignment = HorizontalAlignment.Stretch;
-            listScrollViewer.VerticalAlignment = VerticalAlignment.Stretch;
-            listScrollViewer.Margin = new Thickness(0, 30, 0, 0);
-            listScrollViewer.Background = (Brush) new BrushConverter().ConvertFrom("#FFA7A7A7");
+            Mode = 0;
 
-            Grid searchGrid = CreateSearchAndListGrid(listScrollViewer);
+            ContainerGrid.Children.Clear();
+            ContainerGrid.Children.Add(SearchGrid);
+            ContainerGrid.Children.Add(ListScrollViewer);
+            ListScrollViewer.Content = ListGrid;
 
-            containerGrid.Children.Add(searchGrid);
-            containerGrid.Children.Add(listScrollViewer);
+            PopulateListGrid();
 
-            return containerGrid;
+            return ContainerGrid;
         }
 
         public bool GetMapSaveGrid()
@@ -77,30 +104,105 @@ namespace baUHInia.MapLogic.Manager
             throw new NotImplementedException();
         }
 
-        private Grid CreateListGrid(Map[] maps)
+        private void CreateContainerGrid()
         {
-            Grid listGrid = new Grid();
-            listGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-            listGrid.VerticalAlignment = VerticalAlignment.Stretch;
-            listGrid.Name = "ListGrid";
-
-            int index = 0;
-            foreach (Map map in maps)
-            {
-                listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
-                Grid listItemGrid = new Grid();
-                listItemGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-                Button listItemButton = CreateListButton(map.Name, listGrid);
-                Grid.SetRow(listItemGrid, index);
-                listItemGrid.Children.Add(listItemButton);
-                listGrid.Children.Add(listItemGrid);
-                index++;
-            }
-
-            return listGrid;
+            ContainerGrid= new Grid();
+            ContainerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            ContainerGrid.VerticalAlignment = VerticalAlignment.Stretch;
         }
 
-        private Button CreateListButton(string name, Grid listGrid)
+        private void CreateSearchGrid()
+        {
+            SearchGrid = new Grid();
+            SearchGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            SearchGrid.VerticalAlignment = VerticalAlignment.Top;
+            SearchGrid.Height = 30;
+            SearchGrid.Background = Brushes.Gray;
+
+            TextBox searchTextBox = new TextBox();
+            searchTextBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            searchTextBox.VerticalAlignment = VerticalAlignment.Stretch;
+            searchTextBox.Margin = new Thickness(0, 0, 50, 0);
+            searchTextBox.Padding = new Thickness(5, 0, 5, 0);
+            searchTextBox.VerticalContentAlignment = VerticalAlignment.Center;
+            searchTextBox.Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7");
+            searchTextBox.TextChanged += SearchTextChanged;
+
+            Button searchButton = new Button();
+            searchButton.HorizontalAlignment = HorizontalAlignment.Right;
+            searchButton.VerticalAlignment = VerticalAlignment.Stretch;
+            searchButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF4A9C38");
+            searchButton.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
+            searchButton.Width = 50;
+            searchButton.Content = "Szukaj";
+            searchButton.Foreground = Brushes.White;
+            searchButton.FontFamily = new FontFamily("Segoe UI");
+            searchButton.FontWeight = FontWeights.Bold;
+            searchButton.Click += SearchButtonClick;
+
+            SearchGrid.Children.Add(searchTextBox);
+            SearchGrid.Children.Add(searchButton);
+        }
+
+        private void CreateListScrollViewer()
+        {
+            ListScrollViewer = new ScrollViewer();
+            ListScrollViewer.HorizontalAlignment = HorizontalAlignment.Stretch;
+            ListScrollViewer.VerticalAlignment = VerticalAlignment.Stretch;
+            ListScrollViewer.Margin = new Thickness(0, 30, 0, 0);
+            ListScrollViewer.Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7");
+        }
+
+        private void CreateListGrid()
+        {
+            ListGrid = new Grid();
+            ListGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            ListGrid.VerticalAlignment = VerticalAlignment.Stretch;
+            ListGrid.Name = "ListGrid";
+        }
+
+        private void PopulateListGrid()
+        {
+            ListGrid.RowDefinitions.Clear();
+            ListGrid.Children.Clear();
+
+            int index = 0;
+
+            if (Mode == 0)
+            {
+                Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
+
+                foreach (Map map in filteredMaps)
+                {
+                    ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    Grid listItemGrid = new Grid();
+                    listItemGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    Grid.SetRow(listItemGrid, index);
+                    listItemGrid.Children.Add(CreateListItemButton(map.Name));
+                    ListGrid.Children.Add(listItemGrid);
+                    index++;
+                }
+            }
+            else if (Mode == 2)
+            {
+                Game[] filteredGames = Games.Where(g => g.Name.Contains(Keyword)).ToArray();
+
+                foreach (Game game in filteredGames)
+                {
+                    ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    Grid listItemGrid = new Grid();
+                    listItemGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    Button listItemButton = CreateListItemButton(game.Name);
+                    Grid.SetRow(listItemGrid, index);
+                    listItemGrid.Children.Add(listItemButton);
+                    ListGrid.Children.Add(listItemGrid);
+                    index++;
+                }
+            }
+            
+        }
+
+        private Button CreateListItemButton(string name)
         {
             Button listItemButton = new Button();
             listItemButton.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -114,76 +216,39 @@ namespace baUHInia.MapLogic.Manager
             listItemButton.FontFamily = new FontFamily("Segoe UI");
             listItemButton.FontWeight = FontWeights.Bold;
             listItemButton.Content = name;
-            listItemButton.Click += (s, e) => { ListItemButtonClick((Button) s, listGrid); };
+            listItemButton.Click += ListItemButtonClick;
             listItemButton.ClickMode = ClickMode.Press;
 
             return listItemButton;
         }
 
-        private void ListItemButtonClick(Button sender, Grid listGrid)
+        // Event handlers
+
+        private void ListItemButtonClick(object s, EventArgs e)
         {
-            foreach (Grid listItemGrid in listGrid.Children)
+            foreach (Grid listItemGrid in ListGrid.Children)
             {
                 Button listItemButton = (Button)listItemGrid.Children[0];
-                listItemButton.Background = (Brush) new BrushConverter().ConvertFrom("#FF878787");
+                listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
                 listItemButton.Foreground = Brushes.White;
             }
 
+            Button sender = (Button)s;
+            sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
+            sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
             Choice = sender.Content.ToString();
-            sender.Background = (Brush) new BrushConverter().ConvertFrom("#FF8FAEEC");
-            sender.Foreground = (Brush) new BrushConverter().ConvertFrom("#FF474747");
         }
 
-        private Grid CreateSearchAndListGrid(ScrollViewer listScrollViewer)
+        private void SearchTextChanged(object s, EventArgs e)
         {
-            Grid searchGrid = new Grid();
-            searchGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-            searchGrid.VerticalAlignment = VerticalAlignment.Top;
-            searchGrid.Height = 30;
-            searchGrid.Background = Brushes.Gray;
-
-            TextBox searchTextBox = new TextBox();
-            searchTextBox.HorizontalAlignment = HorizontalAlignment.Stretch;
-            searchTextBox.VerticalAlignment = VerticalAlignment.Stretch;
-            searchTextBox.Margin = new Thickness(0,0,50,0);
-            searchTextBox.Padding = new Thickness(5,0,5,0);
-            searchTextBox.VerticalContentAlignment = VerticalAlignment.Center;
-            searchTextBox.Background = (Brush) new BrushConverter().ConvertFrom("#FFA7A7A7");
-            searchTextBox.TextChanged += SearchTextChanged;
-
-            Button searchButton = new Button();
-            searchButton.HorizontalAlignment = HorizontalAlignment.Right;
-            searchButton.VerticalAlignment = VerticalAlignment.Stretch;
-            searchButton.Background = (Brush) new BrushConverter().ConvertFrom("#FF4A9C38");
-            searchButton.Foreground = (Brush) new BrushConverter().ConvertFrom("#FF474747");
-            searchButton.Width = 50;
-            searchButton.Content = "Szukaj";
-            searchButton.Foreground = Brushes.White;
-            searchButton.FontFamily = new FontFamily("Segoe UI");
-            searchButton.FontWeight = FontWeights.Bold;
-            searchButton.Click += (s, e) => { SearchButtonClick(listScrollViewer); };
-
-            searchGrid.Children.Add(searchTextBox);
-            searchGrid.Children.Add(searchButton);
-
-            Grid listGrid = CreateListGrid(mockupMaps);
-            listScrollViewer.Content = listGrid;
-
-            return searchGrid;
+            TextBox sender = (TextBox)s;
+            Keyword = sender.Text.ToString();
         }
 
-        private void SearchTextChanged(object sender, EventArgs e)
-        {
-            TextBox s = (TextBox) sender;
-            Keyword = s.Text.ToString();
-        }
-
-        private void SearchButtonClick(ScrollViewer listScrollViewer)
+        private void SearchButtonClick(object s, EventArgs e)
         {
             Choice = "";
-            Map[] filteredMaps = mockupMaps.Where(m => m.Name.Contains(Keyword)).ToArray();
-            Grid listGrid = CreateListGrid(filteredMaps);
-            listScrollViewer.Content = listGrid;
+            PopulateListGrid();
         }
     }
 }

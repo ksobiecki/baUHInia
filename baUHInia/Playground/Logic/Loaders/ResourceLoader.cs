@@ -5,9 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Text.Json;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using baUHInia.Playground.Logic.Utils;
-using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Loaders
@@ -38,26 +40,32 @@ namespace baUHInia.Playground.Logic.Loaders
                 string subCategory = subCategories[i];
                 string[] elementsOfSubCategory = resources.ElementsOfSubcategory(subCategory);
                 string config = resources.GetPossibleConfig(subCategory);
-                Offset[] offsets = LoadOffsets(config);
-
+                if (config == null) throw new FileNotFoundException("All tiles must have json file");
+                Config configInstance = LoadConfig(config);
                 Dictionary<string, BitmapImage> bitmaps = resources.LoadBitmaps(
                     resources.Categories[index], subCategory, ResourceDir
                 );
-                Sprite sprite = new Sprite(elementsOfSubCategory, offsets, bitmaps);
-                TileObject tileObject = new TileObject(subCategory, (index, i), sprite);
+                Sprite sprite = new Sprite(elementsOfSubCategory, configInstance?.Offsets, bitmaps);
+                TileObject tileObject = new TileObject(subCategory, (index, i), sprite, configInstance);
                 tileObjects.Add(tileObject);
             }
 
             return tileObjects;
         }
 
-        private static Offset[] LoadOffsets(string config)
+        private static Config LoadConfig(string config)
         {
-            if (config == null) return null;
-            TileConfigReader tileConfigReader = new TileConfigReader(config);
-            return tileConfigReader.ReadTileIndexesWithOffsets();
+            //TODO: refactor
+            string uri = ResourceDir + "resources/" + config;
+            StreamResourceInfo resourceStream = Application.GetResourceStream(new Uri(uri));
+            using (StreamReader reader = new StreamReader(resourceStream.Stream))
+            {
+                string file = reader.ReadToEnd();
+                Config configInstance = JsonSerializer.Deserialize<Config>(file);
+                return configInstance;
+            }
         }
-        
+
         private static string[] GetResourceNames()
         {
             Assembly assembly = Assembly.GetEntryAssembly();

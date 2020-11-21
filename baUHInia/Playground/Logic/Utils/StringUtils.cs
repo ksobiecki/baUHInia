@@ -5,7 +5,7 @@ namespace baUHInia.Playground.Logic.Utils
     public static class StringUtils
     {
         public static string[] GetConfigs(string[] resources) =>
-            resources.Where(str => str.EndsWith(".txt")).ToArray();
+            resources.Where(str => str.EndsWith(".json")).ToArray();
 
         public static string[] GetImageNames(string[] resources) => resources
             .Where(str => str.EndsWith(".png"))

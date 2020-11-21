@@ -38,9 +38,47 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Text.Json.5.0.0\lib\net461\System.Text.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,17 +110,22 @@
     <Compile Include="MapLogic\Model\Map.cs" />
     <Compile Include="Playground\Logic\Creators\ISelectionWindowCreator.cs" />
     <Compile Include="Playground\Logic\Creators\ISelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\ITileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\AdminSelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridFiller.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\UserSelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\VerticalSelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Tiles\GameTileBehaviourSetter.cs" />
+    <Compile Include="Playground\Logic\Creators\Tiles\GenericTileBehaviourSetter.cs" />
+    <Compile Include="Playground\Logic\Creators\Tiles\MapTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileCreator.cs" />
     <Compile Include="Playground\Logic\Creators\IGameGridCreator.cs" />
     <Compile Include="Playground\Logic\Loaders\ResourceLoader.cs" />
     <Compile Include="Playground\Logic\Loaders\TileConfigReader.cs" />
+    <Compile Include="Playground\Logic\Utils\Config.cs" />
     <Compile Include="Playground\Logic\Utils\ResourceCollection.cs" />
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\GameObject.cs" />
@@ -125,6 +168,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -134,30 +178,45 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\terrain\roads\bottom-single-line\asphalt_bottom_line.png" />
-    <Resource Include="resources\terrain\roads\bottom_left-two-lines\asphalt_bottom_left_line.png" />
-    <Resource Include="resources\terrain\roads\bottom_right-two-lines\asphalt_bottom_right_line.png" />
+    <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
+    <Resource Include="resources\terrain\roads\bottom\bottom.json" />
+    <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
+    <Resource Include="resources\terrain\roads\bottom_left\bottom_left.json" />
+    <Resource Include="resources\terrain\roads\bottom_right\asphalt_bottom_right_line.png" />
+    <Resource Include="resources\terrain\roads\bottom_right\bottom_right.json" />
     <Resource Include="resources\terrain\roads\double\1_asphalt_double.png" />
     <Resource Include="resources\terrain\roads\double\2_asphalt_double.png" />
-    <Resource Include="resources\terrain\roads\double\double.txt" />
     <Resource Include="resources\terrain\roads\full\asphalt_full.png" />
-    <Resource Include="resources\terrain\roads\left-single-line\asphalt_left_line.png" />
-    <Resource Include="resources\terrain\roads\left_right-two-lines\asphalt_left_right_line.png" />
-    <Resource Include="resources\terrain\roads\right-single-line\asphalt_right_line.png" />
-    <Resource Include="resources\terrain\roads\top-single-line\asphalt_top_line.png" />
-    <Resource Include="resources\terrain\roads\top_bottom-two-lines\asphalt_top_bottom_line.png" />
-    <Resource Include="resources\terrain\roads\top_left-two-lines\asphalt_top_left_line.png" />
-    <Resource Include="resources\terrain\roads\top_right-two-lines\asphalt_top_right_line.png" />
+    <Resource Include="resources\terrain\roads\full\full.json" />
+    <Resource Include="resources\terrain\roads\left\asphalt_left_line.png" />
+    <Resource Include="resources\terrain\roads\left\left.json" />
+    <Resource Include="resources\terrain\roads\left_right\asphalt_left_right_line.png" />
+    <Resource Include="resources\terrain\roads\left_right\left_right.json" />
+    <Resource Include="resources\terrain\roads\right\asphalt_right_line.png" />
+    <Resource Include="resources\terrain\roads\right\right.json" />
+    <Resource Include="resources\terrain\roads\top\asphalt_top_line.png" />
+    <Resource Include="resources\terrain\roads\top\top.json" />
+    <Resource Include="resources\terrain\roads\top_bottom\asphalt_top_bottom_line.png" />
+    <Resource Include="resources\terrain\roads\top_bottom\top_bottom.json" />
+    <Resource Include="resources\terrain\roads\top_left\asphalt_top_left_line.png" />
+    <Resource Include="resources\terrain\roads\top_left\top_left.json" />
+    <Resource Include="resources\terrain\roads\top_right\asphalt_top_right_line.png" />
+    <Resource Include="resources\terrain\roads\top_right\top_right.json" />
     <Resource Include="resources\terrain\roads\triple\1_asphalt_right_line.png" />
     <Resource Include="resources\terrain\roads\triple\2_asphalt_left_right_line.png" />
     <Resource Include="resources\terrain\roads\triple\3_asphalt_left_line.png" />
+    <Resource Include="resources\terrain\roads\triple\triple.json" />
     <Resource Include="resources\terrain\roads\triple\triple.txt" />
     <Resource Include="resources\terrain\terrain\dirt\dirt.png" />
+    <Resource Include="resources\terrain\terrain\dirt\dirt.json" />
+    <Resource Include="resources\terrain\terrain\grass\grass.json" />
     <Resource Include="resources\terrain\terrain\grass\grass.png" />
+    <Resource Include="resources\terrain\Test\Tester\Tester.json" />
     <Resource Include="resources\terrain\Test\Tester\oak.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Resource Include="resources\terrain\roads\double\double.json" />
     <Resource Include="icon.ico" />
     <Resource Include="res\icon.ico" />
     <Resource Include="res\icon.png" />

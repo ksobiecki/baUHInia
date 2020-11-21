@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -9,6 +10,7 @@ using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Logic.Creators.Tiles;
+using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
@@ -28,6 +30,7 @@ namespace baUHInia.Playground.View
         private IGameGridCreator _gameGridCreator;
         private ISelectorGridCreator _selectorGridCreator;
         private ISelectionWindowCreator _selectionWindowCreator;
+
         private IGameMapManager _manger;
         //private ISimulate _simulator;
 
@@ -45,6 +48,7 @@ namespace baUHInia.Playground.View
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
         public Selection Selection { get; private set; }
+
         //TODO: rest
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; }
@@ -55,7 +59,7 @@ namespace baUHInia.Playground.View
         public int AvailableFounds { get; }
 
         //============================ PREDEFINED ACTIONS ============================//
-        
+
         private void InitializeSelection() => Selection = new Selection(
             ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
 
@@ -71,8 +75,8 @@ namespace baUHInia.Playground.View
 
         private void ShowStartupPanel()
         {
-            Grid loadMapGrid = new Grid{Width = 200, Height = 300};//_manger
-            Grid loadGameGrid = new Grid{Width = 200, Height = 300}; //_manger
+            Grid loadMapGrid = new Grid {Width = 200, Height = 300}; //_manger
+            Grid loadGameGrid = new Grid {Width = 200, Height = 300}; //_manger
             InitialMapGrid = loadMapGrid;
             InitialGameGrid = loadGameGrid;
         }
@@ -86,17 +90,17 @@ namespace baUHInia.Playground.View
         {
             //TODO: implement
         }
-        
+
         private void LoadGame()
         {
             //TODO: implement
         }
-        
+
         private void SaveGame()
         {
             //TODO: implement
         }
-        
+
         private void SaveStateAsJpg()
         {
             //TODO: implement

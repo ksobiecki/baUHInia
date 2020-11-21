@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Model
@@ -6,23 +7,39 @@ namespace baUHInia.Playground.Model
     public class Selection
     {
         public TileObject TileObject { get; set; }
-        private LinkedList<Tile> ChangedElements { get; }
+        private LinkedList<Tile> ChangedTiles { get; }
+        
+        //TODO
+        private List<Tile>[,] ChangedElements { get; }
+        
+        private Grid GameGrid { get; }
 
         public Selection(TileObject tileObject)
         {
             TileObject = tileObject;
-            ChangedElements = new LinkedList<Tile>();
+            ChangedTiles = new LinkedList<Tile>();
         }
 
         public void ApplyTiles()
         {
-            foreach (Tile tile in ChangedElements) tile.AcceptChange();
+            foreach (Tile tile in ChangedTiles) tile.AcceptChange();
+        }
+
+        public void ApplyElements()
+        {
+            Offset[] offsets = TileObject.Sprite.Offsets;
+            foreach (Tile changedElement in ChangedTiles)
+            {
+                //TODO
+                (int x, int y) = changedElement.GetCoords();
+                //GameGrid.
+            }
         }
 
         public void RedoChanges()
         {
-            foreach (Tile temporaryTile in ChangedElements) temporaryTile.RevertChange();
-            ChangedElements.Clear();
+            foreach (Tile temporaryTile in ChangedTiles) temporaryTile.RevertChange();
+            ChangedTiles.Clear();
         }
 
         public void UpdateChangedTileList(Tile hoveredTile, Tile[,] tileGrid)
@@ -45,9 +62,10 @@ namespace baUHInia.Playground.Model
         private void AddChangedSpriteToList(Tile tileAtCoords, int index)
         {
             tileAtCoords.Change(TileObject[index], TileObject.Sprite.FullNameAtIndex(index));
-            ChangedElements.AddLast(tileAtCoords);
+            ChangedTiles.AddLast(tileAtCoords);
         }
 
+        //TODO: fix faulty
         private static bool IsOutsideGrid(int x, int y, Tile[,] grid) =>
             x < 0 || x > grid.GetUpperBound(1) || y < 0 || y > grid.GetUpperBound(0);
     }

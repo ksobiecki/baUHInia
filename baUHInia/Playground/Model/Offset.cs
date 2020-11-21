@@ -2,9 +2,9 @@
 {
     public class Offset
     {
-        public readonly byte I;
-        public readonly sbyte X;
-        public readonly sbyte Y;
+        public byte I { get; }
+        public sbyte X { get; }
+        public sbyte Y { get; }
 
         public Offset(byte i, sbyte x, sbyte y)
         {

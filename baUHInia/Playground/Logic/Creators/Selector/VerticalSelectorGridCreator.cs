@@ -81,7 +81,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         }
 
         private static TileObject[] GetElementsOfGroup(IEnumerable<TileObject> tileObjects, string group) => tileObjects
-            .Where(o => o.Group == group)
+            .Where(o => o.Config.Group == group)
             .ToArray();
     }
 }

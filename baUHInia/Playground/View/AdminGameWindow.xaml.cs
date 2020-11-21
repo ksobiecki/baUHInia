@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -9,6 +10,7 @@ using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Logic.Creators.Tiles;
+using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
@@ -41,6 +43,22 @@ namespace baUHInia.Playground.View
             AdjustWindowSizeAndPosition();
 
             Credentials = credentials;
+
+            /*Config config = new Config
+            {
+                Group = "GROUP", Name = "NAME", Offsets = new[] {new Offset(0, 0, 0), new Offset(1, 1, 0)},
+                IsElement = false
+            };
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    WriteIndented = true, 
+                    IncludeFields = true,
+                    IgnoreReadOnlyFields = false,
+                };
+            string jsonString = JsonSerializer.Serialize(config, options);
+
+            System.IO.File.WriteAllText(@"C:users\Jakub\Desktop\json.json", jsonString);*/
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -57,7 +75,7 @@ namespace baUHInia.Playground.View
         public int AvailableFounds { get; }
 
         //============================ PREDEFINED ACTIONS ============================//
-        
+
         private void InitializeSelection() => Selection = new Selection(
             ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
 
@@ -86,37 +104,37 @@ namespace baUHInia.Playground.View
 
         private void FillCardsAndComboBoxWithCategories() =>
             CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
-        
+
         private void UpdateSelectionWindow()
         {
             //TODO: implement
         }
-        
+
         private void UpdateComboBox()
         {
             //TODO: implement
         }
-        
+
         private void LoadMap()
         {
             //TODO: implement
         }
-        
+
         private void SaveMap()
         {
             //TODO: implement
         }
-        
+
         private void OpenSelectorTab()
         {
             //TODO: implement
         }
-        
+
         private void TestMap()
         {
             //TODO: implement
         }
-        
+
         private void ReturnToLoginWindow()
         {
             //TODO: implement

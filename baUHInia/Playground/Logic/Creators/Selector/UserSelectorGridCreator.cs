@@ -30,13 +30,13 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             tileObjects.Where(o => tileCategory.TileObjects.Contains(o)).ToList();
         
         private static IEnumerable<string> GetGroups(IEnumerable<TileObject> tileObjects) => tileObjects
-            .Where(o => o.Group != null)
-            .Select(o => o.Group)
+            .Where(o => o.Config.Group != null)
+            .Select(o => o.Config.Group)
             .Distinct()
             .ToArray();
         
         private static TileObject[] GetStandaloneObjects(IEnumerable<TileObject> tileObjects) => tileObjects
-            .Where(o => o.Group == null)
+            .Where(o => o.Config.Group == null)
             .ToArray();
     }
 }

@@ -25,9 +25,5 @@ namespace baUHInia.Authorisation
             }
             return _instance;
         }
-        public void flush()
-        {
-            _instance = null;
-        }
     }
 }

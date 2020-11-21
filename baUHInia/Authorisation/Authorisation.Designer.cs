@@ -124,7 +124,6 @@
             this.registerButton.TabIndex = 7;
             this.registerButton.Text = "Zarejestruj się";
             this.registerButton.UseVisualStyleBackColor = true;
-            this.registerButton.Click += new System.EventHandler(this.registerButton_Click);
             // 
             // loginButton
             // 
@@ -134,7 +133,6 @@
             this.loginButton.TabIndex = 3;
             this.loginButton.Text = "Zaloguj się";
             this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click_1);
             // 
             // groupBox1
             // 
@@ -217,7 +215,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Authorisation";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "baUHInia - Autoryzacja";
             this.Load += new System.EventHandler(this.Authorisation_Load);
             this.groupBox2.ResumeLayout(false);

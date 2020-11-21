@@ -66,6 +66,12 @@
     <Compile Include="Authorisation\Authorisation.Designer.cs">
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Authorisation\LoggedIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authorisation\LoggedIn.Designer.cs">
+      <DependentUpon>LoggedIn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
     <Compile Include="MapLogic\Model\Game.cs" />
@@ -101,7 +107,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -114,6 +119,9 @@
     </Compile>
     <EmbeddedResource Include="Authorisation\Authorisation.resx">
       <DependentUpon>Authorisation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Authorisation\LoggedIn.resx">
+      <DependentUpon>LoggedIn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

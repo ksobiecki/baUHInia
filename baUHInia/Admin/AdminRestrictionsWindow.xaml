@@ -22,7 +22,7 @@
         <Border Grid.Column="0" Grid.Row="0" BorderBrush="#003049" BorderThickness="10" CornerRadius="10"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
             <ScrollViewer   VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7">
-                <Grid Name="AllGameObjects" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Grid Name="AllGameObjectsGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </ScrollViewer>
         </Border>
             
@@ -55,7 +55,7 @@
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="Budżet na tę mapę:" Width="200" FontSize="16" VerticalAlignment="Bottom" Padding="15,0,15,0"/>
-                    <TextBox Grid.Row="1" Background="#eae2b7"/>
+                    <TextBox Grid.Row="1" Name="AdminBudget" Background="#eae2b7"/>
                     
                     <Border  Grid.Row="2" BorderBrush="#003049" BorderThickness="10" CornerRadius="5" 
                             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">

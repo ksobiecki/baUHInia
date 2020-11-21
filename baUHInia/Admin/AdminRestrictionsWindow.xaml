@@ -21,8 +21,8 @@
             
         <Border Grid.Column="0" Grid.Row="0" BorderBrush="#003049" BorderThickness="10" CornerRadius="10"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ScrollViewer   VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7">
-                <Grid Name="AllGameObjectsGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <ScrollViewer   VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7" Padding="3">
+                <Grid Name="AllGameObjectsGrid" HorizontalAlignment="Left" VerticalAlignment="Top" />
             </ScrollViewer>
         </Border>
             

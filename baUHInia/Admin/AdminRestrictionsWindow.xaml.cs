@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
@@ -10,6 +11,7 @@ namespace baUHInia.Admin
     public partial class AdminRestrictionsWindow : Window, IAdminOnClickObject
     {
         private AdminGridObjectsCreator AllGameObjects;
+        private AdminSelectedObjectDetails ObjectDetails;
         public AdminRestrictionsWindow()
         {
             InitializeComponent();
@@ -19,7 +21,8 @@ namespace baUHInia.Admin
                 AllGameObjectsGrid,
                 this
                 );
-            AllGameObjects.CreateGrid();
+            AllGameObjects.CreateGrid(GetCategoryBreakLineIndex());
+            ObjectDetails = new AdminSelectedObjectDetails(SelectedGameObjectDetails);
         }
 
         //todo zmien Terrain na Foliage, gdy cos tam juz bedzie
@@ -27,6 +30,8 @@ namespace baUHInia.Admin
         {
             List<GameObject> allGameObjects = new List<GameObject>();
             List<TileCategory> categoryList = ResourceHolder.Get.Terrain;
+            
+            
             foreach (var category in categoryList)
             {
                 foreach (var tileObject in category.TileObjects)
@@ -36,14 +41,25 @@ namespace baUHInia.Admin
                         );
                 }
             }
-
+            
             return allGameObjects.ToArray();
         }
 
+        private List<int> GetCategoryBreakLineIndex()
+        {
+            List<TileCategory> categoryList = ResourceHolder.Get.Terrain;
+            List<int> categoryBreakLineIndex = new List<int>();
+            foreach (var category in categoryList)
+            {
+                categoryBreakLineIndex.Add(categoryBreakLineIndex.LastOrDefault() + category.TileObjects.Count);
+            }
+
+            return categoryBreakLineIndex;
+        }
 
         public void OnObjectClick(AdminInGridClickableObject selectedObject)
         {
-            AdminBudget.Text = selectedObject.GameObject.TileObject.Name;
+            ObjectDetails.Display(selectedObject.GameObject);
         }
     }
 }

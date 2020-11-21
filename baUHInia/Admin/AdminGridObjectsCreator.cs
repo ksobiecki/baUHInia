@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using baUHInia.Playground.Model;
 
@@ -24,7 +25,7 @@ namespace baUHInia.Admin
 
         public void CreateGrid()
         {
-            int cols = 8;
+            int cols = 12;
             int rows = GameObjectsList.Length / cols + 1;
             for (var i = 0; i < cols; i++)
             {
@@ -37,9 +38,15 @@ namespace baUHInia.Admin
 
             int row = 0;
             int col = 0;
-            foreach (var gameObject in GameObjectsList)
+            for (var i = 0; i < GameObjectsList.Length; i++)
             {
-                Button button = gameObject.ClickableGameObject;
+                if (i == 13)
+                {
+                    ObjectsGrid.RowDefinitions.Add(new RowDefinition());
+                    row++;
+                    col = 0;
+                }
+                Button button = GameObjectsList[i].ClickableGameObject;
                 Grid.SetRow(button, row);
                 Grid.SetColumn(button, col);
                 ObjectsGrid.Children.Add(button);
@@ -50,8 +57,41 @@ namespace baUHInia.Admin
                     row++;
                 }
             }
-            
+        }
+        public void CreateGrid(List<int> categoryBreaksLineIndex)
+        {
+            int cols = 12;
+            int rows = GameObjectsList.Length / cols + 1;
+            for (var i = 0; i < cols; i++)
+            {
+                ObjectsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+            for (var i = 0; i < rows; i++)
+            {
+                ObjectsGrid.RowDefinitions.Add(new RowDefinition());
+            }
 
+            int row = 0;
+            int col = 0;
+            for (var i = 0; i < GameObjectsList.Length; i++)
+            {
+                if (categoryBreaksLineIndex.Contains(i))
+                {
+                    ObjectsGrid.RowDefinitions.Add(new RowDefinition());
+                    row++;
+                    col = 0;
+                }
+                Button button = GameObjectsList[i].ClickableGameObject;
+                Grid.SetRow(button, row);
+                Grid.SetColumn(button, col);
+                ObjectsGrid.Children.Add(button);
+                col++;
+                if (col == cols)
+                {
+                    col = 0;
+                    row++;
+                }
+            }
         }
     }
     

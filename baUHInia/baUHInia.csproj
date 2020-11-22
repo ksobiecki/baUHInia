@@ -43,6 +43,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlClient, Version=4.6.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.8.2\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -59,6 +67,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AdminInGridClickableObject.cs" />
+    <Compile Include="Admin\AdminGridObjectsCreator.cs" />
+    <Compile Include="Admin\AdminRestrictionsWindow.xaml.cs">
+      <DependentUpon>AdminRestrictionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminSelectedObjectDetails.cs" />
+    <Compile Include="Admin\IAdminOnClickObject.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -71,6 +86,7 @@
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
     <Compile Include="MapLogic\Manager\GameMapManager.cs" />
+    <Compile Include="Database\Program.cs" />
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
     <Compile Include="MapLogic\Model\Game.cs" />
     <Compile Include="MapLogic\Model\Map.cs" />
@@ -131,6 +147,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -182,6 +199,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Admin\AdminRestrictionsWindow.xaml" />
     <Page Include="Playground\View\UserGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

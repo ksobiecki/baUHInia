@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
 
@@ -7,8 +6,6 @@ namespace baUHInia.Playground.Model.Tiles
 {
     public class Sprite
     {
-        public const string Grass = "terrain/grass/grass.png";
-
         public readonly string[] Names;
 
         public readonly Offset[] Offsets;
@@ -31,11 +28,5 @@ namespace baUHInia.Playground.Model.Tiles
         public (byte x, byte y) SpriteWidthHeight() => (
             (byte) (Offsets.Max(val => val.X) - Offsets.Min(val => val.X)),
             (byte) (Offsets.Max(val => val.Y) - Offsets.Min(val => val.Y)));
-
-        public string FullNameAtIndex(int i)
-        {
-            string path = this[i].ToString();
-            return path.Substring(path.IndexOf("resources/", StringComparison.Ordinal) + 10);
-        }
     }
 }

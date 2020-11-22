@@ -18,6 +18,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         {
             _selectorCreator = new SelectorCreator(binder.Selection);
             _selectorGrid = binder.SelectorGrid;
+            _selectorGrid.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
         public abstract void CreateSelectionPanel(TileCategory tileCategory, ITileBinder tileBinder);

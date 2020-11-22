@@ -40,14 +40,13 @@ namespace baUHInia.Playground.Model
 
         private void UpdateChangedTileList(Tile tileAtCoords, int index)
         {
-            tileAtCoords.Change(TileObject[index], TileObject.Sprite.FullNameAtIndex(index));
+            tileAtCoords.Change(TileObject[index], TileObject.Config.Name);
             ChangedPlacers.AddLast(tileAtCoords);
         }
 
         private void UpdateChangedElementList((int x, int y) coords, int index)
         {
             Element element = ElementsLayers[coords.y, coords.x].Last();
-            //TODO: check name
             element.Change(TileObject[index], TileObject.Config.Name);
             ChangedPlacers.AddLast(element);
         }

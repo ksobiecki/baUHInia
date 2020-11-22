@@ -80,7 +80,7 @@ namespace baUHInia.Playground.View
         //============================ PREDEFINED ACTIONS ============================//
 
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
+            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "Plain Dirt"));
 
         private void AdjustWindowSizeAndPosition()
         {

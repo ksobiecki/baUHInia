@@ -25,8 +25,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         public Tile CreateBehavioralTileInGameGrid(int xPos, int yPos, BitmapImage image)
         {
             //TODO: Change
-            TileObject to = ResourceHolder.Get.Terrain.First(c => c.Name == "terrain")["grass"];
-            Button button = CreateButton(Sprite.Grass, to["grass.png"]);//image);//
+            TileObject to = ResourceHolder.Get.Terrain.First(c => c.Name == "terrain")["Plain Grass"];
+            Button button = CreateButton(to.Name, to["grass.png"]);//image);//
             ApplyBehaviourToTile(button);
             Tile tile = new Tile(button);
             tile.SetPositionInGrid(GameGrid, xPos, yPos);

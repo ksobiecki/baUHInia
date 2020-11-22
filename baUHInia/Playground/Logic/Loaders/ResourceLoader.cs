@@ -47,7 +47,7 @@ namespace baUHInia.Playground.Logic.Loaders
                     resources.Categories[index], subCategory, ResourceDir
                 );
                 Sprite sprite = new Sprite(elementsOfSubCategory, configInstance?.Offsets, bitmaps);
-                TileObject tileObject = new TileObject(subCategory, (index, i), sprite, configInstance);
+                TileObject tileObject = new TileObject((index, i), sprite, configInstance);
                 tileObjects.Add(tileObject);
             }
 

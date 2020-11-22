@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 using baUHInia.Playground.Logic.Utils;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Model.Tiles
 {

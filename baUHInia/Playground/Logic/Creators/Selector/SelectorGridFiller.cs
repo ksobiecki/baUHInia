@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Logic.Creators.Selector
 {
@@ -43,9 +44,9 @@ namespace baUHInia.Playground.Logic.Creators.Selector
                 string element = tileObject.Sprite.Names[offset.I];
                 Button button = _selectorCreator.CreateSelectorTile(element, tileObject[element], tileObject.Tag);
                 button.Margin = new Thickness(-1, 0, -1, 0);
-                button.Padding = new Thickness(-1.05);
+                button.Padding = new Thickness(-1.1);
                 Grid.SetColumn(button, offset.X - x);
-                Grid.SetRow(button, my - offset.Y - y);
+                Grid.SetRow(button, my - offset.Y + y);
                 _subGrid.Children.Add(button);
             }
         }

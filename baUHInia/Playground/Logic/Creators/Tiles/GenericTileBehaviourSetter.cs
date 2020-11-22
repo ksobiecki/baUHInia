@@ -2,10 +2,11 @@
 using System.Windows.Input;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
-    public abstract class GenericTileBehaviourSetter : IPlacerBehaviourSetter
+    public abstract class GenericTileBehaviourSetter : ITileBehaviourSetter
     {
         protected readonly Selection Selection;
         protected readonly Tile[,] TileGrid;

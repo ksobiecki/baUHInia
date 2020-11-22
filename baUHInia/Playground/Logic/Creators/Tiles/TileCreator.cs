@@ -3,21 +3,21 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
     public class TileCreator
     {
         public Grid GameGrid { get; set; }
-        private readonly TileBehaviourSetter _behaviourSetter;
+        private readonly ITileBehaviourSetter _behaviourSetter;
 
         public TileCreator(Selection selection, Tile[,] tileGrid)
         {
             //TODO: check
-            _behaviourSetter = new TileBehaviourSetter(selection, tileGrid);
+            _behaviourSetter = new GameTileBehaviourSetter(selection, tileGrid);
         }
 
         //============================ COMPLEX TILE CREATION ============================//

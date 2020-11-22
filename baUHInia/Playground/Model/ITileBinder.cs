@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using baUHInia.Authorisation;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Model
 {

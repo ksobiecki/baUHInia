@@ -4,6 +4,7 @@ using baUHInia.MapLogic.Model;
 using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators
 {

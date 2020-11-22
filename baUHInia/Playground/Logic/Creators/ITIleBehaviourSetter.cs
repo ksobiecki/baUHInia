@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace baUHInia.Playground.Logic.Creators
 {
-    public interface IPlacerBehaviourSetter
+    public interface ITileBehaviourSetter
     {
         void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs);
 

@@ -1,4 +1,4 @@
-﻿namespace baUHInia.Playground.Model
+﻿namespace baUHInia.Playground.Model.Utility
 {
     public class Offset
     {

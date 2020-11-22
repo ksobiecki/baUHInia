@@ -1,26 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Utility;
 
-namespace baUHInia.Playground.Model
+namespace baUHInia.Playground.Model.Wrappers
 {
     public class Selection
     {
         public TileObject TileObject { get; set; }
-        private LinkedList<Placer> ChangedPlacers { get; }
         public List<Element>[,] ElementsLayers { get; set; }
+        public LinkedList<Placement> PlacedElements { get; }
+        private LinkedList<Placer> ChangedPlacers { get; }
+
 
         public Selection(TileObject tileObject)
         {
             TileObject = tileObject;
             ChangedPlacers = new LinkedList<Placer>();
+            PlacedElements = new LinkedList<Placement>();
         }
 
-        public void ApplyTiles()
+        public void ApplyTiles(Button button)
         {
+            (int x, int y) position = (Grid.GetColumn(button), Grid.GetRow(button));
+            bool isElement = TileObject.Config.IsElement;
+            bool located = PlacedElements.FirstOrDefault(e => e.Position == position) != null;
+            if (isElement && located)
+            {
+                Console.WriteLine("CANNOT PLACE THERE!");
+                return;
+            }
             foreach (Placer tile in ChangedPlacers) tile.AcceptChange();
+            if (!isElement) return;
+            GameObject gameObject = new GameObject(TileObject, 0, 0);
+            Placement placement = new Placement(gameObject, position);
+            PlacedElements.AddLast(placement);
         }
 
         public void RedoChanges()

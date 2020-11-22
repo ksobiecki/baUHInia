@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Logic.Loaders
 {

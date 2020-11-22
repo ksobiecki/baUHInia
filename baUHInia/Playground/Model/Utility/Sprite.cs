@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Media.Imaging;
 
-namespace baUHInia.Playground.Model.Tiles
+namespace baUHInia.Playground.Model.Utility
 {
     public class Sprite
     {

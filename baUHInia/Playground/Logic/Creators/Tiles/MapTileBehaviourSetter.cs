@@ -1,7 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
@@ -11,7 +13,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         
         public override void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs)
         { 
-            Selection.ApplyTiles();
+            Selection.ApplyTiles(sender as Button);
         }
 
         public override void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)

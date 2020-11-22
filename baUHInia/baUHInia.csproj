@@ -120,7 +120,6 @@
     <Compile Include="Playground\Logic\Creators\Tiles\GameTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GenericTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\MapTileBehaviourSetter.cs" />
-    <Compile Include="Playground\Logic\Creators\Tiles\TileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileCreator.cs" />
     <Compile Include="Playground\Logic\Creators\IGameGridCreator.cs" />
     <Compile Include="Playground\Logic\Loaders\ResourceLoader.cs" />
@@ -128,20 +127,20 @@
     <Compile Include="Playground\Logic\Utils\Config.cs" />
     <Compile Include="Playground\Logic\Utils\ResourceCollection.cs" />
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
-    <Compile Include="Playground\Model\GameObject.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />
-    <Compile Include="Playground\Model\Offset.cs" />
-    <Compile Include="Playground\Model\Placement.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
-    <Compile Include="Playground\Model\Selection.cs" />
     <Compile Include="Playground\Model\Tiles\Element.cs" />
     <Compile Include="Playground\Model\Tiles\Placer.cs" />
-    <Compile Include="Playground\Model\Tiles\Sprite.cs" />
     <Compile Include="Playground\Model\Tiles\Tile.cs" />
     <Compile Include="Playground\Model\Tiles\TileCategory.cs" />
     <Compile Include="Playground\Model\Tiles\TileObject.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Playground\Model\Utility\Offset.cs" />
+    <Compile Include="Playground\Model\Utility\Sprite.cs" />
+    <Compile Include="Playground\Model\Wrappers\GameObject.cs" />
+    <Compile Include="Playground\Model\Wrappers\Placement.cs" />
+    <Compile Include="Playground\Model\Wrappers\Selection.cs" />
     <Compile Include="Playground\View\UserGameWindow.xaml.cs">
       <DependentUpon>UserGameWindow.xaml</DependentUpon>
     </Compile>

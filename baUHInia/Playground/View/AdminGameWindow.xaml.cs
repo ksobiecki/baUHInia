@@ -89,7 +89,7 @@ namespace baUHInia.Playground.View
         private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
 
         private void FillCardsAndComboBoxWithCategories() =>
-            CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
+            CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => char.ToUpper(c.Name[0]) + c.Name.Substring(1));
 
         private void UpdateSelectionWindow()
         {
@@ -132,7 +132,7 @@ namespace baUHInia.Playground.View
         {
             ComboBox comboBox = sender as ComboBox;
             string item = comboBox.SelectedItem as string;
-            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item), this);
+            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item.ToLower()), this);
         }
     }
 }

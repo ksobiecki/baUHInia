@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="HeatIsland" Name="Window" Width="800" Height="600">
 
-	<Grid x:Name="DockPanel" MinHeight="200" Margin="0" MinWidth="100" Background="#404455">
+	<Grid x:Name="DockPanel" UseLayoutRounding="True" SnapsToDevicePixels="True" MinHeight="200" Margin="0" MinWidth="100" Background="#404455">
 
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
@@ -34,7 +34,7 @@
 						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="NOWA MAPA"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/icon.ico"/>
 						<Border BorderBrush="#6688CC" BorderThickness="10" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,230,0,0">
-							<Button Click="CreateNewMap" Content="UTWÓRZ" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="80" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
+							<Button Click="CreateNewMap" Content="Utwórz" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="80" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
 						</Border>
 					</Grid>
 				</Border>
@@ -47,30 +47,67 @@
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
-				<RowDefinition Height="30"/>
-				<RowDefinition Height="30"/>
-				<RowDefinition Height="30"/>
-				<RowDefinition Height="30"/>
-				<RowDefinition Height="30"/>
-				<RowDefinition Height="30"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="55"/>
 				<RowDefinition Height="30"/>
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
 			<TextBlock Text="TRYB KREACJI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
 
-			<Button Content="Zapisz Grę" Width="75" Grid.Row="1" Height="20" />
-			<Button Content="Wczytaj Grę" Width="75" Grid.Row="2" Height="20"/>
-			<Button Content="Nowa Gra" Width="75" Grid.Row="3" Height="20"/>
-			<Button Content="Od Nowa" Width="75" Grid.Row="4" Height="20"/>
-			<Button Content="Ustawienia" Width="75" Grid.Row="5" Height="20"/>
-			<Button Content="Wyloguj" Width="75" Grid.Row="6" Height="20" Margin="0,0,0,40"/>
+			<Border BorderBrush="#6688CC" BorderThickness="5" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="1">
+				<Button Content="Zapisz Grę" Width="85"  Height="20" Background="#6688CC" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0"/>
+			</Border>
+			
+			<Border BorderBrush="#6688CC" BorderThickness="5" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="2">
+				<Button Content="Wczytaj Grę" Width="85" Height="20" Background="#6688CC" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0"/>
+			</Border>
+			
+			<Border BorderBrush="#6688CC" BorderThickness="5" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="3">
+				<Button Content="Nowa Gra" Width="85" Height="20" Background="#6688CC" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0"/>
+			</Border>
+			
+			<Border BorderBrush="#6688CC" BorderThickness="5" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="4">
+				<Button Content="Od Nowa" Width="85" Height="20" Background="#6688CC" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0"/>
+			</Border>
+			
+			<Border BorderBrush="#6688CC" BorderThickness="5" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Row="5">
+				<Button Content="Ustawienia" Width="85" Height="20" Background="#6688CC" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0"/>
+			</Border>
+			
+			<Border BorderBrush="#6688CC" BorderThickness="5" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20" Grid.Row="6">
+				<Button Content="Wyloguj" Width="85" Height="20" Background="#6688CC" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" />
+			</Border>
 
-			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="7" SelectionChanged="CategorySelector_SelectionChanged"/>
+			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="7" 
+			          SelectionChanged="CategorySelector_SelectionChanged" 
+			          FontStretch="Expanded" Background="#6688CC"
+			          Foreground="#DDDDDD"
+			          HorizontalContentAlignment="Center" 
+			          VerticalContentAlignment="Center" 
+			          FontSize="14" FontWeight="Bold" 
+			          Style="{DynamicResource ComboBoxStyle}">
+				
+			          <ComboBox.Resources>
+					<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="Brown" />
+				</ComboBox.Resources>
+				<ComboBox.ItemContainerStyle>
+					<Style TargetType="ComboBoxItem">
+					<Setter Property="Background" Value="#6688CC"/>
+					<Setter Property="BorderBrush" Value="#6688CC"/>
+				
+				</Style>
+				</ComboBox.ItemContainerStyle>
+			</ComboBox>
 
 			<ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Stretch" Background="#888888">
 				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			</ScrollViewer>
+			
 
 		</Grid>
 

@@ -26,6 +26,7 @@ namespace baUHInia.MapLogic.Manager
         private Grid SearchGrid;
         private ScrollViewer ListScrollViewer;
         private Grid ListGrid;
+        private Grid SaveGrid;
 
         public GameMapManager()
         {
@@ -52,6 +53,8 @@ namespace baUHInia.MapLogic.Manager
             // TODO get games from database.
 
             Mode = 2;
+            Choice = "";
+            Keyword = "";
 
             ContainerGrid.Children.Clear();
             ContainerGrid.Children.Add(SearchGrid);
@@ -68,6 +71,8 @@ namespace baUHInia.MapLogic.Manager
             // TODO get maps from database.
 
             Mode = 0;
+            Choice = "";
+            Keyword = "";
 
             ContainerGrid.Children.Clear();
             ContainerGrid.Children.Add(SearchGrid);
@@ -79,7 +84,16 @@ namespace baUHInia.MapLogic.Manager
             return ContainerGrid;
         }
 
-        public bool GetMapSaveGrid()
+        public Grid GetMapSaveGrid()
+        {
+            Mode = 1;
+            ContainerGrid.Children.Clear();
+            CreateSaveGrid();
+            ContainerGrid.Children.Add(SaveGrid);
+            return ContainerGrid;
+        }
+
+        public Grid GetGameSaveGrid()
         {
             throw new NotImplementedException();
         }
@@ -109,6 +123,31 @@ namespace baUHInia.MapLogic.Manager
             ContainerGrid= new Grid();
             ContainerGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
             ContainerGrid.VerticalAlignment = VerticalAlignment.Stretch;
+        }
+
+        private void CreateSaveGrid()
+        {
+            SaveGrid = new Grid();
+            SaveGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
+            SaveGrid.VerticalAlignment = VerticalAlignment.Stretch;
+            SaveGrid.Margin = new Thickness(30,80,30,80);
+            SaveGrid.Background = Brushes.Blue;
+
+            TextBox nameTextBox = new TextBox();
+            nameTextBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            nameTextBox.VerticalAlignment = VerticalAlignment.Top;
+            nameTextBox.VerticalContentAlignment = VerticalAlignment.Center;
+            nameTextBox.Padding = new Thickness(10,0,10,0);
+            nameTextBox.Height = 30;
+
+            Button saveButton = new Button();
+            saveButton.HorizontalAlignment = HorizontalAlignment.Stretch;
+            saveButton.VerticalAlignment = VerticalAlignment.Stretch;
+            saveButton.Margin = new Thickness(0,30,0,0);
+            saveButton.Content = "Zapisz";
+
+            SaveGrid.Children.Add(nameTextBox);
+            SaveGrid.Children.Add(saveButton);
         }
 
         private void CreateSearchGrid()

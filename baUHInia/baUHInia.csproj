@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F9E92683-670E-4282-B949-60ABF0F594C3}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>baUHInia</RootNamespace>
     <AssemblyName>baUHInia</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -36,6 +36,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -82,10 +85,14 @@
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
+    <Compile Include="MapLogic\Manager\GameMapManager.cs" />
     <Compile Include="Database\Program.cs" />
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
     <Compile Include="MapLogic\Model\Game.cs" />
     <Compile Include="MapLogic\Model\Map.cs" />
+    <Compile Include="MapLogic\View\ChoiceWindow.xaml.cs">
+      <DependentUpon>ChoiceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playground\Logic\Creators\ISelectionWindowCreator.cs" />
     <Compile Include="Playground\Logic\Creators\ISelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\AdminSelectorGridCreator.cs" />
@@ -188,6 +195,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MapLogic\View\ChoiceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Admin\AdminRestrictionsWindow.xaml" />
     <Page Include="Playground\View\UserGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

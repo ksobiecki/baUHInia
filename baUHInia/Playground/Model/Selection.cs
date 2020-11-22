@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Model
@@ -46,8 +48,15 @@ namespace baUHInia.Playground.Model
 
         private void UpdateChangedElementList((int x, int y) coords, int index)
         {
-            Element element = ElementsLayers[coords.y, coords.x].Last();
+            List<Element> elements = ElementsLayers[coords.y, coords.x];
+            Element element = elements.Last();
             element.Change(TileObject[index], TileObject.Config.Name);
+            Image image = new Image {IsHitTestVisible = false};
+            Grid grid = element.GetParentGrid();
+            Grid.SetColumn(image, coords.x);
+            Grid.SetRow(image, coords.y);
+            grid.Children.Add(image);
+            elements.Add(new Element(image));
             ChangedPlacers.AddLast(element);
         }
 

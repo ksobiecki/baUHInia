@@ -151,7 +151,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,8 +216,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Resource Include="resources\terrain\Test\TestTree\1_test_tree.png" />
+    <Resource Include="resources\terrain\Test\TestTree\2_test_tree.png" />
+    <Resource Include="resources\terrain\Test\TestTree\3_test_tree.png" />
+    <Resource Include="resources\terrain\Test\TestTree\4_test_tree.png" />
+    <Resource Include="resources\terrain\Test\TestTree\5_test_tree.png" />
+    <Resource Include="resources\terrain\Test\TestTree\6_test_tree.png" />
     <Resource Include="resources\terrain\roads\double\double.json" />
     <Resource Include="icon.ico" />
+    <Resource Include="resources\terrain\Test\TestTree\TestTree.json" />
     <Resource Include="res\icon.ico" />
     <Resource Include="res\icon.png" />
   </ItemGroup>

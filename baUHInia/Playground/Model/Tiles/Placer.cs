@@ -17,7 +17,7 @@ namespace baUHInia.Playground.Model.Tiles
         {
             FrameworkElement = frameworkElement;
         }
-        
+
         public string GetCategorySubcategoryAndName() => _currentTag;
 
         protected abstract void ApplyTexture();
@@ -50,6 +50,8 @@ namespace baUHInia.Playground.Model.Tiles
             _previousTag = "";
             ApplyTexture();
         }
+
+        public Grid GetParentGrid() => FrameworkElement.Parent as Grid;
 
         public (int x, int y) GetCoords() => (Grid.GetColumn(FrameworkElement), Grid.GetRow(FrameworkElement));
 

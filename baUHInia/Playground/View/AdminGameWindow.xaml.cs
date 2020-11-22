@@ -44,22 +44,6 @@ namespace baUHInia.Playground.View
             AdjustWindowSizeAndPosition();
 
             Credentials = credentials;
-
-            /*Config config = new Config
-            {
-                Group = "GROUP", Name = "NAME", Offsets = new[] {new Offset(0, 0, 0), new Offset(1, 1, 0)},
-                IsElement = false
-            };
-
-            JsonSerializerOptions options = new JsonSerializerOptions
-                {
-                    WriteIndented = true, 
-                    IncludeFields = true,
-                    IgnoreReadOnlyFields = false,
-                };
-            string jsonString = JsonSerializer.Serialize(config, options);
-
-            System.IO.File.WriteAllText(@"C:users\Jakub\Desktop\json.json", jsonString);*/
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -68,12 +52,9 @@ namespace baUHInia.Playground.View
 
         //TODO: rest
         public Tile[,] TileGrid { get; private set; }
-        public List<Placement> PlacedObjects { get; }
+        public List<Placement> PlacedObjects => Selection.PlacedElements;
         public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
-
-        //TODO:
-        public Grid GameGrid => null;
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
@@ -99,6 +80,7 @@ namespace baUHInia.Playground.View
 
         private void CreateGameBoard()
         {
+            SideGrid.Visibility = Visibility.Visible;
             TileGrid = new Tile[BoardDensity, BoardDensity];
             _gameGridCreator = new TileGridCreator(this, BoardDensity);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
@@ -151,15 +133,6 @@ namespace baUHInia.Playground.View
             ComboBox comboBox = sender as ComboBox;
             string item = comboBox.SelectedItem as string;
             _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item), this);
-        }
-
-        private void Filler_Click(object sender, RoutedEventArgs e)
-        {
-            BitmapImage bi = new BitmapImage(new Uri("pack://application:,,,/resources/terrain/Test/Tester/oak.png"));
-            Image img = new Image {Source = bi, IsHitTestVisible = false};
-            Grid.SetRow(img, 5);
-            Grid.SetColumn(img, 5);
-            ((Grid) GameViewer.Content).Children.Add(img);
         }
     }
 }

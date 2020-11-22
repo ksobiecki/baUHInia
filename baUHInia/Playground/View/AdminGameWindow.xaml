@@ -10,11 +10,11 @@
 	<Grid x:Name="DockPanel" MinHeight="200" Margin="0" MinWidth="100" Background="#404455">
 
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
-			<ColumnDefinition Width="140"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<ScrollViewer Name="GameScroll" DockPanel.Dock="Left" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch">
+		<ScrollViewer Name="GameScroll" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch" Grid.Column="0">
 
 			<Grid>
 				
@@ -43,7 +43,7 @@
 		
 		</ScrollViewer>
 
-		<Grid Grid.Column="1" HorizontalAlignment="Left" Height="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Top" Width="140"  MaxWidth="140">
+		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Collapsed">
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
@@ -54,7 +54,7 @@
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="30"/>
-				<RowDefinition Height="300"/>
+				<RowDefinition />
 			</Grid.RowDefinitions>
 
 			<TextBlock Text="TRYB KREACJI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
@@ -64,11 +64,11 @@
 			<Button Content="Nowa Gra" Width="75" Grid.Row="3" Height="20"/>
 			<Button Content="Od Nowa" Width="75" Grid.Row="4" Height="20"/>
 			<Button Content="Ustawienia" Width="75" Grid.Row="5" Height="20"/>
-			<Button Content="Wyloguj" Width="75" Grid.Row="6" Height="20"/>
+			<Button Content="Wyloguj" Width="75" Grid.Row="6" Height="20" Margin="0,0,0,40"/>
 
 			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="7" SelectionChanged="CategorySelector_SelectionChanged"/>
 
-			<ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Top" MinHeight="30" Background="#888888">
+			<ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Stretch" Background="#888888">
 				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			</ScrollViewer>
 

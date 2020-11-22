@@ -11,15 +11,15 @@ namespace baUHInia.Playground.Model.Wrappers
     {
         public TileObject TileObject { get; set; }
         public List<Element>[,] ElementsLayers { get; set; }
-        public LinkedList<Placement> PlacedElements { get; }
+        public List<Placement> PlacedElements { get; }
         private LinkedList<Placer> ChangedPlacers { get; }
 
 
         public Selection(TileObject tileObject)
         {
             TileObject = tileObject;
+            PlacedElements = new List<Placement>();
             ChangedPlacers = new LinkedList<Placer>();
-            PlacedElements = new LinkedList<Placement>();
         }
 
         public void ApplyTiles(Button button)
@@ -36,7 +36,7 @@ namespace baUHInia.Playground.Model.Wrappers
             if (!isElement) return;
             GameObject gameObject = new GameObject(TileObject, 0, 0);
             Placement placement = new Placement(gameObject, position);
-            PlacedElements.AddLast(placement);
+            PlacedElements.Add(placement);
         }
 
         public void RedoChanges()

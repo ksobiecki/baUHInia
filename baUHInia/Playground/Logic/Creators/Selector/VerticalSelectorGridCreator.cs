@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
 
@@ -49,7 +50,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
                 gridRowIndex += 2;
             }
         }
-        
+
         protected void ClearSelectorGrid()
         {
             _selectorGrid.Children.Clear();
@@ -61,7 +62,11 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         {
             _selectorGrid.RowDefinitions.Add(new RowDefinition());
             _selectorGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
-            Label label = new Label {Content = subcategory, Height = 30};
+            Label label = new Label
+            {
+                Content = subcategory, Height = 30, FontSize = 13, FontWeight = FontWeights.Bold,
+                Foreground = Brushes.DarkSlateGray
+            };
             Grid.SetRow(label, gridRowIndex);
             _selectorGrid.Children.Add(label);
         }

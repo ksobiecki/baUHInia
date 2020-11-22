@@ -64,6 +64,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AdminInGridClickableObject.cs" />
+    <Compile Include="Admin\AdminGridObjectsCreator.cs" />
+    <Compile Include="Admin\AdminRestrictionsWindow.xaml.cs">
+      <DependentUpon>AdminRestrictionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminSelectedObjectDetails.cs" />
+    <Compile Include="Admin\IAdminOnClickObject.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -181,6 +188,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Admin\AdminRestrictionsWindow.xaml" />
     <Page Include="Playground\View\UserGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

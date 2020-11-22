@@ -1,7 +1,7 @@
 ﻿using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
 
-namespace baUHInia.Playground.Logic.Creators
+namespace baUHInia.Playground.Logic.Creators.Selector
 {
     public interface ISelectorGridCreator
     {

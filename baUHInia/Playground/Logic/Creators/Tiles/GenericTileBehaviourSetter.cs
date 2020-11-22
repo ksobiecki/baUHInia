@@ -5,7 +5,7 @@ using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
-    public abstract class GenericTileBehaviourSetter : ITileBehaviourSetter
+    public abstract class GenericTileBehaviourSetter : IPlacerBehaviourSetter
     {
         protected readonly Selection Selection;
         protected readonly Tile[,] TileGrid;

@@ -70,6 +70,9 @@ namespace baUHInia.Playground.View
         public List<Placement> PlacedObjects { get; }
         public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
+
+        //TODO:
+        public Grid GameGrid => null;
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }

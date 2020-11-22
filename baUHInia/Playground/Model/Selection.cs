@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
+using System.Linq;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Model
@@ -7,65 +7,58 @@ namespace baUHInia.Playground.Model
     public class Selection
     {
         public TileObject TileObject { get; set; }
-        private LinkedList<Tile> ChangedTiles { get; }
-        
-        //TODO
-        private List<Tile>[,] ChangedElements { get; }
-        
-        private Grid GameGrid { get; }
+        private LinkedList<Placer> ChangedPlacers { get; }
+        public List<Element>[,] ElementsLayers { get; set; }
 
         public Selection(TileObject tileObject)
         {
             TileObject = tileObject;
-            ChangedTiles = new LinkedList<Tile>();
+            ChangedPlacers = new LinkedList<Placer>();
         }
 
         public void ApplyTiles()
         {
-            foreach (Tile tile in ChangedTiles) tile.AcceptChange();
-        }
-
-        public void ApplyElements()
-        {
-            Offset[] offsets = TileObject.Sprite.Offsets;
-            foreach (Tile changedElement in ChangedTiles)
-            {
-                //TODO
-                (int x, int y) = changedElement.GetCoords();
-                //GameGrid.
-            }
+            foreach (Placer tile in ChangedPlacers) tile.AcceptChange();
         }
 
         public void RedoChanges()
         {
-            foreach (Tile temporaryTile in ChangedTiles) temporaryTile.RevertChange();
-            ChangedTiles.Clear();
+            foreach (Placer temporaryTile in ChangedPlacers) temporaryTile.RevertChange();
+            ChangedPlacers.Clear();
         }
 
-        public void UpdateChangedTileList(Tile hoveredTile, Tile[,] tileGrid)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid)
         {
             for (int i = 0; i < TileObject.Sprite.Offsets.Length; i++)
             {
                 (int x, int y) = GetCoords(hoveredTile, i);
-                if (IsOutsideGrid(x, y, tileGrid)) return;
-                AddChangedSpriteToList(tileGrid[y, x], i);
+                if (IsOutsideGrid(x, y, tileGrid)) continue;
+                if (TileObject.Config.IsElement) UpdateChangedElementList((x, y), i);
+                else UpdateChangedTileList(tileGrid[y, x], i);
             }
         }
 
-        private (int x, int y) GetCoords(Tile tileBeforeOffset, int offsetIndex)
+        private void UpdateChangedTileList(Tile tileAtCoords, int index)
+        {
+            tileAtCoords.Change(TileObject[index], TileObject.Sprite.FullNameAtIndex(index));
+            ChangedPlacers.AddLast(tileAtCoords);
+        }
+
+        private void UpdateChangedElementList((int x, int y) coords, int index)
+        {
+            Element element = ElementsLayers[coords.y, coords.x].Last();
+            //TODO: check name
+            element.Change(TileObject[index], TileObject.Config.Name);
+            ChangedPlacers.AddLast(element);
+        }
+
+        private (int x, int y) GetCoords(Placer tileBeforeOffset, int offsetIndex)
         {
             (int x, int y) baseCoords = tileBeforeOffset.GetCoords();
             Offset offset = TileObject.Sprite.Offsets[offsetIndex];
             return (baseCoords.x + offset.X, baseCoords.y - offset.Y);
         }
 
-        private void AddChangedSpriteToList(Tile tileAtCoords, int index)
-        {
-            tileAtCoords.Change(TileObject[index], TileObject.Sprite.FullNameAtIndex(index));
-            ChangedTiles.AddLast(tileAtCoords);
-        }
-
-        //TODO: fix faulty
         private static bool IsOutsideGrid(int x, int y, Tile[,] grid) =>
             x < 0 || x > grid.GetUpperBound(1) || y < 0 || y > grid.GetUpperBound(0);
     }

@@ -108,10 +108,11 @@
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
     <Compile Include="MapLogic\Model\Game.cs" />
     <Compile Include="MapLogic\Model\Map.cs" />
+    <Compile Include="Playground\Logic\Creators\ITIleBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\ISelectionWindowCreator.cs" />
-    <Compile Include="Playground\Logic\Creators\ISelectorGridCreator.cs" />
-    <Compile Include="Playground\Logic\Creators\ITileBehaviourSetter.cs" />
+    <Compile Include="Playground\Logic\Creators\PlacerGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\AdminSelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Selector\ISelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridFiller.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\UserSelectorGridCreator.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Playground\Logic\Creators\Tiles\GameTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GenericTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\MapTileBehaviourSetter.cs" />
-    <Compile Include="Playground\Logic\Creators\Tiles\TileGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileCreator.cs" />
     <Compile Include="Playground\Logic\Creators\IGameGridCreator.cs" />
@@ -134,6 +134,8 @@
     <Compile Include="Playground\Model\Placement.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
     <Compile Include="Playground\Model\Selection.cs" />
+    <Compile Include="Playground\Model\Tiles\Element.cs" />
+    <Compile Include="Playground\Model\Tiles\Placer.cs" />
     <Compile Include="Playground\Model\Tiles\Sprite.cs" />
     <Compile Include="Playground\Model\Tiles\Tile.cs" />
     <Compile Include="Playground\Model\Tiles\TileCategory.cs" />
@@ -206,7 +208,6 @@
     <Resource Include="resources\terrain\roads\triple\2_asphalt_left_right_line.png" />
     <Resource Include="resources\terrain\roads\triple\3_asphalt_left_line.png" />
     <Resource Include="resources\terrain\roads\triple\triple.json" />
-    <Resource Include="resources\terrain\roads\triple\triple.txt" />
     <Resource Include="resources\terrain\terrain\dirt\dirt.png" />
     <Resource Include="resources\terrain\terrain\dirt\dirt.json" />
     <Resource Include="resources\terrain\terrain\grass\grass.json" />

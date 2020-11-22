@@ -1,6 +1,6 @@
 ﻿{
   "Name": "Tester",
   "Group": null,
-  "IsElement": false,
+  "IsElement": true,
   "Offsets": null
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +28,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 List<TileObject> tileObjects = LoadTileObjects(resources, i);
                 tileCategories.Add(new TileCategory(resources.Categories[i], tileObjects));
             }
-
+            HasNameDuplicates(tileCategories);
             return tileCategories;
         }
 
@@ -55,7 +56,7 @@ namespace baUHInia.Playground.Logic.Loaders
 
         private static Config LoadConfig(string config)
         {
-            //TODO: refactor
+            //TODO: refactor extract to other class
             string uri = ResourceDir + "resources/" + config;
             StreamResourceInfo resourceStream = Application.GetResourceStream(new Uri(uri));
             using (StreamReader reader = new StreamReader(resourceStream.Stream))
@@ -74,6 +75,19 @@ namespace baUHInia.Playground.Logic.Loaders
             using (ResourceReader reader = new ResourceReader(stream ?? throw new NullReferenceException()))
             {
                 return reader.Cast<DictionaryEntry>().Select(entry => (string) entry.Key).ToArray();
+            }
+        }
+
+        private static void HasNameDuplicates(IEnumerable<TileCategory> tileCategories)
+        {
+            List<string> configs = (
+                from tileCategory in tileCategories
+                from tileObject in tileCategory.TileObjects
+                select tileObject.Config.Name).ToList();
+            
+            if (configs.GroupBy(s => s).Where(g => g.Count() > 1).ToArray().Length != 0)
+            {
+                throw new DuplicateNameException("There can't be 2 elements with same name");
             }
         }
     }

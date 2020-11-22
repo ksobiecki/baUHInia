@@ -10,16 +10,14 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
     {
         public GameTileBehaviourSetter(Selection selection, Tile[,] tileGrid) : base(selection, tileGrid) { }
 
-        public override void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs)
-        {
-            throw new System.NotImplementedException();
-        }
+        public override void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs)=>
+            Selection.ApplyTiles();
 
         public override void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)
         {
             Button button = sender as Button;
-            Tile tile = Tile.GetTileFromButton(TileGrid, button);
-            Selection.UpdateChangedTileList(tile, TileGrid);
+            Tile tile = Placer.GetPlacerFromButton(TileGrid, button) as Tile;
+            Selection.UpdateChangedPlacerList(tile, TileGrid);
         }
         
         public override void OnFieldMouseLeave(object sender, MouseEventArgs mouseEventArgs)

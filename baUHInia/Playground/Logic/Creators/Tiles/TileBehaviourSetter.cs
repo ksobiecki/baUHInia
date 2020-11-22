@@ -25,8 +25,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         public void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)
         {
             Button button = sender as Button;
-            Tile tile = Tile.GetTileFromButton(_tileGrid, button);
-            _selection.UpdateChangedTileList(tile, _tileGrid);
+            Tile tile = Placer.GetPlacerFromButton(_tileGrid, button) as Tile;
+            _selection.UpdateChangedPlacerList(tile, _tileGrid);
         }
         
         public void OnFieldMouseLeave(object sender, MouseEventArgs mouseEventArgs)

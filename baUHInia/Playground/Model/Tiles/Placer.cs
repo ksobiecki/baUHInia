@@ -1,11 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Model.Tiles
 {
     public abstract class Placer
     {
+        public Offset Root { get; set; }
+        public TileObject TileObject { get; set; }
+            
         private bool _changed;
         private string _previousTag;
         private string _currentTag;
@@ -13,12 +17,15 @@ namespace baUHInia.Playground.Model.Tiles
         protected BitmapImage CurrentTexture;
         protected readonly FrameworkElement FrameworkElement;
 
-        protected Placer(FrameworkElement frameworkElement)
+        protected Placer(FrameworkElement frameworkElement, Offset root)
         {
             FrameworkElement = frameworkElement;
+            Root = root;
         }
 
-        public string GetCategorySubcategoryAndName() => _currentTag;
+        public string GetName() => _currentTag;
+
+        public FrameworkElement GetUIElement() => FrameworkElement;
 
         protected abstract void ApplyTexture();
 

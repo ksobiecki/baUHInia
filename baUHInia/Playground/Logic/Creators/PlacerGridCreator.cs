@@ -4,6 +4,7 @@ using baUHInia.MapLogic.Model;
 using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators
@@ -94,7 +95,7 @@ namespace baUHInia.Playground.Logic.Creators
                     Grid.SetRow(image, i);
                     Grid.SetColumn(image, j);
                     gameGrid.Children.Add(image);
-                    elementsLayers[i, j] = new List<Element> {new Element(image)};
+                    elementsLayers[i, j] = new List<Element> {new Element(image, null)};
                 }
             }
             selection.ElementsLayers = elementsLayers;

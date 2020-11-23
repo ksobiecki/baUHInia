@@ -23,7 +23,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         public override void OnFieldMouseLeave(object sender, MouseEventArgs mouseEventArgs)
         {
             bool pressed = mouseEventArgs.RightButton == MouseButtonState.Pressed;
-            if (pressed) Selection.ApplyTiles(sender as Button);
+            if (pressed && !Selection.TileObject.Config.IsElement) Selection.ApplyTiles(sender as Button);
             else Selection.RedoChanges();
         }
     }

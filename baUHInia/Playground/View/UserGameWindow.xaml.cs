@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
-using baUHInia.Playground.Logic.Creators.Tiles;
-using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
+using Brush = System.Drawing.Brush;
 
 namespace baUHInia.Playground.View
 {
@@ -58,11 +57,12 @@ namespace baUHInia.Playground.View
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
+        public void ChangeMode(string text, System.Windows.Media.Brush color) => throw new NotImplementedException();
 
         //============================ PREDEFINED ACTIONS ============================//
 
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
+            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"), this);
 
         private void AdjustWindowSizeAndPosition()
         {

@@ -49,6 +49,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             (int category, int subCategory) = ((int, int)) senderButton.Tag;
             TileObject tileObject = _tileCategories[category].TileObjects[subCategory];
             _currentSelection.TileObject = tileObject;
+            _currentSelection.ChangeState(State.Place);
         }
     }
 }

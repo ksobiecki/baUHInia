@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
@@ -11,6 +12,7 @@ using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
+using Brush = System.Drawing.Brush;
 
 namespace baUHInia.Playground.View
 {
@@ -54,11 +56,16 @@ namespace baUHInia.Playground.View
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
+        public void ChangeMode(string text, System.Windows.Media.Brush color)
+        {
+            ModeText.Text = text;
+            ModeText.Foreground = color;
+        }
 
         //============================ PREDEFINED ACTIONS ============================//
 
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "Plain Dirt"));
+            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "Plain Dirt"), this);
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -72,6 +79,10 @@ namespace baUHInia.Playground.View
             CreateGameBoard();
             CreateSelectorGrid();
             FillCardsAndComboBoxWithCategories();
+            DeleteButton.Click += (o, args) => { 
+                Selection.ChangeState(State.Remove);
+                ModeText.Text = "USUWANIE";
+            };
         }
 
         private void CreateGameBoard()

@@ -150,6 +150,7 @@
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
+    <Compile Include="Playground\Model\State.cs" />
     <Compile Include="Playground\Model\Tiles\Element.cs" />
     <Compile Include="Playground\Model\Tiles\Placer.cs" />
     <Compile Include="Playground\Model\Tiles\Tile.cs" />
@@ -244,7 +245,6 @@
     <Resource Include="resources\terrain\Test\Tester\oak.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
     <Resource Include="resources\terrain\Test\TestTree\1_test_tree.png" />
     <Resource Include="resources\terrain\Test\TestTree\2_test_tree.png" />
     <Resource Include="resources\terrain\Test\TestTree\3_test_tree.png" />

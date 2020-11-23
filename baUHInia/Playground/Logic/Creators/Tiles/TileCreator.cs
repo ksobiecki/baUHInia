@@ -28,7 +28,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             TileObject to = ResourceHolder.Get.Terrain.First(c => c.Name == "terrain")["Plain Grass"];
             Button button = CreateButton(to.Name, to["grass.png"]);//image);//
             ApplyBehaviourToTile(button);
-            Tile tile = new Tile(button);
+            Tile tile = new Tile(button, null);
             tile.SetPositionInGrid(GameGrid, xPos, yPos);
             return tile;
         }

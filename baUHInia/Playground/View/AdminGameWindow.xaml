@@ -45,7 +45,7 @@
 		
 		</ScrollViewer>
 
-		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Visible">
+		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Collapsed">
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>

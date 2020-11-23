@@ -8,11 +8,11 @@ namespace baUHInia.MapLogic.Manager
     {
         Grid GetMapLoadGrid();
         Grid GetGameLoadGrid();
-        bool GetMapSaveGrid();
+        Grid GetMapSaveGrid();
+        Grid GetGameSaveGrid();
         Map LoadMap(string name);
         Game LoadGame(string name);
         bool SaveMap(ITileBinder tileBinder);
         bool SaveGame(ITileBinder tileBinder);
-
     }
 }

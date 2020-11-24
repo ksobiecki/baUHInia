@@ -12,7 +12,7 @@ namespace baUHInia.Playground.Model.Selectors
         public TileObject TileObject { get; set; }
         public List<Element>[,] ElementsLayers { get; set; }
         public LinkedList<Placer> ChangedPlacers { get; }
-        private State SelectionState { get; set; }
+        public State SelectionState { get; private set; }
 
 
         private IOperator[] Operators { get; }

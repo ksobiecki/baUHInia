@@ -5,8 +5,6 @@ using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
-using baUHInia.Playground.Model.Utility;
-using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators
 {

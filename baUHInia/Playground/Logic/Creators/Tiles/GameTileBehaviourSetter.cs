@@ -24,7 +24,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         {
             bool pressed = mouseEventArgs.RightButton == MouseButtonState.Pressed;
             bool control = Keyboard.Modifiers == ModifierKeys.Control;
-            if (pressed && !Selection.TileObject.Config.IsElement) Selection.ApplyTiles(sender as Button, control);
+            bool canDrag = !Selection.TileObject.Config.IsElement || Selection.SelectionState == State.Block;
+            if (pressed && canDrag) Selection.ApplyTiles(sender as Button, control);
             else Selection.RedoChanges();
         }
     }

@@ -83,6 +83,11 @@ namespace baUHInia.Playground.View
             PlacedObjects = new List<Placement>();
             DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
             PlaceableButton.Click += (o, args) => Selection.ChangeState(State.Block); 
+            /*foreach (Tile tile in TileGrid)
+            {
+                Button button = tile.GetUIElement() as Button;
+                button.Width = button.ActualHeight;
+            }*/
         }
 
         private void CreateGameBoard()

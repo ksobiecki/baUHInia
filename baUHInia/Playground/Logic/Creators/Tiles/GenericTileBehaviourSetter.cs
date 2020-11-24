@@ -1,8 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using baUHInia.Playground.Model;
+﻿using System.Windows.Input;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
-using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
@@ -17,7 +15,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             TileGrid = tileGrid;
         }
 
-        public abstract void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs);
+        public abstract void OnTileMouseClick(object sender, MouseEventArgs mouseEventArgs);
         public abstract void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs);
         public abstract void OnFieldMouseLeave(object sender, MouseEventArgs mouseEventArgs);
     }

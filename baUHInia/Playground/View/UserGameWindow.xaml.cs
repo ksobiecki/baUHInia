@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
@@ -11,9 +10,9 @@ using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
-using Brush = System.Drawing.Brush;
 
 namespace baUHInia.Playground.View
 {

@@ -9,7 +9,8 @@ namespace baUHInia.Playground.Model.Tiles
     {
         public Offset Root { get; set; }
         public TileObject TileObject { get; set; }
-            
+        public bool Placeable { get; set; }    
+        
         private bool _changed;
         private string _previousTag;
         private string _currentTag;
@@ -21,6 +22,7 @@ namespace baUHInia.Playground.Model.Tiles
         {
             FrameworkElement = frameworkElement;
             Root = root;
+            Placeable = true;
         }
 
         public string GetName() => _currentTag;

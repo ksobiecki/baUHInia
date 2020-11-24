@@ -4,8 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model.Resources;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
-using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
@@ -50,9 +50,10 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         {
             button.MouseEnter += _behaviourSetter.OnFieldMouseEnter;
             button.MouseLeave += _behaviourSetter.OnFieldMouseLeave;
-            button.MouseDown += _behaviourSetter.OnTileMouseClick;
-            button.MouseUp += _behaviourSetter.OnTileMouseClick;
-            button.Click += _behaviourSetter.OnTileMouseClick;
+            //button.MouseDown += _behaviourSetter.OnTileMouseClick;
+            button.PreviewMouseUp += _behaviourSetter.OnTileMouseClick;
+            button.PreviewMouseDown += _behaviourSetter.OnTileMouseClick;
+            //button.Click += _behaviourSetter.OnTileMouseClick;
         }
     }
 }

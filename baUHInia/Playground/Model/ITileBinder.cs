@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using baUHInia.Authorisation;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
 

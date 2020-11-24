@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
-using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
@@ -10,8 +9,9 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
     {
         public GameTileBehaviourSetter(Selection selection, Tile[,] tileGrid) : base(selection, tileGrid) { }
 
-        public override void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs)=>
-            Selection.ApplyTiles(sender as Button);
+        public override void OnTileMouseClick(object sender, MouseEventArgs mouseEventArgs) =>
+            Selection.ApplyTiles(sender as Button,Keyboard.Modifiers == ModifierKeys.Control);
+        
 
         public override void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)
         {
@@ -19,11 +19,12 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             Tile tile = Placer.GetPlacerFromButton(TileGrid, button) as Tile;
             Selection.UpdateChangedPlacerList(tile, TileGrid);
         }
-        
+
         public override void OnFieldMouseLeave(object sender, MouseEventArgs mouseEventArgs)
         {
             bool pressed = mouseEventArgs.RightButton == MouseButtonState.Pressed;
-            if (pressed && !Selection.TileObject.Config.IsElement) Selection.ApplyTiles(sender as Button);
+            bool control = Keyboard.Modifiers == ModifierKeys.Control;
+            if (pressed && !Selection.TileObject.Config.IsElement) Selection.ApplyTiles(sender as Button, control);
             else Selection.RedoChanges();
         }
     }

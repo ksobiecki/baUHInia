@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model.Utility;
 
@@ -11,6 +12,12 @@ namespace baUHInia.Playground.Model.Tiles
             CurrentTexture = ((Image) ((Button) FrameworkElement).Content).Source as BitmapImage;
         }
 
+        public void ShowIfAvailable(double opacity, Brush yes, Brush no)
+        {
+            Button button = FrameworkElement as Button;
+            ((Image) button.Content).Opacity = opacity;
+            button.Background = Placeable ? yes : no;
+        }
 
         protected override void ApplyTexture()
         {

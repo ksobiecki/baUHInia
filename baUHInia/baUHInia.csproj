@@ -150,7 +150,12 @@
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
-    <Compile Include="Playground\Model\State.cs" />
+    <Compile Include="Playground\Model\Selectors\DeleteOperator.cs" />
+    <Compile Include="Playground\Model\Selectors\IOperator.cs" />
+    <Compile Include="Playground\Model\Selectors\BlockOperator.cs" />
+    <Compile Include="Playground\Model\Selectors\PlaceOperator.cs" />
+    <Compile Include="Playground\Model\Selectors\Selection.cs" />
+    <Compile Include="Playground\Model\Selectors\State.cs" />
     <Compile Include="Playground\Model\Tiles\Element.cs" />
     <Compile Include="Playground\Model\Tiles\Placer.cs" />
     <Compile Include="Playground\Model\Tiles\Tile.cs" />
@@ -168,7 +173,6 @@
     <Compile Include="Playground\Model\Utility\Sprite.cs" />
     <Compile Include="Playground\Model\Wrappers\GameObject.cs" />
     <Compile Include="Playground\Model\Wrappers\Placement.cs" />
-    <Compile Include="Playground\Model\Wrappers\Selection.cs" />
     <Compile Include="Playground\View\UserGameWindow.xaml.cs">
       <DependentUpon>UserGameWindow.xaml</DependentUpon>
     </Compile>

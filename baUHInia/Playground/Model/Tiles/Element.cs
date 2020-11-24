@@ -7,16 +7,11 @@ namespace baUHInia.Playground.Model.Tiles
     {
         public Element(Image image, Offset root) : base(image, root) { }
 
-        public void MarkAsRemovable()
+        public void MarkAsRemovable(double opacity)
         {
-            ((Image) FrameworkElement).Opacity = 0.6;
+            ((Image) FrameworkElement).Opacity = opacity;
         }
 
-        public void UnmarkAsRemovable()
-        {
-            ((Image) FrameworkElement).Opacity = 1.0;
-        }
-        
         protected override void ApplyTexture()
         {
             ((Image) FrameworkElement).Source = CurrentTexture;

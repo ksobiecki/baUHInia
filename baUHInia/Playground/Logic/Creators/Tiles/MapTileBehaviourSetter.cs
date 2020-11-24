@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using baUHInia.Playground.Model;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
-using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Logic.Creators.Tiles
 {
@@ -11,9 +10,10 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
     {
         public MapTileBehaviourSetter(Selection selection, Tile[,] tileGrid) : base(selection, tileGrid) { }
         
-        public override void OnTileMouseClick(object sender, RoutedEventArgs routedEventArgs)
+        public override void OnTileMouseClick(object sender, MouseEventArgs mouseEventArgs)
         { 
-            Selection.ApplyTiles(sender as Button);
+            //TODO
+            Selection.ApplyTiles(sender as Button, false);
         }
 
         public override void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)

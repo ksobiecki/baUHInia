@@ -192,7 +192,9 @@ bin
 obj
 
 .vs/
+
 /packages/
 /packages/System.Data.Common.4.3.0/
 /packages/System.Data.SqlClient.4.8.2/
 /packages/System.Data.SqlClient.4.8.2/
+

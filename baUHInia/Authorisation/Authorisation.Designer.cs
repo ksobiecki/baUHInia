@@ -44,8 +44,7 @@
             this.loginPasswordBox = new System.Windows.Forms.TextBox();
             this.loginLoginBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -53,6 +52,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.checkBox1);
             this.groupBox2.Controls.Add(this.registerSecondPasswordBox);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
@@ -60,16 +60,16 @@
             this.groupBox2.Controls.Add(this.registerPasswordBox);
             this.groupBox2.Controls.Add(this.registerLoginBox);
             this.groupBox2.Controls.Add(this.registerButton);
-            this.groupBox2.Location = new System.Drawing.Point(276, 328);
+            this.groupBox2.Location = new System.Drawing.Point(12, 148);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(246, 144);
+            this.groupBox2.Size = new System.Drawing.Size(153, 193);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rejestracja";
             // 
             // registerSecondPasswordBox
             // 
-            this.registerSecondPasswordBox.Location = new System.Drawing.Point(102, 74);
+            this.registerSecondPasswordBox.Location = new System.Drawing.Point(6, 112);
             this.registerSecondPasswordBox.Name = "registerSecondPasswordBox";
             this.registerSecondPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.registerSecondPasswordBox.TabIndex = 6;
@@ -78,7 +78,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 79);
+            this.label5.Location = new System.Drawing.Point(3, 96);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 13);
             this.label5.TabIndex = 6;
@@ -87,7 +87,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(60, 51);
+            this.label4.Location = new System.Drawing.Point(3, 57);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(36, 13);
             this.label4.TabIndex = 5;
@@ -96,7 +96,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(63, 22);
+            this.label3.Location = new System.Drawing.Point(3, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 5;
@@ -104,7 +104,7 @@
             // 
             // registerPasswordBox
             // 
-            this.registerPasswordBox.Location = new System.Drawing.Point(102, 48);
+            this.registerPasswordBox.Location = new System.Drawing.Point(6, 73);
             this.registerPasswordBox.Name = "registerPasswordBox";
             this.registerPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.registerPasswordBox.TabIndex = 5;
@@ -112,25 +112,25 @@
             // 
             // registerLoginBox
             // 
-            this.registerLoginBox.Location = new System.Drawing.Point(102, 19);
+            this.registerLoginBox.Location = new System.Drawing.Point(6, 34);
             this.registerLoginBox.Name = "registerLoginBox";
             this.registerLoginBox.Size = new System.Drawing.Size(138, 20);
             this.registerLoginBox.TabIndex = 4;
             // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(66, 107);
+            this.registerButton.Location = new System.Drawing.Point(6, 162);
             this.registerButton.Name = "registerButton";
-            this.registerButton.Size = new System.Drawing.Size(136, 23);
+            this.registerButton.Size = new System.Drawing.Size(86, 23);
             this.registerButton.TabIndex = 7;
             this.registerButton.Text = "Zarejestruj się";
             this.registerButton.UseVisualStyleBackColor = true;
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(31, 96);
+            this.loginButton.Location = new System.Drawing.Point(6, 101);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(136, 23);
+            this.loginButton.Size = new System.Drawing.Size(86, 23);
             this.loginButton.TabIndex = 3;
             this.loginButton.Text = "Zaloguj się";
             this.loginButton.UseVisualStyleBackColor = true;
@@ -142,9 +142,9 @@
             this.groupBox1.Controls.Add(this.loginPasswordBox);
             this.groupBox1.Controls.Add(this.loginLoginBox);
             this.groupBox1.Controls.Add(this.loginButton);
-            this.groupBox1.Location = new System.Drawing.Point(12, 328);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 144);
+            this.groupBox1.Size = new System.Drawing.Size(153, 130);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logowanie";
@@ -152,7 +152,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 51);
+            this.label2.Location = new System.Drawing.Point(3, 58);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 5;
@@ -161,7 +161,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 22);
+            this.label6.Location = new System.Drawing.Point(3, 19);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 5;
@@ -169,7 +169,7 @@
             // 
             // loginPasswordBox
             // 
-            this.loginPasswordBox.Location = new System.Drawing.Point(48, 48);
+            this.loginPasswordBox.Location = new System.Drawing.Point(6, 74);
             this.loginPasswordBox.Name = "loginPasswordBox";
             this.loginPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.loginPasswordBox.TabIndex = 2;
@@ -177,7 +177,7 @@
             // 
             // loginLoginBox
             // 
-            this.loginLoginBox.Location = new System.Drawing.Point(48, 19);
+            this.loginLoginBox.Location = new System.Drawing.Point(6, 35);
             this.loginLoginBox.Name = "loginLoginBox";
             this.loginLoginBox.Size = new System.Drawing.Size(138, 20);
             this.loginLoginBox.TabIndex = 1;
@@ -185,42 +185,28 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::baUHInia.Properties.Resources.icon;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(171, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(510, 310);
+            this.pictureBox1.Size = new System.Drawing.Size(372, 329);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
-            // button2
+            // checkBox1
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(364, 478);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(158, 43);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "DEBUG - MAP CHOICE";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 479);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(346, 43);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "DEBUG - PRZEJDŹ DO MAPY";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 139);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(97, 17);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.Text = "Władze miasta";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Authorisation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(542, 534);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(550, 349);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox1);
@@ -255,7 +241,6 @@
         private System.Windows.Forms.TextBox loginLoginBox;
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

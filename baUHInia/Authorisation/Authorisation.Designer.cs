@@ -43,9 +43,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.loginPasswordBox = new System.Windows.Forms.TextBox();
             this.loginLoginBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -182,17 +182,6 @@
             this.loginLoginBox.Size = new System.Drawing.Size(138, 20);
             this.loginLoginBox.TabIndex = 1;
             // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 479);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(346, 43);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "DEBUG - PRZEJDŹ DO MAPY";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::baUHInia.Properties.Resources.icon;
@@ -213,6 +202,17 @@
             this.button2.Text = "DEBUG - MAP CHOICE";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(12, 479);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(346, 43);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "DEBUG - PRZEJDŹ DO MAPY";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Authorisation
             // 
@@ -254,8 +254,8 @@
         private System.Windows.Forms.TextBox loginPasswordBox;
         private System.Windows.Forms.TextBox loginLoginBox;
         private System.Windows.Forms.Button registerButton;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }

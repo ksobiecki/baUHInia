@@ -1,4 +1,6 @@
-﻿using System;
+﻿using baUHInia.MapLogic.View;
+using baUHInia.Playground.View;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,5 +18,20 @@ namespace baUHInia.DEBUG
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Hide();
+            AdminGameWindow app = new AdminGameWindow(null);
+            app.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Hide();
+            ChoiceWindow app = new ChoiceWindow();
+            app.Show();
+        }
+
     }
 }

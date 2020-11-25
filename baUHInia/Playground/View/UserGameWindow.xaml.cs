@@ -8,10 +8,11 @@ using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
-using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.View
 {
@@ -28,6 +29,7 @@ namespace baUHInia.Playground.View
         private IGameGridCreator _gameGridCreator;
         private ISelectorGridCreator _selectorGridCreator;
         private ISelectionWindowCreator _selectionWindowCreator;
+
         private IGameMapManager _manger;
         //private ISimulate _simulator;
 
@@ -45,6 +47,7 @@ namespace baUHInia.Playground.View
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
         public Selection Selection { get; private set; }
+
         //TODO: rest
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; }
@@ -53,11 +56,12 @@ namespace baUHInia.Playground.View
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
+        public void ChangeMode(string text, System.Windows.Media.Brush color) => throw new NotImplementedException();
 
         //============================ PREDEFINED ACTIONS ============================//
-        
+
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
+            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"), this);
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -71,8 +75,8 @@ namespace baUHInia.Playground.View
 
         private void ShowStartupPanel()
         {
-            Grid loadMapGrid = new Grid{Width = 200, Height = 300};//_manger
-            Grid loadGameGrid = new Grid{Width = 200, Height = 300}; //_manger
+            Grid loadMapGrid = new Grid {Width = 200, Height = 300}; //_manger
+            Grid loadGameGrid = new Grid {Width = 200, Height = 300}; //_manger
             InitialMapGrid = loadMapGrid;
             InitialGameGrid = loadGameGrid;
         }
@@ -86,17 +90,17 @@ namespace baUHInia.Playground.View
         {
             //TODO: implement
         }
-        
+
         private void LoadGame()
         {
             //TODO: implement
         }
-        
+
         private void SaveGame()
         {
             //TODO: implement
         }
-        
+
         private void SaveStateAsJpg()
         {
             //TODO: implement

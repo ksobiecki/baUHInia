@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
-using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.View
 {
@@ -49,17 +49,24 @@ namespace baUHInia.Playground.View
 
         //TODO: rest
         public Tile[,] TileGrid { get; private set; }
-        public List<Placement> PlacedObjects { get; }
+        public List<Placement> PlacedObjects { get; private set; }
         public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
 
+        public void ChangeMode(string text, System.Windows.Media.Brush color)
+        {
+            ModeText.Text = text;
+            ModeText.Foreground = color;
+        }
+
         //============================ PREDEFINED ACTIONS ============================//
-        
+
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"));
+            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "Plain Dirt"),
+            this);
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -73,10 +80,19 @@ namespace baUHInia.Playground.View
             CreateGameBoard();
             CreateSelectorGrid();
             FillCardsAndComboBoxWithCategories();
+            PlacedObjects = new List<Placement>();
+            DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
+            PlaceableButton.Click += (o, args) => Selection.ChangeState(State.Block); 
+            /*foreach (Tile tile in TileGrid)
+            {
+                Button button = tile.GetUIElement() as Button;
+                button.Width = button.ActualHeight;
+            }*/
         }
 
         private void CreateGameBoard()
         {
+            SideGrid.Visibility = Visibility.Visible;
             TileGrid = new Tile[BoardDensity, BoardDensity];
             _gameGridCreator = new TileGridCreator(this, BoardDensity);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
@@ -85,38 +101,39 @@ namespace baUHInia.Playground.View
         private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
 
         private void FillCardsAndComboBoxWithCategories() =>
-            CategorySelector.ItemsSource = ResourceHolder.Get.Terrain.Select(c => c.Name);
-        
+            CategorySelector.ItemsSource =
+                ResourceHolder.Get.Terrain.Select(c => char.ToUpper(c.Name[0]) + c.Name.Substring(1));
+
         private void UpdateSelectionWindow()
         {
             //TODO: implement
         }
-        
+
         private void UpdateComboBox()
         {
             //TODO: implement
         }
-        
+
         private void LoadMap()
         {
             //TODO: implement
         }
-        
+
         private void SaveMap()
         {
             //TODO: implement
         }
-        
+
         private void OpenSelectorTab()
         {
             //TODO: implement
         }
-        
+
         private void TestMap()
         {
             //TODO: implement
         }
-        
+
         private void ReturnToLoginWindow()
         {
             //TODO: implement
@@ -128,16 +145,8 @@ namespace baUHInia.Playground.View
         {
             ComboBox comboBox = sender as ComboBox;
             string item = comboBox.SelectedItem as string;
-            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item), this);
-        }
-
-        private void Filler_Click(object sender, RoutedEventArgs e)
-        {
-            BitmapImage bi = new BitmapImage(new Uri("pack://application:,,,/resources/terrain/Test/Tester/oak.png"));
-            Image img = new Image {Source = bi, IsHitTestVisible = false};
-            Grid.SetRow(img, 5);
-            Grid.SetColumn(img, 5);
-            ((Grid) GameViewer.Content).Children.Add(img);
+            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item.ToLower()),
+                this);
         }
     }
 }

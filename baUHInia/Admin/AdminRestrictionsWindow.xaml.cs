@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
 {
-    public partial class AdminRestrictionsWindow : Window, IAdminOnClickObject
+    public partial class AdminRestrictionsWindow : IAdminOnClickObject
     {
         private AdminGridObjectsCreator AllGameObjects;
         private AdminSelectedObjectDetails ObjectDetails;

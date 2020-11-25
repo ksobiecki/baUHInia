@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Text.Json;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using baUHInia.Playground.Logic.Utils;
-using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Logic.Loaders
 {
@@ -25,7 +29,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 List<TileObject> tileObjects = LoadTileObjects(resources, i);
                 tileCategories.Add(new TileCategory(resources.Categories[i], tileObjects));
             }
-
+            HasNameDuplicates(tileCategories);
             return tileCategories;
         }
 
@@ -38,26 +42,32 @@ namespace baUHInia.Playground.Logic.Loaders
                 string subCategory = subCategories[i];
                 string[] elementsOfSubCategory = resources.ElementsOfSubcategory(subCategory);
                 string config = resources.GetPossibleConfig(subCategory);
-                Offset[] offsets = LoadOffsets(config);
-
+                if (config == null) throw new FileNotFoundException("All tiles must have json file");
+                Config configInstance = LoadConfig(config);
                 Dictionary<string, BitmapImage> bitmaps = resources.LoadBitmaps(
                     resources.Categories[index], subCategory, ResourceDir
                 );
-                Sprite sprite = new Sprite(elementsOfSubCategory, offsets, bitmaps);
-                TileObject tileObject = new TileObject(subCategory, (index, i), sprite);
+                Sprite sprite = new Sprite(elementsOfSubCategory, configInstance?.Offsets, bitmaps);
+                TileObject tileObject = new TileObject((index, i), sprite, configInstance);
                 tileObjects.Add(tileObject);
             }
 
             return tileObjects;
         }
 
-        private static Offset[] LoadOffsets(string config)
+        private static Config LoadConfig(string config)
         {
-            if (config == null) return null;
-            TileConfigReader tileConfigReader = new TileConfigReader(config);
-            return tileConfigReader.ReadTileIndexesWithOffsets();
+            //TODO: refactor extract to other class
+            string uri = ResourceDir + "resources/" + config;
+            StreamResourceInfo resourceStream = Application.GetResourceStream(new Uri(uri));
+            using (StreamReader reader = new StreamReader(resourceStream.Stream))
+            {
+                string file = reader.ReadToEnd();
+                Config configInstance = JsonSerializer.Deserialize<Config>(file);
+                return configInstance;
+            }
         }
-        
+
         private static string[] GetResourceNames()
         {
             Assembly assembly = Assembly.GetEntryAssembly();
@@ -66,6 +76,19 @@ namespace baUHInia.Playground.Logic.Loaders
             using (ResourceReader reader = new ResourceReader(stream ?? throw new NullReferenceException()))
             {
                 return reader.Cast<DictionaryEntry>().Select(entry => (string) entry.Key).ToArray();
+            }
+        }
+
+        private static void HasNameDuplicates(IEnumerable<TileCategory> tileCategories)
+        {
+            List<string> configs = (
+                from tileCategory in tileCategories
+                from tileObject in tileCategory.TileObjects
+                select tileObject.Config.Name).ToList();
+            
+            if (configs.GroupBy(s => s).Where(g => g.Count() > 1).ToArray().Length != 0)
+            {
+                throw new DuplicateNameException("There can't be 2 elements with same name");
             }
         }
     }

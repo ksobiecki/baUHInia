@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using baUHInia.Playground.Model;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
 {

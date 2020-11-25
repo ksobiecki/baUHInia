@@ -21,13 +21,13 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         }
 
         private static IEnumerable<string> GetGroups(TileCategory tileCategory) => tileCategory.TileObjects
-            .Where(o => o.Group != null)
-            .Select(o => o.Group)
+            .Where(o => o.Config.Group != null)
+            .Select(o => o.Config.Group)
             .Distinct()
             .ToArray();
         
         private static TileObject[] GetStandaloneObjects(TileCategory tileCategory) => tileCategory.TileObjects
-            .Where(o => o.Group == null)
+            .Where(o => o.Config.Group == null)
             .ToArray();
     }
 }

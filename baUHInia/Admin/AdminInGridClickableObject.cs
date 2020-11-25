@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using baUHInia.Playground.Model;
-using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
 {

@@ -3,8 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Creators.Selector
@@ -48,6 +48,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             (int category, int subCategory) = ((int, int)) senderButton.Tag;
             TileObject tileObject = _tileCategories[category].TileObjects[subCategory];
             _currentSelection.TileObject = tileObject;
+            _currentSelection.ChangeState(State.Place);
         }
     }
 }

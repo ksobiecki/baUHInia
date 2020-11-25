@@ -19,7 +19,8 @@ namespace baUHInia.Authorisation
 
         private void Authorisation_Load(object sender, EventArgs e)
         {
-
+            Form DEBUG = new DEBUG.DEBUG();
+            DEBUG.Show();
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {

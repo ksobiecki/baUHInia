@@ -13,7 +13,8 @@ namespace baUHInia
             try
             {
                 Form authForm = new Authorisation.Authorisation();
-                authForm.ShowDialog();
+                authForm.Show();
+
             }
             catch (System.Exception ex)
             {

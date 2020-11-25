@@ -124,6 +124,12 @@
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
+    <Compile Include="DEBUG\DEBUG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DEBUG\DEBUG.Designer.cs">
+      <DependentUpon>DEBUG.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapLogic\Manager\GameMapManager.cs" />
     <Compile Include="Database\Program.cs" />
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />
@@ -197,6 +203,9 @@
     </Compile>
     <EmbeddedResource Include="Authorisation\Authorisation.resx">
       <DependentUpon>Authorisation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DEBUG\DEBUG.resx">
+      <DependentUpon>DEBUG.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

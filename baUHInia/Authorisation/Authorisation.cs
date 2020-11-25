@@ -1,4 +1,7 @@
-﻿using baUHInia.Playground.View;
+using baUHInia.MapLogic.View; // Exists for debug purposes only, remove later.
+using baUHInia.Playground.View;
+using baUHInia.Database;
+
 using System;
 using System.Windows.Forms;
 
@@ -6,6 +9,8 @@ namespace baUHInia.Authorisation
 {
     public partial class Authorisation : Form
     {
+        BazaDanych bazaDanych = BazaDanych.GetBazaDanych();
+
         public Boolean isMapVisible = false;
         public Authorisation()
         {
@@ -31,6 +36,14 @@ namespace baUHInia.Authorisation
             Hide();
             //TODO: zmienisz potem :3
             AdminGameWindow app = new AdminGameWindow(null);
+            app.Show();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e) // Exists for debug purposes only, remove later.
+        {
+            Hide();
+            isMapVisible = true;
+            ChoiceWindow app = new ChoiceWindow();
             app.Show();
         }
     }

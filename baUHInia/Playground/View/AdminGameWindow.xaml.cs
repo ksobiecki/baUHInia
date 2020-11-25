@@ -41,6 +41,10 @@ namespace baUHInia.Playground.View
             AdjustWindowSizeAndPosition();
 
             Credentials = credentials;
+
+            // Debug purposes, remove later.
+            _manager = new GameMapManager();
+            SaveButton.Click += (o, arg) => _manager.SaveMap(this);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//

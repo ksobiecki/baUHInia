@@ -14,7 +14,7 @@ namespace baUHInia.Playground.Model.Tiles
         
         private bool _changed;
         private string _previousTag;
-        private string _currentTag;
+        private string _currentTag = "Plain Grass";
         private BitmapImage _previousTexture;
         protected BitmapImage CurrentTexture;
         protected readonly FrameworkElement FrameworkElement;

@@ -22,9 +22,9 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         public override void OnFieldMouseLeave(object sender, MouseEventArgs mouseEventArgs)
         {
+            bool canDrag = !Selection.TileObject.Config.IsElement || Selection.SelectionState == State.Block;
             bool pressed = mouseEventArgs.RightButton == MouseButtonState.Pressed;
             bool control = Keyboard.Modifiers == ModifierKeys.Control;
-            bool canDrag = !Selection.TileObject.Config.IsElement || Selection.SelectionState == State.Block;
             if (pressed && canDrag) Selection.ApplyTiles(sender as Button, control);
             else Selection.RedoChanges();
         }

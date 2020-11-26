@@ -5,8 +5,8 @@ namespace baUHInia.Playground.Model.Wrappers
     public class GameObject
     {
         public readonly TileObject TileObject;
-        public readonly float ChangeValue;
-        public readonly int Price;
+        public float ChangeValue { get; set; }
+        public int Price{ get; set; }
 
         public GameObject(TileObject tileObject, float changeValue, int price)
         {

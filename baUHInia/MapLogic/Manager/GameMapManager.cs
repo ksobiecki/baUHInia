@@ -13,6 +13,8 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using baUHInia.Playground.Model.Wrappers;
+using System.IO;
+using baUHInia.MapLogic.Helper;
 
 namespace baUHInia.MapLogic.Manager
 {
@@ -125,109 +127,29 @@ namespace baUHInia.MapLogic.Manager
         {
             JObject jsonMap = new JObject();
 
-            JsonAddSize(jsonMap, tileBinder.TileGrid);
-            JsonAddTileGridAndDictionary(jsonMap, tileBinder.TileGrid);
-            JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
+            SerializationHelper.JsonAddBasicData(jsonMap, tileBinder);
+            SerializationHelper.JsonAddTileGridAndDictionary(jsonMap, tileBinder.TileGrid);
+            SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
+            //SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects); // TODO uncomment when not null anymore.
 
-            Console.WriteLine(jsonMap.ToString());
+            File.WriteAllText("test.txt", jsonMap.ToString(Formatting.None));
+
+            string readText = File.ReadAllText("test.txt");
+            jsonMap = JObject.Parse(readText);
+
+            int width = 0;
+            int height = 0;
+            int availableMoney = 0;
+
+            SerializationHelper.JsonGetBasicData(jsonMap, ref width, ref height, ref availableMoney);
+
+            int[,] tileGrid = new int[width, height];
+            bool[,] placeableGrid = new bool[width, height];
+            Dictionary<int, string> indexer = new Dictionary<int, string>();
+
+            SerializationHelper.JsonGetTileGridAndDictionary(jsonMap, indexer,tileGrid, placeableGrid); // TODO fix.
 
             return true;
-        }
-
-        private void JsonAddSize(JObject jsonMap, Tile[,] tileGrid)
-        {
-            jsonMap["width"] = tileGrid.GetLength(0);
-            jsonMap["height"] = tileGrid.GetLength(1);
-        }
-
-        private void JsonAddTileGridAndDictionary(JObject jsonMap, Tile[,] tileGrid)
-        {
-            Dictionary<int, string> indexer = new Dictionary<int, string>();
-            int[] intTileGrid = new int[tileGrid.GetLength(0) * tileGrid.GetLength(1)];
-            JArray jsonIntTileGrid = new JArray();
-            JArray jsonTileGrid = new JArray();
-            int key = 0;
-
-            for (int i = 0; i < tileGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < tileGrid.GetLength(1); j++)
-                {
-                    if (!indexer.ContainsValue(tileGrid[i, j].GetName()))
-                    {
-                        indexer.Add(key, tileGrid[i, j].GetName());
-
-                        JObject jsonTile = new JObject();
-                        jsonTile["Key"] = key;
-                        jsonTile["Placeable"] = tileGrid[i, j].Placeable;
-                        jsonTileGrid.Add(jsonTile);
-                        jsonIntTileGrid.Add(key);
-                        key++;
-                    }
-                    else
-                    {
-                        jsonIntTileGrid.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
-                        JObject jsonTile = new JObject();
-                        jsonTile["Key"] = indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key;
-                        jsonTile["Placeable"] = tileGrid[i, j].Placeable;
-                        jsonTileGrid.Add(jsonTile);
-                    }
-                }
-            }
-
-            jsonMap["TileGrid"] = jsonTileGrid;
-            jsonMap["Indexer"] = DictionaryToJson(indexer);
-        }
-
-        private JArray DictionaryToJson(Dictionary<int, string> indexer)
-        {
-            JArray a = new JArray();
-
-            for (int i = 0; i < indexer.Count; i++)
-            { 
-                JObject o = new JObject();
-                o["key"] = i;
-                o["value"] = indexer[i];
-                a.Add(o);
-            }
-
-            return a;
-        }
-
-        private Dictionary<int, string> GenerateDictionary(Tile[,] tileGrid)
-        {
-            Dictionary<int, string> indexer = new Dictionary<int, string>();
-            int key = 0;
-
-            for (int i = 0; i < tileGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < tileGrid.GetLength(1); j++)
-                {
-                    if (!indexer.ContainsValue(tileGrid[i, j].GetName()))
-                    {
-                        indexer.Add(key, tileGrid[i, j].GetName());
-                        key++;
-                    }
-                }
-            }
-
-            return indexer;
-        }
-
-        private void JsonAddPlacements(JObject jsonMap, List<Placement> placedObjects)
-        {
-
-            JArray jsonPlacements = new JArray();
-
-            foreach (Placement placement in placedObjects)
-            {
-                JObject jsonPlacement = new JObject();
-                jsonPlacement["Name"] = placement.GameObject.TileObject.Name;
-                jsonPlacement["X"] = placement.Position.x;
-                jsonPlacement["Y"] = placement.Position.y;
-                jsonPlacements.Add(jsonPlacement);
-            }
-
-            jsonMap["PlacedObjects"] = jsonPlacements;
         }
 
         private void CreateContainerGrid()

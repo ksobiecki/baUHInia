@@ -133,6 +133,7 @@
     <Compile Include="DEBUG\DEBUG.Designer.cs">
       <DependentUpon>DEBUG.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapLogic\Helper\SerializationHelper.cs" />
     <Compile Include="MapLogic\Manager\GameMapManager.cs" />
     <Compile Include="Database\Program.cs" />
     <Compile Include="MapLogic\Manager\IGameMapManager.cs" />

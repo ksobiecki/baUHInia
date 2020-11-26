@@ -132,7 +132,9 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
             //SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects); // TODO uncomment when not null anymore.
 
-            File.WriteAllText("test.txt", jsonMap.ToString(Formatting.None));
+            File.WriteAllText("test.txt", jsonMap.ToString(Formatting.None)); // TODO switch to database methods when they are available.
+
+            // Debug purposes, move to load later.
 
             string readText = File.ReadAllText("test.txt");
             jsonMap = JObject.Parse(readText);
@@ -147,7 +149,9 @@ namespace baUHInia.MapLogic.Manager
             bool[,] placeableGrid = new bool[width, height];
             Dictionary<int, string> indexer = new Dictionary<int, string>();
 
-            SerializationHelper.JsonGetTileGridAndDictionary(jsonMap, indexer,tileGrid, placeableGrid); // TODO fix.
+            SerializationHelper.JsonGetTileGridAndDictionary(jsonMap, indexer,tileGrid, placeableGrid);
+
+            // TODO add placed objects getter when not null anymore.
 
             return true;
         }

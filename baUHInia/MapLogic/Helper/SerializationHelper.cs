@@ -139,8 +139,8 @@ namespace baUHInia.MapLogic.Helper
             foreach (JObject tile in jsonTileGrid)
             {
                 tileGrid[index / width, index % width] = (int)tile["Key"];
-                Console.WriteLine((string)tile["Key"]);
                 placeableGrid[index / width, index % width] = (bool)tile["Placeable"];
+                index++;
             }
 
             foreach (JObject association in jsonIndexer)

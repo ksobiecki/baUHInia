@@ -106,10 +106,10 @@ namespace baUHInia.Admin
             _selectedObject.GameObject.ChangeValue = ratio;
         }
 
-        public Grid GetAdminSelectorTableGrid(ITileBinder iTileBinder) => AvailableForUserGameObjectsGrid;
+        public Grid GetAdminSelectorTableGrid() => AdminRestrictionsGrid;
         
 
-        public GameObject[] GetModifiedAvailableObjects() => _availableForUserGameObjects.GetGameObjects();
+        public List<GameObject> GetModifiedAvailableObjects() => _availableForUserGameObjects.GetGameObjects().ToList();
         
 
         public void Save(object obj, RoutedEventArgs routedEventArgs)

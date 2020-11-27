@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:baUHInia.Admin"
         mc:Ignorable="d"
         Title="AdminRestrictionsWindow" Height="500" Width="820">
-    <Grid  HorizontalAlignment="Left" Height="500" Margin="10,10,5,5" VerticalAlignment="Top" Width="800">
+    <Grid Name="AdminRestrictionsGrid"  HorizontalAlignment="Left" Height="500" Margin="10,10,5,5" VerticalAlignment="Top" Width="800">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>

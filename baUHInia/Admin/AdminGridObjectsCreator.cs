@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using baUHInia.Playground.Model.Wrappers;
 
@@ -110,5 +111,8 @@ namespace baUHInia.Admin
         {
             GameObjectsList.Remove(gameObject);
         }
+
+        public GameObject[] GetGameObjects() => GameObjectsList.Select(c => c.GameObject).ToArray();
+
     }
 }

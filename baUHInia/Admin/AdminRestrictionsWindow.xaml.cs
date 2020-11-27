@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
 {
-    public partial class AdminRestrictionsWindow : IAdminOnClickObject, IAdminChangeObjectDetails
+    public partial class AdminRestrictionsWindow : IAdminOnClickObject, IAdminChangeObjectDetails, IAdminSelectorTabCreator
     {
         private AdminGridObjectsCreator AllGameObjects;
         private AdminGridObjectsCreator AvailableForUserGameObjects;
         private AdminSelectedObjectDetails ObjectDetails;
         private AdminInGridClickableObject SelectedObject;
+        private int Budget;
 
         public AdminRestrictionsWindow()
         {
@@ -24,17 +27,17 @@ namespace baUHInia.Admin
                 AllGameObjectsGrid,
                 this
             );
+            //todo wczytaj liste z TileBinder
             AvailableForUserGameObjects = new AdminGridObjectsCreator(
                 new GameObject[0],
                 true,
                 AvailableForUserGameObjectsGrid,
                 this
             );
-            AllGameObjects.InitializeGridDefinitions();
-            AllGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
-
             AvailableForUserGameObjects.InitializeGridDefinitions();
             AvailableForUserGameObjects.CreateGrid();
+            AllGameObjects.InitializeGridDefinitions();
+            AllGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
             ObjectDetails = new AdminSelectedObjectDetails(SelectedGameObjectDetails, this);
         }
 
@@ -100,6 +103,18 @@ namespace baUHInia.Admin
         {
             SelectedObject.GameObject.Price = price;
             SelectedObject.GameObject.ChangeValue = ratio;
+        }
+
+        public Grid GetAdminSelectorTableGrid(ITileBinder iTileBinder) => AvailableForUserGameObjectsGrid;
+        
+
+        public GameObject[] GetModifiedAvailableObjects() => AvailableForUserGameObjects.GetGameObjects();
+        
+
+        public void Save(object obj, RoutedEventArgs routedEventArgs)
+        {
+            Budget = int.Parse(AdminBudget.Text);
+            
         }
     }
 }

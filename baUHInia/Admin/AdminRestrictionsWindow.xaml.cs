@@ -12,33 +12,34 @@ namespace baUHInia.Admin
 {
     public partial class AdminRestrictionsWindow : IAdminOnClickObject, IAdminChangeObjectDetails, IAdminSelectorTabCreator
     {
-        private AdminGridObjectsCreator AllGameObjects;
-        private AdminGridObjectsCreator AvailableForUserGameObjects;
-        private AdminSelectedObjectDetails ObjectDetails;
-        private AdminInGridClickableObject SelectedObject;
-        private int Budget;
+        private readonly AdminGridObjectsCreator _allGameObjects;
+        private readonly AdminGridObjectsCreator _availableForUserGameObjects;
+        private readonly AdminSelectedObjectDetails _objectDetails;
+        private AdminInGridClickableObject _selectedObject;
+        private int _budget;
 
-        public AdminRestrictionsWindow()
+        public AdminRestrictionsWindow(ITileBinder iTileBinder)
         {
             InitializeComponent();
-            AllGameObjects = new AdminGridObjectsCreator(
+            _budget = iTileBinder.AvailableFounds;
+            _allGameObjects = new AdminGridObjectsCreator(
                 InitializeGameObjects(),
                 false,
                 AllGameObjectsGrid,
                 this
             );
-            //todo wczytaj liste z TileBinder
-            AvailableForUserGameObjects = new AdminGridObjectsCreator(
-                new GameObject[0],
+            
+            _availableForUserGameObjects = new AdminGridObjectsCreator(
+                iTileBinder.AvailableObjects.ToArray(),
                 true,
                 AvailableForUserGameObjectsGrid,
                 this
             );
-            AvailableForUserGameObjects.InitializeGridDefinitions();
-            AvailableForUserGameObjects.CreateGrid();
-            AllGameObjects.InitializeGridDefinitions();
-            AllGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
-            ObjectDetails = new AdminSelectedObjectDetails(SelectedGameObjectDetails, this);
+            _availableForUserGameObjects.InitializeGridDefinitions();
+            _availableForUserGameObjects.CreateGrid();
+            _allGameObjects.InitializeGridDefinitions();
+            _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
+            _objectDetails = new AdminSelectedObjectDetails(SelectedGameObjectDetails, this);
         }
 
         //todo zmien Terrain na Foliage, gdy cos tam juz bedzie
@@ -75,46 +76,49 @@ namespace baUHInia.Admin
 
         private void ChangeAvailabilityOfObject(Object sender, RoutedEventArgs e)
         {
-            if (SelectedObject.IsAvailable)
+            if (_selectedObject.IsAvailable)
             {
-                AllGameObjects.ChangeAvailability(SelectedObject);
-                AvailableForUserGameObjects.RemoveObject(SelectedObject);
-                AvailableForUserGameObjects.CreateGrid();
-                AllGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
+                _allGameObjects.ChangeAvailability(_selectedObject);
+                _availableForUserGameObjects.RemoveObject(_selectedObject);
+                _availableForUserGameObjects.CreateGrid();
+                _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
             }
             else
             {
-                AllGameObjects.ChangeAvailability(SelectedObject);
-                AdminInGridClickableObject copy = new AdminInGridClickableObject(SelectedObject.GameObject, true, this);
+                _allGameObjects.ChangeAvailability(_selectedObject);
+                AdminInGridClickableObject copy = new AdminInGridClickableObject(_selectedObject.GameObject, true, this);
                 OnObjectClick(copy);
-                AvailableForUserGameObjects.AddObject(copy);
-                AvailableForUserGameObjects.CreateGrid();
-                AllGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
+                _availableForUserGameObjects.AddObject(copy);
+                _availableForUserGameObjects.CreateGrid();
+                _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
             }
         }
 
         public void OnObjectClick(AdminInGridClickableObject selectedObject)
         {
-            SelectedObject = selectedObject;
-            ObjectDetails.Display(selectedObject.GameObject);
+            _selectedObject = selectedObject;
+            _objectDetails.Display(selectedObject.GameObject);
         }
 
         public void SubmitChanges(int price, float ratio)
         {
-            SelectedObject.GameObject.Price = price;
-            SelectedObject.GameObject.ChangeValue = ratio;
+            _selectedObject.GameObject.Price = price;
+            _selectedObject.GameObject.ChangeValue = ratio;
         }
 
         public Grid GetAdminSelectorTableGrid(ITileBinder iTileBinder) => AvailableForUserGameObjectsGrid;
         
 
-        public GameObject[] GetModifiedAvailableObjects() => AvailableForUserGameObjects.GetGameObjects();
+        public GameObject[] GetModifiedAvailableObjects() => _availableForUserGameObjects.GetGameObjects();
         
 
         public void Save(object obj, RoutedEventArgs routedEventArgs)
         {
-            Budget = int.Parse(AdminBudget.Text);
+            _budget = int.Parse(AdminBudget.Text);
             
         }
+
+        public int GetBudget() => _budget;
+
     }
 }

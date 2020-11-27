@@ -8,5 +8,6 @@ namespace baUHInia.Admin
     {
         Grid GetAdminSelectorTableGrid(ITileBinder iTileBinder);
         GameObject[] GetModifiedAvailableObjects();
+        int GetBudget();
     }
 }

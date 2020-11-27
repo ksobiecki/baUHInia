@@ -14,11 +14,9 @@ namespace baUHInia
         {
             try
             {
-                //  Form authForm = new Authorisation.Authorisation();
-                //  authForm.ShowDialog();
-                //todo tylko do testow, usun przed pull req
-                Window adminWindow = new AdminRestrictionsWindow();
-                adminWindow.ShowDialog();
+                 Form authForm = new Authorisation.Authorisation();
+                 authForm.ShowDialog();
+
             }
             catch (System.Exception ex)
             {

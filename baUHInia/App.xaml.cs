@@ -14,9 +14,8 @@ namespace baUHInia
         {
             try
             {
-                 Form authForm = new Authorisation.Authorisation();
-                 authForm.ShowDialog();
-
+                Form authForm = new Authorisation.Authorisation();
+                authForm.ShowDialog();
             }
             catch (System.Exception ex)
             {

@@ -10,7 +10,7 @@ namespace baUHInia.Admin
     {
         public Button ClickableGameObject { get; }
         public GameObject GameObject { get; }
-        private Boolean IsAvailable { get; set; }
+        public Boolean IsAvailable { get; set; }
 
         private readonly IAdminOnClickObject _iAdminOnClickObject;
 

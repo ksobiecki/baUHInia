@@ -112,7 +112,9 @@
       <DependentUpon>AdminRestrictionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Admin\AdminSelectedObjectDetails.cs" />
+    <Compile Include="Admin\IAdminChangeObjectDetails.cs" />
     <Compile Include="Admin\IAdminOnClickObject.cs" />
+    <Compile Include="Admin\IAdminSelectorTabCreator.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

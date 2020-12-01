@@ -82,6 +82,13 @@ namespace baUHInia.Playground.View
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
         }
 
+        public void OpenStatistics(Object sender, RoutedEventArgs e)
+        {
+            Statistics.Statistics statistics = new Statistics.Statistics();
+            statistics.Show();
+           
+        }
+
         private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
 
         private void FillCardsAndComboBoxWithCategories() =>

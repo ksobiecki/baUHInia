@@ -118,7 +118,8 @@ namespace baUHInia.Admin
             
         }
 
+        public Button GetReturnButton() => ReturnBtn;
+        
         public int GetBudget() => _budget;
-
     }
 }

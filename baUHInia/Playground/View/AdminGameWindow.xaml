@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:baUHInia"
         mc:Ignorable="d"
         Title="HeatIsland" Name="Window" Width="800" Height="600">
 
@@ -76,7 +75,7 @@
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			<Button Content="Elementy Gry" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="4" Style="{StaticResource MenuButton}">
+			<Button Content="Elementy Gry" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="4" Style="{StaticResource MenuButton}" Click="OpenSelectorTab">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			

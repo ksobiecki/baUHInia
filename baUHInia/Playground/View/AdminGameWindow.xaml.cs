@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
@@ -29,7 +30,11 @@ namespace baUHInia.Playground.View
         private ISelectorGridCreator _selectorGridCreator;
 
         private IGameMapManager _manager;
+
+        private IAdminSelectorTabCreator _admin;
         //private IAdminSelectorTabCreator _adminCreator;
+
+        private UIElement _storedElement;
 
         public AdminGameWindow(LoginData credentials)
         {
@@ -38,9 +43,13 @@ namespace baUHInia.Playground.View
             //CreateGameBoard();
             //CreateSelectorGrid();
             //FillCardsAndComboBoxWithCategories();
+            _manager = new GameMapManager();
+            InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
             AdjustWindowSizeAndPosition();
 
             Credentials = credentials;
+            AvailableObjects = new List<GameObject>();
+            _admin = new AdminRestrictionsWindow(this);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -52,7 +61,7 @@ namespace baUHInia.Playground.View
         public List<Placement> PlacedObjects { get; private set; }
         public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
-        public List<GameObject> AvailableObjects { get; }
+        public List<GameObject> AvailableObjects { get; private set; }
         public LoginData Credentials { get; }
         public int AvailableFounds { get; }
 
@@ -82,7 +91,7 @@ namespace baUHInia.Playground.View
             FillCardsAndComboBoxWithCategories();
             PlacedObjects = new List<Placement>();
             DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
-            PlaceableButton.Click += (o, args) => Selection.ChangeState(State.Block); 
+            PlaceableButton.Click += (o, args) => Selection.ChangeState(State.Block);
             /*foreach (Tile tile in TileGrid)
             {
                 Button button = tile.GetUIElement() as Button;
@@ -124,9 +133,32 @@ namespace baUHInia.Playground.View
             //TODO: implement
         }
 
-        private void OpenSelectorTab()
+        private void OpenSelectorTab(object source, RoutedEventArgs args)
         {
-            //TODO: implement
+            if (_storedElement == null)
+            {
+                _admin.GetReturnButton().Click += (sender, eventArgs) =>
+                {
+                    AvailableObjects = _admin.GetModifiedAvailableObjects();
+                    SwapBoardAndAdminPanel();
+                };
+                _storedElement = GameScroll.Content as UIElement;
+                Grid grid = _admin.GetAdminSelectorTableGrid();
+                grid.VerticalAlignment = VerticalAlignment.Center;
+                grid.HorizontalAlignment = HorizontalAlignment.Center;
+                GameScroll.Content = grid;
+                _storedElement.Visibility = Visibility.Hidden;
+            }
+            else SwapBoardAndAdminPanel();
+        }
+
+        private void SwapBoardAndAdminPanel()
+        {
+            UIElement temp = _storedElement;
+            _storedElement = GameScroll.Content as UIElement;
+            _storedElement.Visibility = Visibility.Visible;
+            GameScroll.Content = temp;
+            temp.Visibility = Visibility.Visible;
         }
 
         private void TestMap()

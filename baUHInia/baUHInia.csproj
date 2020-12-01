@@ -52,7 +52,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WindowsFormsIntegration.dll"/>
+    <Reference Include="WindowsFormsIntegration.dll" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
@@ -162,6 +162,7 @@
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
+    <Compile Include="Playground\Model\Resources\ResourceType.cs" />
     <Compile Include="Playground\Model\Selectors\DeleteOperator.cs" />
     <Compile Include="Playground\Model\Selectors\IOperator.cs" />
     <Compile Include="Playground\Model\Selectors\BlockOperator.cs" />

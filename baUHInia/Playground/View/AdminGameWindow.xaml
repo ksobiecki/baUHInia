@@ -44,7 +44,7 @@
 		
 		</ScrollViewer>
 
-		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Collapsed">
+		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Visible">
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
@@ -56,6 +56,7 @@
 				<RowDefinition Height="35"/>
 				<RowDefinition Height="35"/>
 				<RowDefinition Height="24"/>
+				<RowDefinition Height="30"/>
 				<RowDefinition Height="30"/>
 				<RowDefinition />
 			</Grid.RowDefinitions>
@@ -71,7 +72,7 @@
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			<Button Content="Nowa Mapa" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="3" Style="{StaticResource MenuButton}">
+			<Button Content="Nowa Mapa" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="3" Style="{StaticResource MenuButton}" Click="NewMap">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
@@ -79,11 +80,11 @@
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			<Button Content="Tryb Rozgrywki" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="5" Style="{StaticResource MenuButton}">
+			<Button Content="Tryb Rozgrywki" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="5" Style="{StaticResource MenuButton}" Click="ChangeGameMode">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			<Button Content="Wyloguj" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="6" Style="{StaticResource MenuButton}">
+			<Button Content="Wyloguj" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="6" Style="{StaticResource MenuButton}" Click="ReturnToLoginWindow">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
@@ -98,8 +99,12 @@
 			<TextBlock Grid.Row="8" Text="TRYB:" Foreground="#DDDDDD" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
 			<TextBlock Grid.Row="8" Text="STAWIANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0" Name="ModeText"/>
 
-			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="9" 
-			          SelectionChanged="CategorySelector_SelectionChanged" 
+			<Button HorizontalAlignment="Left" Content="Terrain" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="9" Style="{StaticResource TerrainButton}" Margin="0,0,0,0" Name="TerrainSwitch"/>
+			<Button HorizontalAlignment="Center" Content="Structure" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="9" Style="{StaticResource StructureButton}" Margin="0,0,0,0" Name="StructureSwitch"/>
+			<Button HorizontalAlignment="Right" Content="Foliage" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="9" Style="{StaticResource FoliageButton}" Margin="0,0,0,0" Name="FoliageSwitch"/>
+			
+			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="10" 
+			          SelectionChanged="ChangeDropdownSelection" 
 			          FontStretch="Expanded" Background="#6688CC"
 			          Foreground="#DDDDDD"
 			          HorizontalContentAlignment="Center" 
@@ -118,7 +123,7 @@
 				</ComboBox.ItemContainerStyle>
 			</ComboBox>
 
-			<ScrollViewer x:Name="SelectorScroll" Grid.Row="10" VerticalAlignment="Stretch" Background="#888888">
+			<ScrollViewer x:Name="SelectorScroll" Grid.Row="11" VerticalAlignment="Stretch" Background="#888888">
 				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			</ScrollViewer>
 			

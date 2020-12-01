@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Controls;
 using System.Windows.Media;
+using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Model.Selectors
 {
@@ -11,7 +15,7 @@ namespace baUHInia.Playground.Model.Selectors
         public ITileBinder Binder { get; }
         public TileObject TileObject { get; set; }
         public List<Element>[,] ElementsLayers { get; set; }
-        public LinkedList<Placer> ChangedPlacers { get; }
+        public LinkedList<Placer> ChangedPlacers { get; private set; }
         public State SelectionState { get; private set; }
 
 
@@ -29,6 +33,13 @@ namespace baUHInia.Playground.Model.Selectors
             CurrentOperator = Operators[0];
         }
 
+        public void Reset()
+        {
+            SelectionState = State.Place;
+            ChangedPlacers = new LinkedList<Placer>();
+            ChangeState(State.Place);
+        }
+
         public void ChangeState(State state)
         {
             SelectionState = state;
@@ -36,15 +47,15 @@ namespace baUHInia.Playground.Model.Selectors
             switch (SelectionState)
             {
                 case State.Place:
-                    Binder.ChangeMode("STAWIANIE", Brushes.SeaGreen);
+                    Binder.ChangeInteractionMode("STAWIANIE", Brushes.SeaGreen);
                     CurrentOperator = Operators[0];
                     break;
                 case State.Remove:
-                    Binder.ChangeMode("USUWANIE", Brushes.Brown);
+                    Binder.ChangeInteractionMode("USUWANIE", Brushes.Brown);
                     CurrentOperator = Operators[1];
                     break;
                 case State.Block:
-                    Binder.ChangeMode("LCTRL", Brushes.Peru);
+                    Binder.ChangeInteractionMode("LCTRL", Brushes.Peru);
                     CurrentOperator = Operators[2];
                     break;
             }

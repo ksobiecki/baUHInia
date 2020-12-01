@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
@@ -16,15 +15,9 @@ using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.View
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class AdminGameWindow : ITileBinder
     {
         private const byte BoardDensity = 50;
-
-        //private GameGridCreator _gameGridCreator;
-        //private SelectorGridCreator _selectorGridCreator;
 
         private IGameGridCreator _gameGridCreator;
         private ISelectorGridCreator _selectorGridCreator;
@@ -32,50 +25,38 @@ namespace baUHInia.Playground.View
         private IGameMapManager _manager;
 
         private IAdminSelectorTabCreator _admin;
-        //private IAdminSelectorTabCreator _adminCreator;
 
         private UIElement _storedElement;
 
         public AdminGameWindow(LoginData credentials)
         {
             InitializeComponent();
-            //InitializeSelection();
-            //CreateGameBoard();
-            //CreateSelectorGrid();
-            //FillCardsAndComboBoxWithCategories();
-            _manager = new GameMapManager();
-            InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
+            AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
-
-            Credentials = credentials;
-            AvailableObjects = new List<GameObject>();
-            _admin = new AdminRestrictionsWindow(this);
+            InitializeProperties(credentials);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
 
         public Selection Selection { get; private set; }
-
-        //TODO: rest
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; private set; }
         public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
-        public LoginData Credentials { get; }
-        public int AvailableFounds { get; }
+        public LoginData Credentials { get; private set; }
+        public int AvailableFounds { get; set; }
 
-        public void ChangeMode(string text, System.Windows.Media.Brush color)
+        //============================ PREDEFINED ACTIONS ============================//
+
+        public void ChangeInteractionMode(string text, Brush color)
         {
             ModeText.Text = text;
             ModeText.Foreground = color;
         }
-
-        //============================ PREDEFINED ACTIONS ============================//
-
+        
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "Plain Dirt"),
-            this);
+            ResourceHolder.Get.GetTerrainTileObject("Plain Dirt"), this);
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -83,20 +64,24 @@ namespace baUHInia.Playground.View
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
 
-        private void CreateNewMap(Object sender, RoutedEventArgs e)
+        private void InitializeInteractionChangers()
         {
-            InitializeSelection();
-            CreateGameBoard();
-            CreateSelectorGrid();
-            FillCardsAndComboBoxWithCategories();
-            PlacedObjects = new List<Placement>();
             DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
             PlaceableButton.Click += (o, args) => Selection.ChangeState(State.Block);
-            /*foreach (Tile tile in TileGrid)
-            {
-                Button button = tile.GetUIElement() as Button;
-                button.Width = button.ActualHeight;
-            }*/
+        }
+
+        private void InitializeSwitches()
+        {
+            TerrainSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Terrain);
+            StructureSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Structure);
+            FoliageSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Foliage);
+        }
+        
+        private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
+        {
+            string item = CategorySelector.SelectedItem as string;
+            TileCategory category = ResourceHolder.Get.GetCategoryByName(item);
+            _selectorGridCreator.CreateSelectionPanel(category, this);
         }
 
         private void CreateGameBoard()
@@ -106,21 +91,54 @@ namespace baUHInia.Playground.View
             _gameGridCreator = new TileGridCreator(this, BoardDensity);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
         }
-
+        
         private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
-
-        private void FillCardsAndComboBoxWithCategories() =>
-            CategorySelector.ItemsSource =
-                ResourceHolder.Get.Terrain.Select(c => char.ToUpper(c.Name[0]) + c.Name.Substring(1));
-
-        private void UpdateSelectionWindow()
+        
+        private void SwapBoardAndAdminPanel()
         {
-            //TODO: implement
+            UIElement temp = _storedElement;
+            _storedElement = GameScroll.Content as UIElement;
+            _storedElement.Visibility = Visibility.Visible;
+            GameScroll.Content = temp;
+            temp.Visibility = Visibility.Visible;
+        }
+        
+        //============================== INITIAL WINDOW ==============================//
+
+        private void AddLoadCardAndInitializeManager()
+        {
+            _manager = new GameMapManager();
+            InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
         }
 
-        private void UpdateComboBox()
+        private void InitializeProperties(LoginData credentials)
         {
-            //TODO: implement
+            Credentials = credentials;
+            PlacedObjects = new List<Placement>();
+            AvailableObjects = new List<GameObject>();
+            _admin = new AdminRestrictionsWindow(this);
+        }
+
+        //=============================== FUNCTIONALITY ==============================//
+        
+        private void CreateNewMap(object sender, RoutedEventArgs e)
+        {
+            InitializeSelection();
+            CreateGameBoard();
+            CreateSelectorGrid();
+            InitializeSwitches();
+            InitializeInteractionChangers();
+            UpdateSelectorComboBox(ResourceType.Terrain);
+        }
+
+        private void UpdateSelectorComboBox(ResourceType type)
+        {
+            ResourceHolder.Get.ChangeResourceType(type);
+            TileCategory category = ResourceHolder.Get.GetFirstTileCategory();
+
+            CategorySelector.ItemsSource = ResourceHolder.Get.GetCategoryName();
+            CategorySelector.SelectedIndex = 0;
+            _selectorGridCreator.CreateSelectionPanel(category, this);
         }
 
         private void LoadMap()
@@ -133,13 +151,22 @@ namespace baUHInia.Playground.View
             //TODO: implement
         }
 
+        private void NewMap(object source, RoutedEventArgs args)
+        {
+            CreateGameBoard();
+            Selection.Reset();
+            PlacedObjects.Clear();
+        }
+
         private void OpenSelectorTab(object source, RoutedEventArgs args)
         {
+            //TODO change to make compatible with load/save windows
             if (_storedElement == null)
             {
                 _admin.GetReturnButton().Click += (sender, eventArgs) =>
                 {
                     AvailableObjects = _admin.GetModifiedAvailableObjects();
+                    AvailableFounds = _admin.GetBudget();
                     SwapBoardAndAdminPanel();
                 };
                 _storedElement = GameScroll.Content as UIElement;
@@ -152,33 +179,19 @@ namespace baUHInia.Playground.View
             else SwapBoardAndAdminPanel();
         }
 
-        private void SwapBoardAndAdminPanel()
+        private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
-            UIElement temp = _storedElement;
-            _storedElement = GameScroll.Content as UIElement;
-            _storedElement.Visibility = Visibility.Visible;
-            GameScroll.Content = temp;
-            temp.Visibility = Visibility.Visible;
+            UserGameWindow userWindow = new UserGameWindow {Owner = this};
+            Hide(); // not required if using the child events below
+            userWindow.ShowDialog();
         }
 
-        private void TestMap()
+        private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            //TODO: implement
-        }
-
-        private void ReturnToLoginWindow()
-        {
-            //TODO: implement
-        }
-
-        //============================ ELEMENTS BEHAVIOUR =============================//
-
-        private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            string item = comboBox.SelectedItem as string;
-            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item.ToLower()),
-                this);
+            //TODO: change after Authorisation module is finished
+            Close();
+            DEBUG.DEBUG debug = new DEBUG.DEBUG();
+            debug.Show();
         }
     }
 }

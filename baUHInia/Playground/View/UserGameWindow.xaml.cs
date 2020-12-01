@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.Playground.Logic.Creators;
@@ -55,8 +54,8 @@ namespace baUHInia.Playground.View
         public Grid SelectorGrid => UserSelectorGrid;
         public List<GameObject> AvailableObjects { get; }
         public LoginData Credentials { get; }
-        public int AvailableFounds { get; }
-        public void ChangeMode(string text, System.Windows.Media.Brush color) => throw new NotImplementedException();
+        public int AvailableFounds { get; set; }
+        public void ChangeInteractionMode(string text, System.Windows.Media.Brush color) => throw new NotImplementedException();
 
         //============================ PREDEFINED ACTIONS ============================//
 
@@ -139,15 +138,6 @@ namespace baUHInia.Playground.View
             ComboBox comboBox = sender as ComboBox;
             string item = comboBox.SelectedItem as string;
             _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item), this);
-        }
-
-        private void Filler_Click(object sender, RoutedEventArgs e)
-        {
-            BitmapImage bi = new BitmapImage(new Uri("pack://application:,,,/resources/terrain/Test/Tester/oak.png"));
-            Image img = new Image {Source = bi, IsHitTestVisible = false};
-            Grid.SetRow(img, 5);
-            Grid.SetColumn(img, 5);
-            ((Grid) GameViewer.Content).Children.Add(img);
         }
     }
 }

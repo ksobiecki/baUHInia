@@ -130,28 +130,38 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddBasicData(jsonMap, tileBinder);
             SerializationHelper.JsonAddTileGridAndDictionary(jsonMap, tileBinder.TileGrid);
             SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
-            //SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects); // TODO uncomment when not null anymore.
+            SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
-            File.WriteAllText("test.txt", jsonMap.ToString(Formatting.None)); // TODO switch to database methods when they are available.
+            File.WriteAllText("C:/Users/Mateusz/Desktop/test.txt", jsonMap.ToString(Formatting.None)); // TODO switch to database methods when they are available.
 
             // Debug purposes, move to load later.
 
-            string readText = File.ReadAllText("test.txt");
+            string readText = File.ReadAllText("C:/Users/Mateusz/Desktop/test.txt");
             jsonMap = JObject.Parse(readText);
 
+            string name = "";
             int width = 0;
             int height = 0;
             int availableMoney = 0;
 
-            SerializationHelper.JsonGetBasicData(jsonMap, ref width, ref height, ref availableMoney);
+            SerializationHelper.JsonGetBasicData(jsonMap, ref name, ref width, ref height, ref availableMoney);
 
             int[,] tileGrid = new int[width, height];
             bool[,] placeableGrid = new bool[width, height];
+
             Dictionary<int, string> indexer = new Dictionary<int, string>();
 
             SerializationHelper.JsonGetTileGridAndDictionary(jsonMap, indexer,tileGrid, placeableGrid);
 
-            // TODO add placed objects getter when not null anymore.
+            GameObject[] availableTiles = null;
+
+            SerializationHelper.JsonGetAvailableTiles(jsonMap, availableTiles);
+
+            Placement[] placedObjects = null;
+
+            SerializationHelper.JsonGetPlacedObjects(jsonMap, placedObjects);
+
+            Map deserializedMap = new Map(123, 123, name, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
 
             return true;
         }

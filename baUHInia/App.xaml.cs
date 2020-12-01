@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Forms;
+using baUHInia.Admin;
 
 namespace baUHInia
 {
@@ -13,8 +15,7 @@ namespace baUHInia
             try
             {
                 Form authForm = new Authorisation.Authorisation();
-                authForm.Show();
-
+                authForm.ShowDialog();
             }
             catch (System.Exception ex)
             {

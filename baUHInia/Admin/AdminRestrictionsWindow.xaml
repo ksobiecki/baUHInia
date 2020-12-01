@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:baUHInia.Admin"
         mc:Ignorable="d"
-        Title="AdminRestrictionsWindow" Height="550" Width="820">
-    <Grid  HorizontalAlignment="Left" Height="550" Margin="10,10,5,5" VerticalAlignment="Top" Width="800">
+        Title="AdminRestrictionsWindow" Height="500" Width="820">
+    <Grid Name="AdminRestrictionsGrid"  HorizontalAlignment="Left" Height="500" Margin="10,10,5,5" VerticalAlignment="Top" Width="800">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
@@ -22,20 +22,20 @@
 
         <Border Grid.Column="0" Grid.Row="0" BorderBrush="#003049" BorderThickness="10" CornerRadius="10"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ScrollViewer   VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7" Padding="3">
-                <Grid Name="AllGameObjectsGrid" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <ScrollViewer   VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7" Padding="3,3,3,10">
+                <Grid Name="AllGameObjectsGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,10" />
             </ScrollViewer>
         </Border>
 
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="#003049" BorderThickness="10" CornerRadius="5" 
                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5,0,5">
-            <Button  Content="Przenieś obiekt" Foreground="White" Width="120" FontSize="16" VerticalAlignment="Center" 
+            <Button Click="ChangeAvailabilityOfObject"  Content="Przenieś obiekt" Foreground="White" Width="120" FontSize="16" VerticalAlignment="Center" 
                          Height="40" Background="#003049" BorderThickness="0"/>
         </Border>
         <Border Grid.Column="0" Grid.Row="2" BorderBrush="#003049" BorderThickness="10" CornerRadius="10" 
                     HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ScrollViewer  VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7">
-                <Grid Name="AvailableForUserGameObjects" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <ScrollViewer  VerticalAlignment="Top" MinHeight="200" MinWidth="580" Background="#eae2b7" Padding="3,3,3,10">
+                <Grid Name="AvailableForUserGameObjectsGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,10"/>
             </ScrollViewer>
         </Border>
 
@@ -56,16 +56,16 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Budżet na tę mapę:" Width="200" FontSize="16" VerticalAlignment="Bottom" Padding="15,0,15,0"/>
-                <TextBox Grid.Row="1" Name="AdminBudget" Background="#eae2b7"/>
+                <TextBox Grid.Row="1" Name="AdminBudget" FontSize="30" Background="#eae2b7"/>
 
                 <Border  Grid.Row="2" BorderBrush="#003049" BorderThickness="10" CornerRadius="5" 
                             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">
-                    <Button  Content="Zapisz" Foreground="White" Width="100" FontSize="16" VerticalAlignment="Center" 
+                    <Button  Content="Zatwierdź" Click="Save" Foreground="White" Width="100" FontSize="16" VerticalAlignment="Center" 
                                  Height="30" Background="#003049" BorderThickness="0"/>
                 </Border>
                 <Border  Grid.Row="3" BorderBrush="#003049" BorderThickness="10" CornerRadius="5" 
                              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">
-                    <Button  Content="Cofnij" Foreground="White" Width="100" FontSize="16" VerticalAlignment="Center" 
+                    <Button Name="ReturnBtn" Content="Powrót" Foreground="White" Width="100" FontSize="16" VerticalAlignment="Center" 
                                  Height="30" Background="#003049" BorderThickness="0"/>
                 </Border>
 
@@ -73,7 +73,7 @@
             </Grid>
         </Border>
 
-
+<!--
         <Border Grid.Column="0" Grid.Row="3" BorderBrush="#003049" BorderThickness="10" CornerRadius="5" 
                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5,0,5">
             <Button Content="Cofnij" Foreground="White" Width="120" FontSize="16" VerticalAlignment="Center" 
@@ -85,6 +85,6 @@
                          Height="30" Background="#003049" BorderThickness="0"/>
 		</Border>
 
-
+-->
     </Grid>
 </Window>

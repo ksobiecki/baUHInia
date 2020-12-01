@@ -13,7 +13,8 @@ namespace baUHInia.MapLogic.Helper
         // Serialization
         public static void JsonAddBasicData(JObject jsonMap, ITileBinder tileBinder)
         {
-            // TODO how do I get all the IDs?
+            // TODO how do I get all the IDs?;
+            jsonMap["Name"] = "Placeholder name";
             jsonMap["Width"] = tileBinder.TileGrid.GetLength(0);
             jsonMap["Height"] = tileBinder.TileGrid.GetLength(1);
             jsonMap["AvailableMoney"] = tileBinder.AvailableFounds;
@@ -35,9 +36,9 @@ namespace baUHInia.MapLogic.Helper
                     {
                         indexer.Add(key, tileGrid[i, j].GetName());
 
-                        JObject jsonTile = new JObject();
-                        jsonTile["Key"] = key;
-                        jsonTile["Placeable"] = tileGrid[i, j].Placeable;
+                        JArray jsonTile = new JArray();
+                        jsonTile.Add(key);
+                        jsonTile.Add(tileGrid[i, j].Placeable);
                         jsonTileGrid.Add(jsonTile);
                         jsonIntTileGrid.Add(key);
                         key++;
@@ -45,9 +46,9 @@ namespace baUHInia.MapLogic.Helper
                     else
                     {
                         jsonIntTileGrid.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
-                        JObject jsonTile = new JObject();
-                        jsonTile["Key"] = indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key;
-                        jsonTile["Placeable"] = tileGrid[i, j].Placeable;
+                        JArray jsonTile = new JArray();
+                        jsonTile.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
+                        jsonTile.Add(tileGrid[i, j].Placeable);
                         jsonTileGrid.Add(jsonTile);
                     }
                 }
@@ -114,15 +115,20 @@ namespace baUHInia.MapLogic.Helper
             JArray jsonAvailableObjects = new JArray();
             foreach (GameObject gameObject in availableTiles)
             {
-                jsonAvailableObjects.Add(gameObject.TileObject.Name);
+                JObject jsonTile = new JObject();
+                jsonTile["Name"] = gameObject.TileObject.Name;
+                jsonTile["Price"] = gameObject.Price;
+                jsonTile["ChangeValue"] = gameObject.ChangeValue;
+                jsonAvailableObjects.Add(jsonTile);
             }
 
             jsonMap["AvailableObjects"] = jsonAvailableObjects;
         }
 
         // Deserialization
-        public static void JsonGetBasicData(JObject jsonMap, ref int width, ref int height, ref int availableMoney)
+        public static void JsonGetBasicData(JObject jsonMap, ref string name, ref int width, ref int height, ref int availableMoney)
         {
+            name = (string)jsonMap["Name"];
             width = (int)jsonMap["Width"];
             height = (int)jsonMap["Height"];
             availableMoney = (int)jsonMap["AvailableMoney"];
@@ -136,16 +142,44 @@ namespace baUHInia.MapLogic.Helper
             JArray jsonTileGrid = (JArray)jsonMap["TileGrid"];
             JArray jsonIndexer = (JArray)jsonMap["Indexer"];
 
-            foreach (JObject tile in jsonTileGrid)
+            foreach (JArray jsonTile in jsonTileGrid)
             {
-                tileGrid[index / width, index % width] = (int)tile["Key"];
-                placeableGrid[index / width, index % width] = (bool)tile["Placeable"];
+                tileGrid[index / width, index % width] = (int)jsonTile[0];
+                placeableGrid[index / width, index % width] = (bool)jsonTile[1];
                 index++;
             }
 
             foreach (JObject association in jsonIndexer)
             {
                 indexer.Add((int)association["Key"], (string)association["Value"]);
+            }
+        }
+
+        public static void JsonGetAvailableTiles(JObject jsonMap, GameObject[] availableTiles)
+        {
+            JArray jsonAvailableTiles = (JArray)jsonMap["AvailableTiles"];
+            availableTiles = new GameObject[jsonAvailableTiles.Count];
+
+            int index = 0;
+
+            foreach (JObject jsonTile in jsonAvailableTiles)
+            {
+                // TODO create a GameObject and append it to the array.
+                index++;
+            }
+        }
+
+        public static void JsonGetPlacedObjects(JObject jsonMap, Placement[] placedObjects)
+        {
+            JArray jsonPlacedObjects = (JArray)jsonMap["PlacedObjects"];
+            placedObjects = new Placement[jsonPlacedObjects.Count];
+
+            int index = 0;
+
+            foreach (JObject jsonPlacement in jsonPlacedObjects)
+            {
+                // TODO create a Placement and append it to the array.
+                index++;
             }
         }
     }

@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Authorisation));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.isAdmin = new System.Windows.Forms.CheckBox();
             this.registerSecondPasswordBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -44,7 +45,6 @@
             this.loginPasswordBox = new System.Windows.Forms.TextBox();
             this.loginLoginBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -52,7 +52,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.isAdmin);
             this.groupBox2.Controls.Add(this.registerSecondPasswordBox);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
@@ -66,6 +66,16 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rejestracja";
+            // 
+            // isAdmin
+            // 
+            this.isAdmin.AutoSize = true;
+            this.isAdmin.Location = new System.Drawing.Point(6, 139);
+            this.isAdmin.Name = "isAdmin";
+            this.isAdmin.Size = new System.Drawing.Size(97, 17);
+            this.isAdmin.TabIndex = 8;
+            this.isAdmin.Text = "Władze miasta";
+            this.isAdmin.UseVisualStyleBackColor = true;
             // 
             // registerSecondPasswordBox
             // 
@@ -109,6 +119,7 @@
             this.registerPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.registerPasswordBox.TabIndex = 5;
             this.registerPasswordBox.UseSystemPasswordChar = true;
+            this.registerPasswordBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.registerPasswordBox_MouseClick);
             // 
             // registerLoginBox
             // 
@@ -116,6 +127,7 @@
             this.registerLoginBox.Name = "registerLoginBox";
             this.registerLoginBox.Size = new System.Drawing.Size(138, 20);
             this.registerLoginBox.TabIndex = 4;
+            this.registerLoginBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.registerLoginBox_MouseClick);
             // 
             // registerButton
             // 
@@ -125,6 +137,7 @@
             this.registerButton.TabIndex = 7;
             this.registerButton.Text = "Zarejestruj się";
             this.registerButton.UseVisualStyleBackColor = true;
+            this.registerButton.Click += new System.EventHandler(this.registerButton_Click);
             // 
             // loginButton
             // 
@@ -134,6 +147,7 @@
             this.loginButton.TabIndex = 3;
             this.loginButton.Text = "Zaloguj się";
             this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // groupBox1
             // 
@@ -192,16 +206,6 @@
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 139);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(97, 17);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "Władze miasta";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // Authorisation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,7 +214,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Authorisation";
@@ -241,6 +245,6 @@
         private System.Windows.Forms.TextBox loginLoginBox;
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox isAdmin;
     }
 }

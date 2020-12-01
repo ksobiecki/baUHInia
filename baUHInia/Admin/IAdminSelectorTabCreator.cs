@@ -9,6 +9,8 @@ namespace baUHInia.Admin
     {
         Grid GetAdminSelectorTableGrid();
         List<GameObject> GetModifiedAvailableObjects();
+
+        Button GetReturnButton();
         int GetBudget();
     }
 }

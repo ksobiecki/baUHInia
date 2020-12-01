@@ -1,13 +1,7 @@
 ﻿using baUHInia.MapLogic.View;
 using baUHInia.Playground.View;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms.Integration;
 using System.Windows.Forms;
 
 namespace baUHInia.DEBUG
@@ -23,6 +17,8 @@ namespace baUHInia.DEBUG
         {
             Hide();
             AdminGameWindow app = new AdminGameWindow(null);
+            //Formsy psują wprowadzanie tekstu. Poniższa linijka jest niezbędna
+            ElementHost.EnableModelessKeyboardInterop(app);
             app.Show();
         }
 

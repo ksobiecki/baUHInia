@@ -125,6 +125,27 @@ namespace baUHInia.Database
             return 0;
         }
 
+        public int newPasssword(String login,String nowehaslo)
+        {
+             int code = 0;
+            try
+            {
+                code = Polacz();
+                String query = "update Uzytkownicy set haslo=@newPass where nazwa=@login";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@newPass",nowehaslo);
+                sqlCommand.Parameters.AddWithValue("@login",login);
+                sqlCommand.ExecuteNonQuery();
+                code = Rozlacz();
+            }
+            catch (SqlException)
+            {
+                code+=100;
+                return code; //blad 100 = blad pobrania nazwy uzytkownika; 101 = blad polaczenia
+            }
+            return 0;
+        }
+
   //  public bool UsunUzytkownika()
    //     {
     //        try

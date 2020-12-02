@@ -229,6 +229,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\1_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\2_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\3_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\4_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\5_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\6_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\summer_oak.json" />
     <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
     <Resource Include="resources\terrain\roads\bottom\bottom.json" />
     <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
@@ -265,14 +272,7 @@
     <Resource Include="resources\terrain\Test\Tester\oak.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\terrain\Test\TestTree\1_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\2_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\3_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\4_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\5_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\6_test_tree.png" />
     <Resource Include="resources\terrain\roads\double\double.json" />
-    <Resource Include="resources\terrain\Test\TestTree\TestTree.json" />
     <Resource Include="icon.ico" />
     <Resource Include="res\icon.ico" />
     <Resource Include="res\icon.png" />

@@ -8,12 +8,11 @@ namespace baUHInia.Playground.Model.Resources
     public class ResourceHolder
     {
         public readonly List<TileCategory> Terrain;
-        public readonly List<TileCategory> Structures;
-        public readonly List<TileCategory> Foliage;
-
-        private ResourceType CurrentType { get; set; }
+        private List<TileCategory> Structures { get; }
+        private List<TileCategory> Foliage { get; }
 
         private static ResourceHolder _instance;
+        public ResourceType CurrentType { get; private set; } = ResourceType.Terrain;
 
         private ResourceHolder(List<TileCategory> terrain, List<TileCategory> structures, List<TileCategory> foliage)
         {
@@ -22,10 +21,19 @@ namespace baUHInia.Playground.Model.Resources
             Foliage = foliage;
         }
 
-        public static ResourceHolder Get =>
-            _instance ?? (_instance = new ResourceHolder(ResourceLoader.LoadTileCategories("terrain"), null, null));
-
+        public static ResourceHolder Get => _instance ?? InitializeInstance();
+        
         public void ChangeResourceType(ResourceType type) => CurrentType = type;
+
+        public List<TileCategory> GetSelectedCategories()
+        {
+            switch (CurrentType)
+            {
+                case ResourceType.Terrain: return Terrain;
+                case ResourceType.Structure: return Structures; 
+                default: return Foliage;
+            }
+        }
 
         public TileCategory GetCategoryByName(string name)
         {
@@ -52,9 +60,9 @@ namespace baUHInia.Playground.Model.Resources
             TileCategory nullPlaceholder = new TileCategory("", new List<TileObject>());
             switch (CurrentType)
             {
-                case ResourceType.Terrain: return Get.Terrain?[0] ?? nullPlaceholder;
-                case ResourceType.Structure: return Get.Structures?[0] ?? nullPlaceholder;
-                default: return Get.Foliage?[0] ?? nullPlaceholder;
+                case ResourceType.Terrain: return Get.Terrain.ElementAtOrDefault(0) ?? nullPlaceholder;
+                case ResourceType.Structure: return Get.Structures.ElementAtOrDefault(0) ?? nullPlaceholder;
+                default: return Get.Foliage.ElementAtOrDefault(0) ?? nullPlaceholder;
             }
         }
 
@@ -65,8 +73,20 @@ namespace baUHInia.Playground.Model.Resources
             return FindInGroup(Structures, name) ?? FindInGroup(Foliage, name);
         }
 
-        private static TileCategory GetSpecificCategory(IEnumerable<TileCategory> categories, string name) =>
-            categories?.First(c => c.Name == name.ToLower()) ?? new TileCategory("", new List<TileObject>());
+        private static ResourceHolder InitializeInstance()
+        {
+            List<TileCategory> terrain = ResourceLoader.LoadTileCategories("terrain");
+            List<TileCategory> structures = ResourceLoader.LoadTileCategories("structures");
+            List<TileCategory> foliage = ResourceLoader.LoadTileCategories("foliage");
+            _instance = new ResourceHolder(terrain, structures, foliage);
+            return _instance;
+        }
+
+        private static TileCategory GetSpecificCategory(IEnumerable<TileCategory> categories, string name)
+        {
+            return categories.FirstOrDefault(c => c.Name == name.ToLower()) ??
+                   new TileCategory("", new List<TileObject>());
+        }
 
         private static IEnumerable<string> GetCategoryNames(IEnumerable<TileCategory> categories) =>
             categories?.Select(c => char.ToUpper(c.Name[0]) + c.Name.Substring(1));

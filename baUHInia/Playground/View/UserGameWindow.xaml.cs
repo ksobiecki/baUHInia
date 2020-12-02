@@ -60,7 +60,7 @@ namespace baUHInia.Playground.View
         //============================ PREDEFINED ACTIONS ============================//
 
         private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "dirt"), this);
+            ResourceHolder.Get.GetTerrainTileObject("Plain Dirt"), this);
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -119,11 +119,16 @@ namespace baUHInia.Playground.View
         private void CreateGameBoard()
         {
             TileGrid = new Tile[BoardDensity, BoardDensity];
-            _gameGridCreator = new TileGridCreator(this, BoardDensity);
+            TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
+            _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
         }
 
-        private void CreateSelectorGrid() => _selectorGridCreator = new UserSelectorGridCreator(this);
+        private void CreateSelectorGrid()
+        {
+            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
+            _selectorGridCreator = new UserSelectorGridCreator(this, categories);
+        }
 
         private void UpdateSelectionWindow()
         {

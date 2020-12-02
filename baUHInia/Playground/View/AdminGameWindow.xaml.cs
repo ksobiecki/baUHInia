@@ -19,14 +19,12 @@ namespace baUHInia.Playground.View
     {
         private const byte BoardDensity = 50;
 
-        private IGameGridCreator _gameGridCreator;
         private ISelectorGridCreator _selectorGridCreator;
-
+        private IGameGridCreator _gameGridCreator;
+        private IAdminSelectorTabCreator _admin;
         private IGameMapManager _manager;
 
-        private IAdminSelectorTabCreator _admin;
-
-        private UIElement _storedElement;
+        private UIElement _storedGui;
 
         public AdminGameWindow(LoginData credentials)
         {
@@ -54,9 +52,12 @@ namespace baUHInia.Playground.View
             ModeText.Text = text;
             ModeText.Foreground = color;
         }
-        
-        private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.GetTerrainTileObject("Plain Dirt"), this);
+
+        private void InitializeSelection()
+        {
+            TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Dirt");
+            Selection = new Selection(tileObject, this);
+        }
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -76,11 +77,12 @@ namespace baUHInia.Playground.View
             StructureSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Structure);
             FoliageSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Foliage);
         }
-        
+
         private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
         {
-            string item = CategorySelector.SelectedItem as string;
-            TileCategory category = ResourceHolder.Get.GetCategoryByName(item);
+            TileCategory category = !(CategorySelector.SelectedItem is string item)
+                ? ResourceHolder.Get.GetFirstTileCategory()
+                : ResourceHolder.Get.GetCategoryByName(item);
             _selectorGridCreator.CreateSelectionPanel(category, this);
         }
 
@@ -88,21 +90,26 @@ namespace baUHInia.Playground.View
         {
             SideGrid.Visibility = Visibility.Visible;
             TileGrid = new Tile[BoardDensity, BoardDensity];
-            _gameGridCreator = new TileGridCreator(this, BoardDensity);
+            TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
+            _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
         }
-        
-        private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
-        
+
+        private void CreateSelectorGrid()
+        {
+            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
+            _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
+        }
+
         private void SwapBoardAndAdminPanel()
         {
-            UIElement temp = _storedElement;
-            _storedElement = GameScroll.Content as UIElement;
-            _storedElement.Visibility = Visibility.Visible;
-            GameScroll.Content = temp;
+            UIElement temp = _storedGui;
+            _storedGui = GameScroll.Content as UIElement;
+            _storedGui.Visibility = Visibility.Visible;
             temp.Visibility = Visibility.Visible;
+            GameScroll.Content = temp;
         }
-        
+
         //============================== INITIAL WINDOW ==============================//
 
         private void AddLoadCardAndInitializeManager()
@@ -120,7 +127,7 @@ namespace baUHInia.Playground.View
         }
 
         //=============================== FUNCTIONALITY ==============================//
-        
+
         private void CreateNewMap(object sender, RoutedEventArgs e)
         {
             InitializeSelection();
@@ -134,10 +141,12 @@ namespace baUHInia.Playground.View
         private void UpdateSelectorComboBox(ResourceType type)
         {
             ResourceHolder.Get.ChangeResourceType(type);
+            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
             TileCategory category = ResourceHolder.Get.GetFirstTileCategory();
 
             CategorySelector.ItemsSource = ResourceHolder.Get.GetCategoryName();
             CategorySelector.SelectedIndex = 0;
+            _selectorGridCreator.UpdateTileGroup(categories);
             _selectorGridCreator.CreateSelectionPanel(category, this);
         }
 
@@ -161,7 +170,7 @@ namespace baUHInia.Playground.View
         private void OpenSelectorTab(object source, RoutedEventArgs args)
         {
             //TODO change to make compatible with load/save windows
-            if (_storedElement == null)
+            if (_storedGui == null)
             {
                 _admin.GetReturnButton().Click += (sender, eventArgs) =>
                 {
@@ -169,12 +178,12 @@ namespace baUHInia.Playground.View
                     AvailableFounds = _admin.GetBudget();
                     SwapBoardAndAdminPanel();
                 };
-                _storedElement = GameScroll.Content as UIElement;
+                _storedGui = GameScroll.Content as UIElement;
                 Grid grid = _admin.GetAdminSelectorTableGrid();
                 grid.VerticalAlignment = VerticalAlignment.Center;
                 grid.HorizontalAlignment = HorizontalAlignment.Center;
                 GameScroll.Content = grid;
-                _storedElement.Visibility = Visibility.Hidden;
+                _storedGui.Visibility = Visibility.Hidden;
             }
             else SwapBoardAndAdminPanel();
         }

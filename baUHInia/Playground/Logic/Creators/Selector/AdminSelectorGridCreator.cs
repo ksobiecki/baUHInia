@@ -7,13 +7,14 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 {
     public class AdminSelectorGridCreator : VerticalSelectorGridCreator
     {
-        public AdminSelectorGridCreator(ITileBinder binder) : base(binder) { }
+        public AdminSelectorGridCreator(ITileBinder binder, List<TileCategory> categories) :
+            base(binder, categories) { }
 
         public override void CreateSelectionPanel(TileCategory tileCategory, ITileBinder tileBinder)
         {
             ClearSelectorGrid();
             int gridRowIndex = 0;
-            
+
             IEnumerable<string> groups = GetGroups(tileCategory);
             TileObject[] otherObjects = GetStandaloneObjects(tileCategory);
             CreateGroups(groups, tileCategory.TileObjects, ref gridRowIndex);
@@ -25,7 +26,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             .Select(o => o.Config.Group)
             .Distinct()
             .ToArray();
-        
+
         private static TileObject[] GetStandaloneObjects(TileCategory tileCategory) => tileCategory.TileObjects
             .Where(o => o.Config.Group == null)
             .ToArray();

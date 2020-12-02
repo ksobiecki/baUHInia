@@ -52,7 +52,6 @@ namespace baUHInia.Playground.View
             AvailableObjects = new List<GameObject>();
             _admin = new AdminRestrictionsWindow(this);
 
-
             // Debug.
             _manager = new GameMapManager();
             SaveButton.Click += (o, arg) => _manager.SaveMap(this);

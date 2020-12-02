@@ -43,6 +43,7 @@ namespace baUHInia.Playground.View
             AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
             InitializeProperties(credentials);
+            SaveButton.Click += (o, arg) => _manager.SaveMap(this);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//

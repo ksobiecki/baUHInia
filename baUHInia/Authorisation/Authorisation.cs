@@ -23,7 +23,6 @@ namespace baUHInia.Authorisation
 
         private void Authorisation_Load(object sender, EventArgs e)
         {
-            checkLock();
             Form DEBUG = new DEBUG.DEBUG();
             DEBUG.Show();
         }
@@ -55,6 +54,7 @@ namespace baUHInia.Authorisation
             passwd = ComputeSha256Hash(loginPasswordBox.Text);
             Console.WriteLine(login);
             Console.WriteLine(passwd);
+
             if (true)
             {
                 var result = MessageBox.Show("Pomyślnie zalogowano.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -65,6 +65,7 @@ namespace baUHInia.Authorisation
                     ld.isAdmin = true;
                     ld.name = login;
                     ld.hash = passwd;
+                    isMapVisible = true;
                     Hide();
                     AdminGameWindow app = new AdminGameWindow(null);
                     app.Show();
@@ -72,17 +73,9 @@ namespace baUHInia.Authorisation
             }
             else
             {
-                secVal = secVal - 1;
-                if (secVal == 0)
-                {
-                    lockSystem();
-                }
-                else
-                {
-                    MessageBox.Show("Wprowadzone dane nie są poprawne.\nIlość prób do zablokowania systemu: " + secVal, "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    loginLoginBox.Text = "";
-                    loginPasswordBox.Text = "";
-                }
+                MessageBox.Show("Wprowadzone dane nie są poprawne.\nIlość prób do zablokowania systemu: " + secVal, "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                loginLoginBox.Text = "";
+                loginPasswordBox.Text = "";
                 return;
             }
         }
@@ -133,6 +126,11 @@ namespace baUHInia.Authorisation
             passwd = ComputeSha256Hash(registerPasswordBox.Text);
             Console.WriteLine(login);
             Console.WriteLine(passwd);
+            Boolean Admin = false;
+            if (isAdmin.Checked)
+            {
+                Admin = true;
+            }
             if (true)
             {
                 var result = MessageBox.Show("Pomyślnie zalogowano.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -143,6 +141,7 @@ namespace baUHInia.Authorisation
                     ld.isAdmin = true;
                     ld.name = login;
                     ld.hash = passwd;
+                    isMapVisible = true;
                     Hide();
                     AdminGameWindow app = new AdminGameWindow(null);
                     app.Show();
@@ -190,17 +189,15 @@ namespace baUHInia.Authorisation
             tt.Show("Wprowadzone hasło:\n1. Musi zawierać co najmniej jedną cyfrę\n2. Musi zawierać co najmniej jedną wielką literę\n3. Musi zawierać co najmniej jedną małą literę\n4. Musi zawierać co najmniej 8 znaków\n5. Nie może zawierać spacji.", TB, 138, 0, VisibleTime);
         }
 
-        private void lockSystem()
-        {
 
-        }
-        private void checkLock()
+        private void recoverPasswdBttn_Click(object sender, EventArgs e)
         {
-            if (false)
+            if (loginLoginBox.Text.Length == 0)
             {
-                MessageBox.Show("Wprowadzono niepoprawne hasło zbyt wiele razy.\nProszę odczekać 5 minut.", "BLOKADA SYSTEMU", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Application.Exit();
+                MessageBox.Show("Proszę podać login.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
         }
 
     }

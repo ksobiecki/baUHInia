@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
@@ -14,7 +14,9 @@ using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
-using baUHInia.Properties;
+using Application = System.Windows.Application;
+using Button = System.Windows.Controls.Button;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
 namespace baUHInia.Playground.View
 {
@@ -43,7 +45,7 @@ namespace baUHInia.Playground.View
             AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
             InitializeProperties(credentials);
-            SaveButton.Click += (o, arg) => _manager.SaveMap(this);
+            //SaveButton.Click += (o, arg) => _manager.SaveMap(this);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -61,8 +63,14 @@ namespace baUHInia.Playground.View
 
         public void ChangeInteractionMode(string text, Brush color)
         {
-            ModeText.Text = text;
-            ModeText.Foreground = color;
+            string[] strings = text.Split('/');
+            if (strings.Length < 4) return;
+
+            (ModeText.Text, FirstTip.Text, SecondTip.Text, ThirdTip.Text) =
+                (strings[0], strings[1], strings[2], strings[3]);
+
+            (ModeText.Foreground, FirstTip.Foreground, SecondTip.Foreground, ThirdTip.Foreground) =
+                (color, color, color, color);
         }
 
         private void StoreMenuGrid() => MenuGrid = GameScroll.Content as Grid;
@@ -176,35 +184,44 @@ namespace baUHInia.Playground.View
         {
             if (LoadMapGrid == null)
             {
-                Border border = FindResource("LoadMapTemplate") as Border;
-                Grid loadGrid = new Grid {Children = {border}};
-                
+                LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
+                Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((TextBlock) innerGrid.Children[0]).Text = "LISTA MAP";
                 ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid ?? MenuGrid;
                     SideGrid.Visibility = GameMapGrid == null ? Visibility.Collapsed : Visibility.Visible;
                 };
-                ((Button) innerGrid.Children[4]).Click += (sender, arg) =>
-                {
-                    LoadMap();
-                };
-                LoadMapGrid = loadGrid;
             }
+
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = LoadMapGrid;
         }
 
-        private void LoadMap()
+        private void CreateSaveWindow(object source, RoutedEventArgs args)
         {
-            //TODO: implement
+            if (SaveMapGrid == null)
+            {
+                SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
+                Border border = SaveMapGrid.Children[0] as Border;
+                Grid innerGrid = border.Child as Grid;
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = AdminGrid; };
+            }
+
+            SideGrid.Visibility = Visibility.Collapsed;
+            GameScroll.Content = SaveMapGrid;
         }
 
-        private void SaveMap()
+        private void LoadMap(object sender, RoutedEventArgs args)
         {
-            //TODO: implement
+            //_manager.LoadMap()
+        }
+
+        private void SaveMap(object sender, RoutedEventArgs args)
+        {
+            _manager.SaveMap(this);
         }
 
         private void NewMap(object source, RoutedEventArgs args)
@@ -226,20 +243,14 @@ namespace baUHInia.Playground.View
                     AvailableFounds = _admin.GetBudget();
                     GameScroll.Content = GameMapGrid;
                     SideGrid.Visibility = Visibility.Visible;
-                    //SwapBoardAndAdminPanel();
                 };
-                //_storedGui = GameScroll.Content as UIElement;
+                _admin.GetApplyButton().Click += (sender, eventArgs) => { CreateSaveWindow(null, null); };
                 AdminGrid = _admin.GetAdminSelectorTableGrid();
                 AdminGrid.VerticalAlignment = VerticalAlignment.Center;
                 AdminGrid.HorizontalAlignment = HorizontalAlignment.Center;
                 GameScroll.Content = AdminGrid;
-                //_storedGui.Visibility = Visibility.Hidden;
             }
-            else
-            {
-                GameScroll.Content = AdminGrid;
-                //SwapBoardAndAdminPanel();
-            }
+            else GameScroll.Content = AdminGrid;
         }
 
         private void ChangeGameMode(object sender, RoutedEventArgs args)

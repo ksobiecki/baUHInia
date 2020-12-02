@@ -12,6 +12,10 @@ namespace baUHInia.Playground.Model.Selectors
 {
     public class Selection
     {
+        private const string PlacementString = "STAWIANIE/LMB: POJEDYŃCZO/RMB: MALOWANIE/NIEDOSTĘPNE DLA OBIEKTÓW";
+        private const string RemoveString = "USUWANIE/LMB: USUWA OBIEKT/PO NAJECHANIU, POLA/ZMIENIAJĄ PRZEZROCZYSTOŚĆ";
+        private const string BlockString = "BLOKOWANIE/LMB: ODBLOKOWUJE/RMB: MALUJE/LCTRL + LMB\\RMB: BLOKUJE";
+        
         public ITileBinder Binder { get; }
         public TileObject TileObject { get; set; }
         public List<Element>[,] ElementsLayers { get; set; }
@@ -47,15 +51,15 @@ namespace baUHInia.Playground.Model.Selectors
             switch (SelectionState)
             {
                 case State.Place:
-                    Binder.ChangeInteractionMode("STAWIANIE", Brushes.SeaGreen);
+                    Binder.ChangeInteractionMode(PlacementString, Brushes.SeaGreen);
                     CurrentOperator = Operators[0];
                     break;
                 case State.Remove:
-                    Binder.ChangeInteractionMode("USUWANIE", Brushes.Brown);
+                    Binder.ChangeInteractionMode(RemoveString, Brushes.Brown);
                     CurrentOperator = Operators[1];
                     break;
                 case State.Block:
-                    Binder.ChangeInteractionMode("LCTRL", Brushes.Peru);
+                    Binder.ChangeInteractionMode(BlockString, Brushes.Peru);
                     CurrentOperator = Operators[2];
                     break;
             }

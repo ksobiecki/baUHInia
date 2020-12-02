@@ -15,7 +15,7 @@ namespace baUHInia.DEBUG
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Hide();
+            Close();
             AdminGameWindow app = new AdminGameWindow(null);
             //Formsy psują wprowadzanie tekstu. Poniższa linijka jest niezbędna
             ElementHost.EnableModelessKeyboardInterop(app);

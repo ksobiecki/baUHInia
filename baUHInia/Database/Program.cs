@@ -75,8 +75,8 @@ namespace baUHInia.Database
             return 0;
         }
 
-        public String PobierzPytanie(String login){
-             int code = 0;
+        public Tuple<int, String> PobierzPytanie(String login){
+            int code = 0;
             try
             {
                 code = Polacz();
@@ -85,8 +85,9 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (reader.GetString(0) == nazwa){
-                        return reader.GetString(1);
+                    if (reader.GetString(0) == login)
+                    {
+                        return new Tuple<int, String> (code, reader.GetString(1));
                     }
                 }
                 code = Rozlacz();
@@ -94,12 +95,12 @@ namespace baUHInia.Database
             catch (SqlException)
             {
                 code+=100;
-                return code; //blad 100 = blad pobrania nazwy uzytkownika; 101 = blad polaczenia
+                return new Tuple<int, String>(code, "ERROR"); //blad 100 = blad pobrania nazwy uzytkownika; 101 = blad polaczenia
             }
-            return 0;
+            return new Tuple<int, String>(code, "null"); ;
         }
 
-        public int SprawdzPytanie(String login,String odpowiedz){
+        public int SprawdzPytanie(String login, String odpowiedz){
          int code = 0;
             try
             {
@@ -109,10 +110,9 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (reader.GetString(0) == nazwa)
+                    if (reader.GetString(0) == odpowiedz)
                     {
-                        if(reader.GetString(1) == odpowiedz)
-                            return 200; //odpowiedz prawidolowa
+                        return 200; //odpowiedz prawidolowa
                     }
                 }
                 code = Rozlacz();
@@ -252,24 +252,24 @@ namespace baUHInia.Database
             return true;
         }
 
-        public String GetGameSerial(int id){   //ewentualnie jakis objekt gry 
-            try {
-                Polacz();
-                String query = "SELECT id,serial from Rozgrywka";
-                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    if (reader.GetInt(0) == id)
-                        return reader.GetString(1);
-                }
-                Rozlacz();
-            }
-            catch(SqlException)
-            {
-                return 0;
-            }
-            return  0;
-        }
+        //public String GetGameSerial(int id){   //ewentualnie jakis objekt gry 
+        //    try {
+        //        Polacz();
+        //        String query = "SELECT id,serial from Rozgrywka";
+        //        SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+        //        SqlDataReader reader = sqlCommand.ExecuteReader();
+        //        while (reader.Read())
+        //        {
+        //            if (reader.GetInt(0) == id)
+        //                return reader.GetString(1);
+        //        }
+        //        Rozlacz();
+        //    }
+        //    catch(SqlException)
+        //    {
+        //        return 0;
+        //    }
+        //    return  0;
+        //}
     }
 }

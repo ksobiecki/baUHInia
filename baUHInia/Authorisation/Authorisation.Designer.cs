@@ -45,6 +45,7 @@
             this.loginPasswordBox = new System.Windows.Forms.TextBox();
             this.loginLoginBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.recoverPasswdBttn = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -60,7 +61,7 @@
             this.groupBox2.Controls.Add(this.registerPasswordBox);
             this.groupBox2.Controls.Add(this.registerLoginBox);
             this.groupBox2.Controls.Add(this.registerButton);
-            this.groupBox2.Location = new System.Drawing.Point(12, 148);
+            this.groupBox2.Location = new System.Drawing.Point(12, 178);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(153, 193);
             this.groupBox2.TabIndex = 3;
@@ -133,7 +134,7 @@
             // 
             this.registerButton.Location = new System.Drawing.Point(6, 162);
             this.registerButton.Name = "registerButton";
-            this.registerButton.Size = new System.Drawing.Size(86, 23);
+            this.registerButton.Size = new System.Drawing.Size(138, 23);
             this.registerButton.TabIndex = 7;
             this.registerButton.Text = "Zarejestruj się";
             this.registerButton.UseVisualStyleBackColor = true;
@@ -141,9 +142,9 @@
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(6, 101);
+            this.loginButton.Location = new System.Drawing.Point(6, 131);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(86, 23);
+            this.loginButton.Size = new System.Drawing.Size(138, 23);
             this.loginButton.TabIndex = 3;
             this.loginButton.Text = "Zaloguj się";
             this.loginButton.UseVisualStyleBackColor = true;
@@ -151,6 +152,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.recoverPasswdBttn);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.loginPasswordBox);
@@ -158,7 +160,7 @@
             this.groupBox1.Controls.Add(this.loginButton);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(153, 130);
+            this.groupBox1.Size = new System.Drawing.Size(153, 160);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logowanie";
@@ -201,16 +203,26 @@
             this.pictureBox1.Image = global::baUHInia.Properties.Resources.icon;
             this.pictureBox1.Location = new System.Drawing.Point(171, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(372, 329);
+            this.pictureBox1.Size = new System.Drawing.Size(373, 359);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
+            // 
+            // recoverPasswdBttn
+            // 
+            this.recoverPasswdBttn.Location = new System.Drawing.Point(7, 101);
+            this.recoverPasswdBttn.Name = "recoverPasswdBttn";
+            this.recoverPasswdBttn.Size = new System.Drawing.Size(137, 23);
+            this.recoverPasswdBttn.TabIndex = 6;
+            this.recoverPasswdBttn.Text = "Przypomnij Hasło";
+            this.recoverPasswdBttn.UseVisualStyleBackColor = true;
+            this.recoverPasswdBttn.Click += new System.EventHandler(this.recoverPasswdBttn_Click);
             // 
             // Authorisation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 349);
+            this.ClientSize = new System.Drawing.Size(549, 383);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox1);
@@ -246,5 +258,6 @@
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox isAdmin;
+        private System.Windows.Forms.Button recoverPasswdBttn;
     }
 }

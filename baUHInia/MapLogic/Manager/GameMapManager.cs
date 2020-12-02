@@ -5,6 +5,16 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
 using System.Linq;
+using System.Collections.Generic;
+using baUHInia.Playground.Model.Tiles;
+
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using baUHInia.Playground.Model.Wrappers;
+using System.IO;
+using baUHInia.MapLogic.Helper;
 
 namespace baUHInia.MapLogic.Manager
 {
@@ -115,7 +125,45 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveMap(ITileBinder tileBinder)
         {
-            throw new NotImplementedException();
+            JObject jsonMap = new JObject();
+
+            SerializationHelper.JsonAddBasicData(jsonMap, tileBinder);
+            SerializationHelper.JsonAddTileGridAndDictionary(jsonMap, tileBinder.TileGrid);
+            SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
+            SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
+
+            File.WriteAllText("C:/Users/Mateusz/Desktop/test.txt", jsonMap.ToString(Formatting.None)); // TODO switch to database methods when they are available.
+
+            // Debug purposes, move to load later.
+
+            string readText = File.ReadAllText("C:/Users/Mateusz/Desktop/test.txt");
+            jsonMap = JObject.Parse(readText);
+
+            string name = "";
+            int width = 0;
+            int height = 0;
+            int availableMoney = 0;
+
+            SerializationHelper.JsonGetBasicData(jsonMap, ref name, ref width, ref height, ref availableMoney);
+
+            int[,] tileGrid = new int[width, height];
+            bool[,] placeableGrid = new bool[width, height];
+
+            Dictionary<int, string> indexer = new Dictionary<int, string>();
+
+            SerializationHelper.JsonGetTileGridAndDictionary(jsonMap, indexer,tileGrid, placeableGrid);
+
+            GameObject[] availableTiles = null;
+
+            SerializationHelper.JsonGetAvailableTiles(jsonMap, availableTiles);
+
+            Placement[] placedObjects = null;
+
+            SerializationHelper.JsonGetPlacedObjects(jsonMap, placedObjects);
+
+            Map deserializedMap = new Map(123, 123, name, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+
+            return true;
         }
 
         private void CreateContainerGrid()

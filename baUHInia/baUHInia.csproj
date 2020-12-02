@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>res\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -273,7 +273,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\terrain\roads\double\double.json" />
-    <Resource Include="icon.ico" />
     <Resource Include="res\icon.ico" />
     <Resource Include="res\icon.png" />
   </ItemGroup>
@@ -300,6 +299,24 @@
     <Page Include="Playground\View\AdminGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\statistics.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\newmap.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\logout.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\game.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\observe.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\loadmap.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

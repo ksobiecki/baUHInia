@@ -9,7 +9,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
     //TODO: NOT TESTED !!!
     public class UserSelectorGridCreator : VerticalSelectorGridCreator
     {
-        public UserSelectorGridCreator(ITileBinder binder) : base(binder) { }
+        public UserSelectorGridCreator(ITileBinder binder, List<TileCategory> categories) : base(binder, categories) { }
 
         public override void CreateSelectionPanel(TileCategory tileCategory, ITileBinder tileBinder)
         {

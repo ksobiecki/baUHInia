@@ -24,8 +24,8 @@ namespace baUHInia.Playground.Model
         
         LoginData Credentials { get; }
         
-        int AvailableFounds { get; }
+        int AvailableFounds { get; set; }
 
-        void ChangeMode(string text, Brush color);
+        void ChangeInteractionMode(string text, Brush color);
     }
 }

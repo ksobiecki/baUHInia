@@ -11,6 +11,8 @@ namespace baUHInia.Admin
         List<GameObject> GetModifiedAvailableObjects();
 
         Button GetReturnButton();
+
+        Button GetApplyButton();
         int GetBudget();
     }
 }

@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>res\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -55,7 +55,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WindowsFormsIntegration.dll"/>
+    <Reference Include="WindowsFormsIntegration.dll" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
@@ -166,6 +166,7 @@
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />
     <Compile Include="Playground\Model\Resources\ResourceHolder.cs" />
+    <Compile Include="Playground\Model\Resources\ResourceType.cs" />
     <Compile Include="Playground\Model\Selectors\DeleteOperator.cs" />
     <Compile Include="Playground\Model\Selectors\IOperator.cs" />
     <Compile Include="Playground\Model\Selectors\BlockOperator.cs" />
@@ -232,6 +233,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\1_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\2_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\3_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\4_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\5_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\6_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\summer_oak.json" />
     <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
     <Resource Include="resources\terrain\roads\bottom\bottom.json" />
     <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
@@ -268,15 +276,7 @@
     <Resource Include="resources\terrain\Test\Tester\oak.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\terrain\Test\TestTree\1_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\2_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\3_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\4_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\5_test_tree.png" />
-    <Resource Include="resources\terrain\Test\TestTree\6_test_tree.png" />
     <Resource Include="resources\terrain\roads\double\double.json" />
-    <Resource Include="resources\terrain\Test\TestTree\TestTree.json" />
-    <Resource Include="icon.ico" />
     <Resource Include="res\icon.ico" />
     <Resource Include="res\icon.png" />
   </ItemGroup>
@@ -303,6 +303,24 @@
     <Page Include="Playground\View\AdminGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\statistics.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\newmap.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\logout.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\game.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\observe.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\loadmap.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

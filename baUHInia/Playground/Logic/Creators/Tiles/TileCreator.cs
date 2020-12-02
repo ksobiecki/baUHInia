@@ -23,11 +23,11 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         //============================ COMPLEX TILE CREATION ============================//
 
-        public Tile CreateBehavioralTileInGameGrid(int xPos, int yPos, BitmapImage image)
+        public Tile CreateBehavioralTileInGameGrid(int xPos, int yPos, TileObject tileObject)
         {
             //TODO: Change
-            TileObject to = ResourceHolder.Get.Terrain.First(c => c.Name == "terrain")["Plain Grass"];
-            Button button = CreateButton(to.Name, to["grass.png"]);//image);//
+            // TileObject to = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
+            Button button = CreateButton(tileObject.Name, tileObject[0]/*to["grass.png"]*/);
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
             button.VerticalAlignment = VerticalAlignment.Stretch;
             ApplyBehaviourToTile(button);

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Media;
 using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
@@ -13,74 +14,78 @@ using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
+using Application = System.Windows.Application;
+using Button = System.Windows.Controls.Button;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
 namespace baUHInia.Playground.View
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class AdminGameWindow : ITileBinder
     {
         private const byte BoardDensity = 50;
 
-        //private GameGridCreator _gameGridCreator;
-        //private SelectorGridCreator _selectorGridCreator;
-
-        private IGameGridCreator _gameGridCreator;
         private ISelectorGridCreator _selectorGridCreator;
-
+        private IGameGridCreator _gameGridCreator;
+        private IAdminSelectorTabCreator _admin;
         private IGameMapManager _manager;
 
-        private IAdminSelectorTabCreator _admin;
-        //private IAdminSelectorTabCreator _adminCreator;
+        //private UIElement _storedGui;
+        private Grid MenuGrid { get; set; }
+        private Grid AdminGrid { get; set; }
+        private Grid SaveMapGrid { get; set; }
+        private Grid LoadMapGrid { get; set; }
 
-        private UIElement _storedElement;
+        private Grid GameMapGrid { get; set; }
+        //private Grid CurrentGrid { get; set; }
 
         public AdminGameWindow(LoginData credentials)
         {
             InitializeComponent();
-            //InitializeSelection();
-            //CreateGameBoard();
-            //CreateSelectorGrid();
-            //FillCardsAndComboBoxWithCategories();
-            _manager = new GameMapManager();
-            InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
+            StoreMenuGrid();
+            AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
-
-            Credentials = credentials;
-
-            AvailableObjects = new List<GameObject>();
-            _admin = new AdminRestrictionsWindow(this);
-
-            // Debug.
-            _manager = new GameMapManager();
-            SaveButton.Click += (o, arg) => _manager.SaveMap(this);
+            InitializeProperties(credentials);
+            //SaveButton.Click += (o, arg) => _manager.SaveMap(this);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
 
         public Selection Selection { get; private set; }
-
-        //TODO: rest
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; private set; }
         public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
-        public LoginData Credentials { get; }
-        public int AvailableFounds { get; }
-
-        public void ChangeMode(string text, System.Windows.Media.Brush color)
-        {
-            ModeText.Text = text;
-            ModeText.Foreground = color;
-        }
+        public LoginData Credentials { get; private set; }
+        public int AvailableFounds { get; set; }
 
         //============================ PREDEFINED ACTIONS ============================//
 
-        private void InitializeSelection() => Selection = new Selection(
-            ResourceHolder.Get.Terrain.First(c => c.Name == "terrain").TileObjects.First(o => o.Name == "Plain Dirt"),
-            this);
+        public void ChangeInteractionMode(string text, Brush color)
+        {
+            string[] strings = text.Split('/');
+            if (strings.Length < 4) return;
+
+            (ModeText.Text, FirstTip.Text, SecondTip.Text, ThirdTip.Text) =
+                (strings[0], strings[1], strings[2], strings[3]);
+
+            (ModeText.Foreground, FirstTip.Foreground, SecondTip.Foreground, ThirdTip.Foreground) =
+                (color, color, color, color);
+        }
+
+        private void StoreMenuGrid() => MenuGrid = GameScroll.Content as Grid;
+
+        private void BackToGame()
+        {
+            SideGrid.Visibility = Visibility.Visible;
+            GameScroll.Content = GameMapGrid;
+        }
+
+        private void InitializeSelection()
+        {
+            TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Dirt");
+            Selection = new Selection(tileObject, this);
+        }
 
         private void AdjustWindowSizeAndPosition()
         {
@@ -88,102 +93,185 @@ namespace baUHInia.Playground.View
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
 
-        private void CreateNewMap(Object sender, RoutedEventArgs e)
+        private void InitializeInteractionChangers()
         {
-            InitializeSelection();
-            CreateGameBoard();
-            CreateSelectorGrid();
-            FillCardsAndComboBoxWithCategories();
-            PlacedObjects = new List<Placement>();
             DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
             PlaceableButton.Click += (o, args) => Selection.ChangeState(State.Block);
-            /*foreach (Tile tile in TileGrid)
-            {
-                Button button = tile.GetUIElement() as Button;
-                button.Width = button.ActualHeight;
-            }*/
+        }
+
+        private void InitializeSwitches()
+        {
+            TerrainSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Terrain);
+            StructureSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Structure);
+            FoliageSwitch.Click += (o, args) => UpdateSelectorComboBox(ResourceType.Foliage);
+        }
+
+        private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
+        {
+            TileCategory category = !(CategorySelector.SelectedItem is string item)
+                ? ResourceHolder.Get.GetFirstTileCategory()
+                : ResourceHolder.Get.GetCategoryByName(item);
+            _selectorGridCreator.CreateSelectionPanel(category, this);
         }
 
         private void CreateGameBoard()
         {
+            NewGameTitle.Text = "POWRÓT DO PLANSZY";
+            NewGameButton.Content = "POWRÓĆ";
             SideGrid.Visibility = Visibility.Visible;
             TileGrid = new Tile[BoardDensity, BoardDensity];
-            _gameGridCreator = new TileGridCreator(this, BoardDensity);
+            TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
+            _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
+            GameMapGrid = GameScroll.Content as Grid;
+            //CurrentGrid = GameMapGrid;
         }
 
-        private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
-
-        private void FillCardsAndComboBoxWithCategories() =>
-            CategorySelector.ItemsSource =
-                ResourceHolder.Get.Terrain.Select(c => char.ToUpper(c.Name[0]) + c.Name.Substring(1));
-
-        private void UpdateSelectionWindow()
+        private void CreateSelectorGrid()
         {
-            //TODO: implement
+            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
+            _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
         }
 
-        private void UpdateComboBox()
+        //============================== INITIAL WINDOW ==============================//
+
+        private void AddLoadCardAndInitializeManager()
         {
-            //TODO: implement
+            _manager = new GameMapManager();
+            //TODO:
+            //InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
         }
 
-        private void LoadMap()
+        private void InitializeProperties(LoginData credentials)
         {
-            //TODO: implement
+            Credentials = credentials;
+            PlacedObjects = new List<Placement>();
+            AvailableObjects = new List<GameObject>();
+            _admin = new AdminRestrictionsWindow(this);
         }
 
-        private void SaveMap()
+        //=============================== FUNCTIONALITY ==============================//
+
+        private void CreateNewMap(object sender, RoutedEventArgs e)
         {
-            //TODO: implement
+            if (GameMapGrid != null)
+            {
+                BackToGame();
+                return;
+            }
+
+            InitializeSelection();
+            CreateGameBoard();
+            CreateSelectorGrid();
+            InitializeSwitches();
+            InitializeInteractionChangers();
+            UpdateSelectorComboBox(ResourceType.Terrain);
+        }
+
+        private void UpdateSelectorComboBox(ResourceType type)
+        {
+            ResourceHolder.Get.ChangeResourceType(type);
+            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
+            TileCategory category = ResourceHolder.Get.GetFirstTileCategory();
+
+            CategorySelector.ItemsSource = ResourceHolder.Get.GetCategoryName();
+            CategorySelector.SelectedIndex = 0;
+            _selectorGridCreator.UpdateTileGroup(categories);
+            _selectorGridCreator.CreateSelectionPanel(category, this);
+        }
+
+        private void CreateLoadWindow(object source, RoutedEventArgs args)
+        {
+            if (LoadMapGrid == null)
+            {
+                LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
+                Border border = LoadMapGrid.Children[0] as Border;
+                Grid innerGrid = border.Child as Grid;
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
+                {
+                    GameScroll.Content = GameMapGrid ?? MenuGrid;
+                    SideGrid.Visibility = GameMapGrid == null ? Visibility.Collapsed : Visibility.Visible;
+                };
+            }
+
+            SideGrid.Visibility = Visibility.Collapsed;
+            GameScroll.Content = LoadMapGrid;
+        }
+
+        private void CreateSaveWindow(object source, RoutedEventArgs args)
+        {
+            if (SaveMapGrid == null)
+            {
+                SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
+                Border border = SaveMapGrid.Children[0] as Border;
+                Grid innerGrid = border.Child as Grid;
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = AdminGrid; };
+            }
+
+            SideGrid.Visibility = Visibility.Collapsed;
+            GameScroll.Content = SaveMapGrid;
+        }
+
+        private void LoadMap(object sender, RoutedEventArgs args)
+        {
+            //_manager.LoadMap()
+        }
+
+        private void SaveMap(object sender, RoutedEventArgs args)
+        {
+            _manager.SaveMap(this);
+        }
+
+        private void NewMap(object source, RoutedEventArgs args)
+        {
+            CreateGameBoard();
+            Selection.Reset();
+            PlacedObjects.Clear();
         }
 
         private void OpenSelectorTab(object source, RoutedEventArgs args)
         {
-            if (_storedElement == null)
+            //TODO change to make compatible with load/save windows
+            SideGrid.Visibility = Visibility.Collapsed;
+            if (AdminGrid == null)
             {
                 _admin.GetReturnButton().Click += (sender, eventArgs) =>
                 {
                     AvailableObjects = _admin.GetModifiedAvailableObjects();
-                    SwapBoardAndAdminPanel();
+                    AvailableFounds = _admin.GetBudget();
+                    GameScroll.Content = GameMapGrid;
+                    SideGrid.Visibility = Visibility.Visible;
                 };
-                _storedElement = GameScroll.Content as UIElement;
-                Grid grid = _admin.GetAdminSelectorTableGrid();
-                grid.VerticalAlignment = VerticalAlignment.Center;
-                grid.HorizontalAlignment = HorizontalAlignment.Center;
-                GameScroll.Content = grid;
-                _storedElement.Visibility = Visibility.Hidden;
+                _admin.GetApplyButton().Click += (sender, eventArgs) => { CreateSaveWindow(null, null); };
+                AdminGrid = _admin.GetAdminSelectorTableGrid();
+                AdminGrid.VerticalAlignment = VerticalAlignment.Center;
+                AdminGrid.HorizontalAlignment = HorizontalAlignment.Center;
+                GameScroll.Content = AdminGrid;
             }
-            else SwapBoardAndAdminPanel();
+            else GameScroll.Content = AdminGrid;
         }
 
-        private void SwapBoardAndAdminPanel()
+        private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
-            UIElement temp = _storedElement;
-            _storedElement = GameScroll.Content as UIElement;
-            _storedElement.Visibility = Visibility.Visible;
-            GameScroll.Content = temp;
-            temp.Visibility = Visibility.Visible;
+            UserGameWindow userWindow = new UserGameWindow {Owner = this};
+            Hide(); // not required if using the child events below
+            userWindow.ShowDialog();
         }
 
-        private void TestMap()
+        private void ReturnToMenu(object sender, RoutedEventArgs args)
         {
-            //TODO: implement
+            SideGrid.Visibility = Visibility.Collapsed;
+            GameScroll.Content = MenuGrid;
         }
 
-        private void ReturnToLoginWindow()
+        private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            //TODO: implement
-        }
-
-        //============================ ELEMENTS BEHAVIOUR =============================//
-
-        private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            string item = comboBox.SelectedItem as string;
-            _selectorGridCreator.CreateSelectionPanel(ResourceHolder.Get.Terrain.First(c => c.Name == item.ToLower()),
-                this);
+            //TODO: change after Authorisation module is finished
+            Close();
+            DEBUG.DEBUG debug = new DEBUG.DEBUG();
+            debug.Show();
         }
     }
 }

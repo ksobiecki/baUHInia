@@ -15,14 +15,15 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         private readonly Grid _selectorGrid;
 
-        protected VerticalSelectorGridCreator(ITileBinder binder)
+        protected VerticalSelectorGridCreator(ITileBinder binder, List<TileCategory> categories)
         {
-            _selectorCreator = new SelectorCreator(binder.Selection);
+            _selectorCreator = new SelectorCreator(binder.Selection, categories);
             _selectorGrid = binder.SelectorGrid;
             _selectorGrid.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
         public abstract void CreateSelectionPanel(TileCategory tileCategory, ITileBinder tileBinder);
+        public void UpdateTileGroup(List<TileCategory> categories) => _selectorCreator.UpdateTileGroup(categories);
 
         protected void CreateGroups(IEnumerable<string> groups, List<TileObject> tileObjects, ref int rowIndex)
         {

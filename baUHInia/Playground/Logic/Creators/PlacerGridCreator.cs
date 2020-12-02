@@ -8,18 +8,20 @@ using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Creators
 {
-    public class TileGridCreator : IGameGridCreator
+    public class PlacerGridCreator : IGameGridCreator
     {
         private static readonly (int x, int y) BoardResolution = (2000, 2000);
         private readonly int _boardDensity;
 
         private readonly TileCreator _tileCreator;
+        private readonly TileObject _tileObject;
 
 
-        public TileGridCreator(ITileBinder binder, int boardDensity)
+        public PlacerGridCreator(ITileBinder binder, int boardDensity, TileObject tileObject)
         {
             _tileCreator = new TileCreator(binder.Selection, binder.TileGrid);
             _boardDensity = boardDensity;
+            _tileObject = tileObject;
         }
 
         //============================= IMPLEMENTATIONS ================================//
@@ -62,7 +64,7 @@ namespace baUHInia.Playground.Logic.Creators
             {
                 for (int j = 0; j < _boardDensity; j++)
                 {
-                    tileFields[i, j] = _tileCreator.CreateBehavioralTileInGameGrid(j, i, null);
+                    tileFields[i, j] = _tileCreator.CreateBehavioralTileInGameGrid(j, i, _tileObject);
                 }
             }
         }

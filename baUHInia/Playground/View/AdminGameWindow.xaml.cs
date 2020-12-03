@@ -20,7 +20,7 @@ namespace baUHInia.Playground.View
 {
     public partial class AdminGameWindow : ITileBinder
     {
-        private const byte BoardDensity = 50;
+        private const byte BoardDensity = 100;
 
         private ISelectorGridCreator _selectorGridCreator;
         private IGameGridCreator _gameGridCreator;

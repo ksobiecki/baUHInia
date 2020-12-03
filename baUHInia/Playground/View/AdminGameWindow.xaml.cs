@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Media;
 using baUHInia.Admin;
 using baUHInia.Authorisation;
@@ -244,7 +242,12 @@ namespace baUHInia.Playground.View
                     GameScroll.Content = GameMapGrid;
                     SideGrid.Visibility = Visibility.Visible;
                 };
-                _admin.GetApplyButton().Click += (sender, eventArgs) => { CreateSaveWindow(null, null); };
+                _admin.GetApplyButton().Click += (sender, eventArgs) =>
+                {
+                    AvailableObjects = _admin.GetModifiedAvailableObjects();
+                    AvailableFounds = _admin.GetBudget();
+                    CreateSaveWindow(null, null);
+                };
                 AdminGrid = _admin.GetAdminSelectorTableGrid();
                 AdminGrid.VerticalAlignment = VerticalAlignment.Center;
                 AdminGrid.HorizontalAlignment = HorizontalAlignment.Center;

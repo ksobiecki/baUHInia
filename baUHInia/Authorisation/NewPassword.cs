@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace baUHInia.Authorisation
 {
-    public partial class AddQuestion : Form
+    public partial class NewPassword : Form
     {
-        public AddQuestion()
+        public NewPassword()
         {
             InitializeComponent();
-            sendQuestionBttn.DialogResult = DialogResult.OK;
+            changePasswdBttn.DialogResult = DialogResult.OK;
         }
 
     }

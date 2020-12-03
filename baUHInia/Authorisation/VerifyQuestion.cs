@@ -10,11 +10,15 @@ using System.Windows.Forms;
 
 namespace baUHInia.Authorisation
 {
-    public partial class CheckQuestion : Form
+    public partial class VerifyQuestion : Form
     {
-        public CheckQuestion()
+
+        public VerifyQuestion()
         {
             InitializeComponent();
+            verifyQuestionBttn.DialogResult = DialogResult.OK;
         }
+
+
     }
 }

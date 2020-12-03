@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using baUHInia.Admin;
@@ -19,6 +20,7 @@ namespace baUHInia
             }
             catch (System.Exception ex)
             {
+                Console.WriteLine(ex);
                 Debug.WriteLine(ex);
             }
         }

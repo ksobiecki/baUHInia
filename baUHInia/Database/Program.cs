@@ -43,7 +43,7 @@ namespace baUHInia.Database
             return 0;
         }
 
-    public int DodajUzytkownika(String nazwa, String haslo, bool is_admim,String pytanie, String odpowiedz)
+    public int DodajUzytkownika(String nazwa, String haslo, bool is_admim, String pytanie, String odpowiedz)
         {
             int code =0;
             try
@@ -184,7 +184,7 @@ namespace baUHInia.Database
             return 0;
         }
 
-        public int CheckUser(String nazwa, String haslo, bool is_admin)
+        public int CheckUser(String nazwa, String haslo)
         {
             int code = 0;
             try
@@ -197,7 +197,7 @@ namespace baUHInia.Database
                 {
                     if (reader.GetString(0) == nazwa && reader.GetString(1) == haslo)
                     {
-                        if(reader.GetBoolean(2) == is_admin)
+                        if(reader.GetBoolean(2) == true)
                         {
                             Rozlacz();
                             return 32; //uzytkownik podal poprawne dane, uzytkownik jest administratorem

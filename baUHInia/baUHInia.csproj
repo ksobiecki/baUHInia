@@ -123,6 +123,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Authorisation\AddQuestion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authorisation\AddQuestion.Designer.cs">
+      <DependentUpon>AddQuestion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Authorisation\Authorisation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,18 @@
       <DependentUpon>Authorisation.cs</DependentUpon>
     </Compile>
     <Compile Include="Authorisation\LoginData.cs" />
+    <Compile Include="Authorisation\NewPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authorisation\NewPassword.Designer.cs">
+      <DependentUpon>NewPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Authorisation\VerifyQuestion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authorisation\VerifyQuestion.Designer.cs">
+      <DependentUpon>VerifyQuestion.cs</DependentUpon>
+    </Compile>
     <Compile Include="DEBUG\DEBUG.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,8 +227,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Authorisation\AddQuestion.resx">
+      <DependentUpon>AddQuestion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Authorisation\Authorisation.resx">
       <DependentUpon>Authorisation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Authorisation\NewPassword.resx">
+      <DependentUpon>NewPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Authorisation\VerifyQuestion.resx">
+      <DependentUpon>VerifyQuestion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DEBUG\DEBUG.resx">
       <DependentUpon>DEBUG.cs</DependentUpon>

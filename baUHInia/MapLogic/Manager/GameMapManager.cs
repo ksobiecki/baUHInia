@@ -123,7 +123,7 @@ namespace baUHInia.MapLogic.Manager
 
         public Map LoadMap(string name)
         {
-            string readText = File.ReadAllText("C:/test.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
+            string readText = File.ReadAllText("C:/test_map.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
             // TODO get credentials from database.
 
             JObject jsonMap = JObject.Parse(readText);
@@ -156,7 +156,7 @@ namespace baUHInia.MapLogic.Manager
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            File.WriteAllText("C:/test.txt", jsonGame.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
+            File.WriteAllText("C:/test_game.txt", jsonGame.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
             Console.WriteLine(jsonGame.ToString(Formatting.None));
 
             return true;
@@ -171,7 +171,7 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
             SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
-            File.WriteAllText("C:/Users/dotan/Desktop/test.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
+            File.WriteAllText("C:/Users/dotan/Desktop/test_map.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
             Console.WriteLine(jsonMap.ToString(Formatting.None));
 
             return true;

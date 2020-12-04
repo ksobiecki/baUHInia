@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 using baUHInia.Playground.Model.Wrappers;
 using System.IO;
 using baUHInia.MapLogic.Helper;
+using System.Text;
 
 namespace baUHInia.MapLogic.Manager
 {
@@ -115,7 +116,7 @@ namespace baUHInia.MapLogic.Manager
 
         public Map LoadMap(string name)
         {
-            string readText = File.ReadAllText("C:/Users/dotan/Desktop/test.txt"); // TODO switch to database methods when they are available.
+            string readText = File.ReadAllText("C:/Users/dotan/Desktop/test.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
             // TODO get credentials from database.
 
             JObject jsonMap = JObject.Parse(readText);
@@ -157,8 +158,8 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
             SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
-            File.WriteAllText("C:/Users/dotan/Desktop/test.txt", jsonMap.ToString(Formatting.None)); // TODO switch to database methods when they are available.
-            // TODO fix a but where asian hackers corrupt your json string.
+            File.WriteAllText("C:/Users/dotan/Desktop/test.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
+            Console.WriteLine(jsonMap.ToString(Formatting.None));
 
             return true;
         }

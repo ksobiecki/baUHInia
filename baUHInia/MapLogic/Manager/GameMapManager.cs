@@ -111,12 +111,19 @@ namespace baUHInia.MapLogic.Manager
 
         public Game LoadGame(string name)
         {
-            throw new NotImplementedException();
+            string readText = File.ReadAllText("C:/test_game.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
+
+            JObject jsonGame = JObject.Parse(readText);
+            Placement[] placedObjects = null;
+
+            SerializationHelper.JsonGetPlacedObjects(jsonGame, placedObjects);
+
+            return new Game(123, 123, 123, name, placedObjects, null);
         }
 
         public Map LoadMap(string name)
         {
-            string readText = File.ReadAllText("C:/Users/dotan/Desktop/test.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
+            string readText = File.ReadAllText("C:/test.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
             // TODO get credentials from database.
 
             JObject jsonMap = JObject.Parse(readText);
@@ -146,7 +153,13 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveGame(ITileBinder tileBinder)
         {
-            throw new NotImplementedException();
+            JObject jsonGame = new JObject();
+            SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
+
+            File.WriteAllText("C:/test.txt", jsonGame.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
+            Console.WriteLine(jsonGame.ToString(Formatting.None));
+
+            return true;
         }
 
         public bool SaveMap(ITileBinder tileBinder)

@@ -1,4 +1,5 @@
 ﻿using baUHInia.Playground.Model;
+using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
 using Newtonsoft.Json.Linq;
@@ -15,8 +16,7 @@ namespace baUHInia.MapLogic.Helper
         {
             // TODO how do I get all the IDs?;
             jsonMap["Name"] = "Placeholder name";
-            jsonMap["Width"] = tileBinder.TileGrid.GetLength(0);
-            jsonMap["Height"] = tileBinder.TileGrid.GetLength(1);
+            jsonMap["Size"] = tileBinder.TileGrid.GetLength(0);
             jsonMap["AvailableMoney"] = tileBinder.AvailableFounds;
         }
 
@@ -38,7 +38,7 @@ namespace baUHInia.MapLogic.Helper
 
                         JArray jsonTile = new JArray();
                         jsonTile.Add(key);
-                        jsonTile.Add(tileGrid[i, j].Placeable);
+                        jsonTile.Add(tileGrid[i, j].Placeable ? 1 : 0);
                         jsonTileGrid.Add(jsonTile);
                         jsonIntTileGrid.Add(key);
                         key++;
@@ -48,7 +48,7 @@ namespace baUHInia.MapLogic.Helper
                         jsonIntTileGrid.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
                         JArray jsonTile = new JArray();
                         jsonTile.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
-                        jsonTile.Add(tileGrid[i, j].Placeable);
+                        jsonTile.Add(tileGrid[i, j].Placeable ? 1 : 0);
                         jsonTileGrid.Add(jsonTile);
                     }
                 }
@@ -122,15 +122,14 @@ namespace baUHInia.MapLogic.Helper
                 jsonAvailableObjects.Add(jsonTile);
             }
 
-            jsonMap["AvailableObjects"] = jsonAvailableObjects;
+            jsonMap["AvailableTiles"] = jsonAvailableObjects;
         }
 
         // Deserialization
-        public static void JsonGetBasicData(JObject jsonMap, ref string name, ref int width, ref int height, ref int availableMoney)
+        public static void JsonGetBasicData(JObject jsonMap, ref string name, ref int size, ref int availableMoney)
         {
             name = (string)jsonMap["Name"];
-            width = (int)jsonMap["Width"];
-            height = (int)jsonMap["Height"];
+            size = (int)jsonMap["Size"];
             availableMoney = (int)jsonMap["AvailableMoney"];
         }
 
@@ -145,7 +144,7 @@ namespace baUHInia.MapLogic.Helper
             foreach (JArray jsonTile in jsonTileGrid)
             {
                 tileGrid[index / width, index % width] = (int)jsonTile[0];
-                placeableGrid[index / width, index % width] = (bool)jsonTile[1];
+                placeableGrid[index / width, index % width] = ((int)jsonTile[1] == 1);
                 index++;
             }
 
@@ -164,7 +163,10 @@ namespace baUHInia.MapLogic.Helper
 
             foreach (JObject jsonTile in jsonAvailableTiles)
             {
-                // TODO create a GameObject and append it to the array.
+                string name = (string)jsonTile["Name"];
+                int price = (int)jsonTile["Price"];
+                float change = (float)jsonTile["ChangeValue"];
+                availableTiles[index] = new GameObject(ResourceHolder.Get.GetPlaceableTileObject(name), change, price);
                 index++;
             }
         }
@@ -178,7 +180,11 @@ namespace baUHInia.MapLogic.Helper
 
             foreach (JObject jsonPlacement in jsonPlacedObjects)
             {
-                // TODO create a Placement and append it to the array.
+                string name = (string)jsonPlacement["Name"];
+                int x = (int)jsonPlacement["X"];
+                int y = (int)jsonPlacement["Y"];
+                GameObject gameObject = new GameObject(ResourceHolder.Get.GetPlaceableTileObject(name), 0, 0);
+                placedObjects[index] = new Placement(gameObject, (x, y));
                 index++;
             }
         }

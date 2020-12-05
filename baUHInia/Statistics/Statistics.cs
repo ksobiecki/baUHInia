@@ -30,6 +30,9 @@ namespace baUHInia.Statistics
             users.Add("All Users");
             users.Add("user1");
             users.Add("user2");
+            users.Add("user3");
+            users.Add("user4");
+            users.Add("user5");
             foreach (string item in users)
             {
                 userSelectBox.Items.Add(item);
@@ -39,6 +42,9 @@ namespace baUHInia.Statistics
             maps.Add("All Maps");
             maps.Add("map1");
             maps.Add("map2");
+            maps.Add("map3");
+            maps.Add("map4");
+            maps.Add("map5");
             foreach (string item in maps)
             {
                 mapSelectBox.Items.Add(item);
@@ -47,6 +53,26 @@ namespace baUHInia.Statistics
 
             scores.Add(new UserScore("map1", "user1", "300"));
             scores.Add(new UserScore("map2", "user1", "420"));
+            scores.Add(new UserScore("map3", "user1", "200"));
+            scores.Add(new UserScore("map4", "user1", "350"));
+            scores.Add(new UserScore("map5", "user1", "250"));
+
+            scores.Add(new UserScore("map2", "user2", "360"));
+            scores.Add(new UserScore("map4", "user2", "420"));
+            scores.Add(new UserScore("map5", "user2", "300"));
+
+            scores.Add(new UserScore("map2", "user3", "340"));
+            scores.Add(new UserScore("map4", "user3", "405"));
+            scores.Add(new UserScore("map5", "user3", "335"));
+
+            scores.Add(new UserScore("map3", "user4", "280"));
+            scores.Add(new UserScore("map4", "user4", "310"));
+
+            scores.Add(new UserScore("map1", "user5", "460"));
+            scores.Add(new UserScore("map2", "user5", "440"));
+            scores.Add(new UserScore("map3", "user5", "420"));
+            scores.Add(new UserScore("map4", "user5", "360"));
+            scores.Add(new UserScore("map5", "user5", "360"));
 
             mapSelectBox.SelectedIndex = mapSelectBox.Items.IndexOf("All Maps");
             userSelectBox.SelectedIndex = userSelectBox.Items.IndexOf("All Users");

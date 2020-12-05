@@ -30,11 +30,11 @@ namespace baUHInia.Statistics
         private void InitializeComponent()
         {
             this.statsView = new System.Windows.Forms.DataGridView();
+            this.mapSelectBox = new System.Windows.Forms.ComboBox();
+            this.userSelectBox = new System.Windows.Forms.ComboBox();
             this.MapColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UserColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ScoreColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mapSelectBox = new System.Windows.Forms.ComboBox();
-            this.userSelectBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.statsView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,30 +55,6 @@ namespace baUHInia.Statistics
             this.statsView.RowTemplate.Height = 24;
             this.statsView.Size = new System.Drawing.Size(700, 232);
             this.statsView.TabIndex = 0;
-            // 
-            // MapColumn
-            // 
-            this.MapColumn.HeaderText = "Map Name";
-            this.MapColumn.MinimumWidth = 100;
-            this.MapColumn.Name = "MapColumn";
-            this.MapColumn.ReadOnly = true;
-            this.MapColumn.Width = 227;
-            // 
-            // UserColumn
-            // 
-            this.UserColumn.HeaderText = "Username";
-            this.UserColumn.MinimumWidth = 100;
-            this.UserColumn.Name = "UserColumn";
-            this.UserColumn.ReadOnly = true;
-            this.UserColumn.Width = 220;
-            // 
-            // ScoreColumn
-            // 
-            this.ScoreColumn.HeaderText = "Score";
-            this.ScoreColumn.MinimumWidth = 100;
-            this.ScoreColumn.Name = "ScoreColumn";
-            this.ScoreColumn.ReadOnly = true;
-            this.ScoreColumn.Width = 200;
             // 
             // mapSelectBox
             // 
@@ -101,6 +77,30 @@ namespace baUHInia.Statistics
             this.userSelectBox.Size = new System.Drawing.Size(300, 24);
             this.userSelectBox.TabIndex = 2;
             this.userSelectBox.SelectedIndexChanged += new System.EventHandler(this.userSelectBox_SelectedIndexChanged);
+            // 
+            // MapColumn
+            // 
+            this.MapColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.MapColumn.HeaderText = "Map Name";
+            this.MapColumn.MinimumWidth = 100;
+            this.MapColumn.Name = "MapColumn";
+            this.MapColumn.ReadOnly = true;
+            // 
+            // UserColumn
+            // 
+            this.UserColumn.HeaderText = "Username";
+            this.UserColumn.MinimumWidth = 100;
+            this.UserColumn.Name = "UserColumn";
+            this.UserColumn.ReadOnly = true;
+            this.UserColumn.Width = 220;
+            // 
+            // ScoreColumn
+            // 
+            this.ScoreColumn.HeaderText = "Score";
+            this.ScoreColumn.MinimumWidth = 100;
+            this.ScoreColumn.Name = "ScoreColumn";
+            this.ScoreColumn.ReadOnly = true;
+            this.ScoreColumn.Width = 200;
             // 
             // Statistics
             // 

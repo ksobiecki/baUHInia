@@ -3,6 +3,7 @@ using baUHInia.Playground.View;
 using System;
 using System.Windows.Forms.Integration;
 using System.Windows.Forms;
+using baUHInia.Database;
 
 namespace baUHInia.DEBUG
 {
@@ -29,5 +30,11 @@ namespace baUHInia.DEBUG
             app.Show();
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            BazaDanych bd = BazaDanych.GetBazaDanych();
+            bd.DodajUzytkownika("test12345aaa", "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", true, "a", "a");
+            bd.CheckUser("test12345aaa", "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+        }
     }
 }

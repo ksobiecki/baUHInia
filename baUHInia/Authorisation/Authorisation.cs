@@ -12,7 +12,7 @@ namespace baUHInia.Authorisation
 {
     public partial class Authorisation : Form
     {
-        BazaDanych bazaDanych = new BazaDanych();
+        BazaDanych bazaDanych = BazaDanych.GetBazaDanych();
         public Boolean isMapVisible = false;
         public String pytanie;
         public String odpowiedz;
@@ -164,7 +164,7 @@ namespace baUHInia.Authorisation
             }
             ShowAddQuestionDialog();
             int resultadding = bazaDanych.DodajUzytkownika(login, passwd, Admin, pytanie, odpowiedz);
-            if (resultadding == 0)
+            if (resultadding == 33)
             {
                 var result = MessageBox.Show("Pomyślnie utworzono konto.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Question);
                 if (result == DialogResult.OK)

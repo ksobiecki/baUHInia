@@ -76,7 +76,7 @@ namespace baUHInia.Database
                 return code + 51;//84 - nazwa uzytkownika zajeta; 51 - blad dodania uzytkownika; //52 - blad polaczenia
             }
             code = +Rozlacz();
-            return 33; //nazwa zajtea
+            return code; //0 = git
         }
 
         public Tuple<int, String> PobierzPytanie(String login)
@@ -222,8 +222,10 @@ namespace baUHInia.Database
                 while (reader.Read())
                 {
                     if (reader.GetString(0) == nazwa)
+                    {
                         Rozlacz();
-                    return 33; //nazwa uzytkownika zajeta
+                        return 33; //nazwa uzytkownika zajeta
+                    }
                 }
                 code = Rozlacz();
             }

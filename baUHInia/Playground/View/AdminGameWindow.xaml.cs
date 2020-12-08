@@ -196,7 +196,7 @@ namespace baUHInia.Playground.View
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = LoadMapGrid;
         }
-
+        
         private void CreateSaveWindow(object source, RoutedEventArgs args)
         {
             if (SaveMapGrid == null)
@@ -254,6 +254,12 @@ namespace baUHInia.Playground.View
                 GameScroll.Content = AdminGrid;
             }
             else GameScroll.Content = AdminGrid;
+        }
+
+        private void ShowStatistics(object sender, RoutedEventArgs args)
+        {
+            Statistics.Statistics statistics = new Statistics.Statistics(); 
+            statistics.Show();
         }
 
         private void ChangeGameMode(object sender, RoutedEventArgs args)

@@ -76,7 +76,7 @@ namespace baUHInia.Database
                 return code + 51;//84 - nazwa uzytkownika zajeta; 51 - blad dodania uzytkownika; //52 - blad polaczenia
             }
             code = +Rozlacz();
-            return 33; //nazwa zajtea
+            return code; //0 = git
         }
 
         public Tuple<int, String> PobierzPytanie(String login)
@@ -187,11 +187,7 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-<<<<<<< Updated upstream
-=======
-                    Console.WriteLine(reader.GetString(0));
-                    Console.WriteLine(reader.GetString(1));
->>>>>>> Stashed changes
+
                     if (reader.GetString(0) == nazwa && reader.GetString(1) == haslo)
                     {
                         if (reader.GetBoolean(2) == true)
@@ -227,16 +223,11 @@ namespace baUHInia.Database
                 while (reader.Read())
                 {
                     if (reader.GetString(0) == nazwa)
-<<<<<<< Updated upstream
-                        Rozlacz();
-                    return 33; //nazwa uzytkownika zajeta
-=======
                     {
                         Rozlacz();
                         return 33; //nazwa uzytkownika zajeta
                     }
 
->>>>>>> Stashed changes
                 }
                 code = Rozlacz();
             }

@@ -11,7 +11,7 @@ namespace baUHInia.Database
     class BazaDanych
     {
         private SqlConnection polaczenie = new SqlConnection("Server=tcp:bauhiniaserver.database.windows.net,1433;Initial Catalog=baUHInia;Persist Security Info=False;User ID=qutlet;Password=hdmi007X;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-        private SqlCommand komendaSQL= new SqlCommand();
+        private SqlCommand komendaSQL = new SqlCommand();
         private SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
         private static BazaDanych bazaDanych = new BazaDanych();
@@ -187,6 +187,7 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
+
                     if (reader.GetString(0) == nazwa && reader.GetString(1) == haslo)
                     {
                         if (reader.GetBoolean(2) == true)
@@ -226,6 +227,7 @@ namespace baUHInia.Database
                         Rozlacz();
                         return 33; //nazwa uzytkownika zajeta
                     }
+
                 }
                 code = Rozlacz();
             }

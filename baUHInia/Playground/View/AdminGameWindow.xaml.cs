@@ -125,16 +125,6 @@ namespace baUHInia.Playground.View
             //CurrentGrid = GameMapGrid;
         }
 
-<<<<<<< HEAD
-        public void OpenStatistics(Object sender, RoutedEventArgs e)
-        {
-            Statistics.Statistics statistics = new Statistics.Statistics();
-            statistics.Show();
-           
-        }
-
-        private void CreateSelectorGrid() => _selectorGridCreator = new AdminSelectorGridCreator(this);
-=======
         private void CreateSelectorGrid()
         {
             List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();

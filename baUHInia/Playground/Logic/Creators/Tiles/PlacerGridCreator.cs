@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using baUHInia.MapLogic.Model;
-using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
+using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
-namespace baUHInia.Playground.Logic.Creators
+namespace baUHInia.Playground.Logic.Creators.Tiles
 {
     public class PlacerGridCreator : IGameGridCreator
     {
@@ -42,9 +45,31 @@ namespace baUHInia.Playground.Logic.Creators
             InitializeElementsLayer(gameGrid, tileBinder.Selection, boardDensity);
         }
 
-        public void LoadMapIntoTheGameGrid(ITileBinder tileBinder, Map map)
+        public List<GameObject> LoadMapIntoTheGameGrid(ITileBinder tileBinder, Map map)
         {
-            throw new System.NotImplementedException();
+            
+            Grid gameGrid = new Grid {Width = BoardResolution.x, Height = BoardResolution.y};
+            tileBinder.GameViewer.Content = gameGrid;
+
+            _tileCreator.GameGrid = gameGrid;
+            for (int i = 0; i < _boardDensity; i++)
+            {
+                gameGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                gameGrid.RowDefinitions.Add(new RowDefinition());
+            }
+
+            tileBinder.AvailableFounds = map.AvailableMoney;
+            FillGameGridWithTiles(tileBinder, map);
+
+            tileBinder.Selection.ChangeState(State.Place);
+            Placement[] placers = map.PlacedObjects ??  new Placement[0];
+            foreach (Placement placement in placers)
+            {
+                tileBinder.Selection.UpdateChangedPlacerList(null, tileBinder.TileGrid, placement.Position);
+                Button btn = tileBinder.TileGrid[placement.Position.y, placement.Position.x].GetUiElement() as Button;
+                tileBinder.Selection.ApplyTiles(btn, false);
+            }
+            return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
 
         public void LoadGameIntoTheGameGrid(ITileBinder tileBinder, Game game)
@@ -53,9 +78,7 @@ namespace baUHInia.Playground.Logic.Creators
         }
 
         //============================= GAME GRID ================================//
-
-        //public void LoadGameGrid(Map map)
-
+        
         public void CreateGameGridInWindow(Tile[,] tileFields, ScrollViewer window) { }
 
         private void FillGameGridWithTiles(Tile[,] tileFields)
@@ -71,7 +94,18 @@ namespace baUHInia.Playground.Logic.Creators
 
         private void FillGameGridWithTiles(ITileBinder tileBinder, Map map)
         {
-            //TODO: implement            
+            for (int i = 0; i < _boardDensity; i++)
+            {
+                for (int j = 0; j < _boardDensity; j++)
+                {
+                    string imagePath = map.Indexer[map.TileGrid[i, j]];
+                    (TileObject to, BitmapImage bi) = ResourceHolder.Get.GetTerrainPair(imagePath);
+                    Tile tile = _tileCreator.CreateBehavioralTileInGameGrid(j, i, to);
+                    tile.SwapTexture(bi);
+                    tile.Placeable = map.PlacableGrid[i, j];
+                    tileBinder.TileGrid[i, j] = tile;
+                }
+            }
         }
 
         private void FillGameGridWithTiles(ITileBinder tileBinder, Game game)
@@ -99,6 +133,7 @@ namespace baUHInia.Playground.Logic.Creators
                     elementsLayers[i, j] = new List<Element> {new Element(image, null)};
                 }
             }
+
             selection.ElementsLayers = elementsLayers;
         }
     }

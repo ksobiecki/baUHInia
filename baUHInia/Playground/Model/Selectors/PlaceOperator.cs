@@ -65,13 +65,13 @@ namespace baUHInia.Playground.Model.Selectors
         }
 
         // ReSharper disable once CoVariantArrayConversion
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null)
         {
             Config config = _selection.TileObject.Config;
             bool isElement = config.IsElement;
             for (int i = 0; i < config.Offsets.Length; i++)
             {
-                (int x, int y) = _selection.GetCoords(hoveredTile, i);
+                (int x, int y) = pos ?? _selection.GetCoords(hoveredTile, i);
                 if (Selection.IsOutsideGrid(x, y, tileGrid)) continue;
                 if (isElement) UpdateChangedElementList(x, y, i);
                 else UpdateChangedTileList(tileGrid[y, x], i);

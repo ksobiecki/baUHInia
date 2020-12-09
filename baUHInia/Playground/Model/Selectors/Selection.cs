@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Controls;
 using System.Windows.Media;
-using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
-using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Model.Selectors
 {
@@ -72,8 +68,8 @@ namespace baUHInia.Playground.Model.Selectors
         public void RedoChanges() => CurrentOperator.RedoChanges();
 
 
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid) =>
-            CurrentOperator.UpdateChangedPlacerList(hoveredTile, tileGrid);
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null) =>
+            CurrentOperator.UpdateChangedPlacerList(hoveredTile, tileGrid, pos);
 
         public (int x, int y) GetCoords(Placer tileBeforeOffset, int offsetIndex)
         {

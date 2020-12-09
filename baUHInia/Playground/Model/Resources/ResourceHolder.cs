@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media.Imaging;
 using baUHInia.Playground.Logic.Loaders;
 using baUHInia.Playground.Model.Tiles;
 
@@ -67,6 +68,16 @@ namespace baUHInia.Playground.Model.Resources
         }
 
         public TileObject GetTerrainTileObject(string name) => FindInGroup(Terrain, name);
+
+        public (TileObject, BitmapImage) GetTerrainPair(string imagePath)
+        {
+            TileObject tileObject = (from category in Terrain
+                from tile in category.TileObjects
+                where tile.Sprite.Bitmaps.ContainsKey(imagePath)
+                select tile).FirstOrDefault();
+            BitmapImage bitmapImage = tileObject[imagePath];
+            return (tileObject, bitmapImage);
+        }
 
         public TileObject GetPlaceableTileObject(string name)
         {

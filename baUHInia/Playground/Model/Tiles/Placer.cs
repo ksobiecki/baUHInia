@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model.Utility;
 
@@ -28,7 +27,19 @@ namespace baUHInia.Playground.Model.Tiles
 
         public string GetName() => _currentTag;
 
-        public FrameworkElement GetUIElement() => FrameworkElement;
+        public string GetTextureName()
+        {
+            string path = CurrentTexture.ToString();
+            return path.Substring(path.LastIndexOf('/') + 1);
+        }
+
+        public void SwapTexture(BitmapImage bitmapImage)
+        {
+            CurrentTexture = bitmapImage;
+            ApplyTexture();
+        }
+
+        public FrameworkElement GetUiElement() => FrameworkElement;
 
         protected abstract void ApplyTexture();
 

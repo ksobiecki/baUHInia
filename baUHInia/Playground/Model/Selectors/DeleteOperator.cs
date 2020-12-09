@@ -27,7 +27,7 @@ namespace baUHInia.Playground.Model.Selectors
                 (int x, int y) = changedPlacer.GetCoords();
                 List<Element> placers = _selection.ElementsLayers[y, x];
                 placers.Remove(changedPlacer);
-                grid.Children.Remove(changedPlacer.GetUIElement());
+                grid.Children.Remove(changedPlacer.GetUiElement());
             }
 
             if (changedPlacer == null) return;
@@ -46,7 +46,7 @@ namespace baUHInia.Playground.Model.Selectors
             _selection.ChangedPlacers.Clear();
         }
 
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null)
         {
             (int x, int y) = hoveredTile.GetCoords();
             List<Element> layers = _selection.ElementsLayers[y, x];

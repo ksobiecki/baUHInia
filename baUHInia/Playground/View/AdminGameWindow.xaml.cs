@@ -165,7 +165,6 @@ namespace baUHInia.Playground.View
             InitializeInteractionChangers();
             UpdateSelectorComboBox(ResourceType.Terrain);
         }
->>>>>>> main
 
         private void UpdateSelectorComboBox(ResourceType type)
         {

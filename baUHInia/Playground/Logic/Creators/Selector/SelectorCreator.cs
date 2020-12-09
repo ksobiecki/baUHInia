@@ -3,8 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Creators.Selector
@@ -12,15 +12,16 @@ namespace baUHInia.Playground.Logic.Creators.Selector
     public class SelectorCreator
     {
         private readonly Selection _currentSelection;
-        private readonly List<TileCategory> _tileCategories;
+        private List<TileCategory> _tileCategories;
 
 
-        public SelectorCreator(Selection currentSelection)
+        public SelectorCreator(Selection currentSelection, List<TileCategory> categories)
         {
             _currentSelection = currentSelection;
-            //TODO: Check
-            _tileCategories = ResourceHolder.Get.Terrain;
+            _tileCategories = categories;
         }
+
+        public void UpdateTileGroup(List<TileCategory> categories) => _tileCategories = categories;
 
         public Button CreateSelectorTile(string elementName, BitmapImage image, (int category, int subCategory) tag)
         {
@@ -46,8 +47,10 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         {
             Button senderButton = sender as Button;
             (int category, int subCategory) = ((int, int)) senderButton.Tag;
+            //TODO:
             TileObject tileObject = _tileCategories[category].TileObjects[subCategory];
             _currentSelection.TileObject = tileObject;
+            _currentSelection.ChangeState(State.Place);
         }
     }
 }

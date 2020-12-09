@@ -3,87 +3,217 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:baUHInia"
         mc:Ignorable="d"
         Title="HeatIsland" Name="Window" Width="800" Height="600">
 
-  <Grid x:Name="DockPanel" MinHeight="200" Margin="0" MinWidth="100" Background="#404455">
+	<Window.Resources>
+		<Grid x:Key="LoadMapTemplate">
+			<Border  BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,25,0,0">
+				<Grid Height="300" Width="600"  Background="#4466AA"  HorizontalAlignment="Center">
+					<TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="LISTA MAP"/>
+					<Grid HorizontalAlignment="Left" Height="180" Margin="40,0,0,0" VerticalAlignment="Center" Width="300" Background="#444444"/>
+					<Image HorizontalAlignment="Right" Height="256"  VerticalAlignment="Center" Width="256" Margin="0,30,0,0" Source="/baUHInia;component/res/loadmap.ico"/>
+					<Button Content="Powrót" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="240,0,0,5" Height="40" Style="{StaticResource MenuButton}">
+						<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+					</Button>
+					<Button Content="Wczytaj" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="40,0,0,5" Height="40" Style="{StaticResource MenuButton}" Click="LoadMap">
+						<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+					</Button>
+				</Grid>
+			</Border>
+		</Grid>
+		
+		<Grid x:Key="SaveMapTemplate">
+			<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,25,0,0">
+				<Grid Height="300" Width="600"  Background="#4466AA"  HorizontalAlignment="Center">
+					<TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="LISTA MAP"/>
+					<Grid HorizontalAlignment="Left" Height="180" Margin="40,0,0,0" VerticalAlignment="Center" Width="300" Background="#444444"/>
+					<Image HorizontalAlignment="Right" Height="256"  VerticalAlignment="Center" Width="256" Margin="0,30,0,0" Source="/baUHInia;component/res/loadmap.ico"/>
+					<Button Content="Powrót" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="240,0,0,5" Height="40" Style="{StaticResource MenuButton}">
+						<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+					</Button>
+					<Button Content="Zapisz" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="40,0,0,5" Height="40" Style="{StaticResource MenuButton}" Click="SaveMap">
+						<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+					</Button>
+				</Grid>
+			</Border>
+		</Grid>
+		
+	</Window.Resources>
+	
+	<Grid x:Name="DockPanel" UseLayoutRounding="True" SnapsToDevicePixels="True" MinHeight="200" Margin="0" MinWidth="100" Background="#404455">
 
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition/>
-      <ColumnDefinition Width="140"/>
-    </Grid.ColumnDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
 
-    <ScrollViewer Name="GameScroll" DockPanel.Dock="Left" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch">
+		<ScrollViewer Name="GameScroll" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
 
-      <Grid>
+			<Grid Name="AdminMainMenu" Margin="50,50,50,50" VerticalAlignment="Center" HorizontalAlignment="Center">
+				
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
 
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,30,25" Grid.Column="0" Grid.Row="0">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="WCZYTAJ MAPĘ" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/loadmap.ico"/>
+						<Button Click="CreateLoadWindow" Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+					</Grid>
+				</Border>
+				
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,0,30,25" Grid.Column="1" Grid.Row="0">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="STATYSTYKI"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/statistics.ico"/>
+						<Button Click="CreateNewMap" Content="Przejdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+					</Grid>
+				</Border>
 
-        <Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-300,0,0,0">
-          <Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="WCZYTAJ MAPĘ" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
-            <Border BorderBrush="#6688CC" BorderThickness="10" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,230,0,0">
-              <Button Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="75" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
-            </Border>
-            <Grid Name="InitialMapGrid" HorizontalAlignment="Center" Height="170" Margin="00,60,0,0" VerticalAlignment="Top" Width="250" Background="#444444"/>
-          </Grid>
-        </Border>
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,0,0,25" Grid.Column="2" Grid.Row="0">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="NOWA MAPA" Name="NewGameTitle"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/newmap.ico"/>
+						<Button Name="NewGameButton" Click="CreateNewMap" Content="Utwórz" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+					</Grid>
+				</Border>
+				
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,25,30,0" Grid.Column="0" Grid.Row="1">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="WYJŚCIE"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/logout.ico"/>
+						<Button Click="ReturnToLoginWindow" Content="Wyloguj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+					</Grid>
+				</Border>
+				
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,25,30,0" Grid.Column="1" Grid.Row="1">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="TRYB ROZGRYWKI"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/game.ico"/>
+						<Button Click="CreateNewMap" Content="Zagraj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+					</Grid>
+				</Border>
+				
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,25,0,0" Grid.Column="2" Grid.Row="1">
+					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="TRYB OBSERWATORA"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/observe.ico"/>
+						<Button Click="CreateNewMap" Content="Obserwuj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+					</Grid>
+				</Border>
+				
+			
 
-        <Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="300,0,0,0">
-          <Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="NOWA MAPA"/>
-            <Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/icon.ico"/>
-            <Border BorderBrush="#6688CC" BorderThickness="10" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,230,0,0">
-              <Button Click="CreateNewMap" Content="UTWÓRZ" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="80" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
-            </Border>
-          </Grid>
-        </Border>
+			</Grid>
+			
+		
+		</ScrollViewer>
 
-        <Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="900,0,0,0">
-          <Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="STATYSTYKI" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
-            <Border BorderBrush="#6688CC" BorderThickness="10" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,230,0,0">
-              <Button Click="OpenStatistics" Content="Show" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="75" Background="#6688CC" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD"/>
-            </Border>
-          </Grid>
-        </Border>
+		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Collapsed">
 
-      </Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="35"/>
+				<RowDefinition Height="25"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="20"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition />
+			</Grid.RowDefinitions>
 
-    </ScrollViewer>
+			<TextBlock Text="TRYB KREACJI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="Silver"/>
 
-    <Grid Grid.Column="1" HorizontalAlignment="Left" Height="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Top" Width="140"  MaxWidth="140">
+			<Button Grid.Row="1" Content="ZAPISZ" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Style="{StaticResource MenuButton}" Click="OpenSelectorTab">
+				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
+			</Button>
+			
+			
+			<Button Content="WCZYTAJ" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="2" Style="{StaticResource MenuButton}" Click="CreateLoadWindow">
+				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
+			</Button>
+			
+			<Button Content="OD NOWA" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="3" Style="{StaticResource MenuButton}" Click="NewMap">
+				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
+			</Button>
+			
+			<Button Content="MENU" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="4" Style="{StaticResource MenuButton}" Click="ReturnToMenu">
+				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
+			</Button>
+			
+			<Button HorizontalAlignment="Left" Content="USUWANIE" Width="55"  Height="30" FontSize="9" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="5" Style="{StaticResource DeleteButton}" Margin="12,0,0,0" Name="DeleteButton">
+				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+			</Button>
+			
+			<Button HorizontalAlignment="Right" Content="BLOKADA" Width="55"  Height="30" FontSize="9" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="5" Style="{StaticResource AvailableButton}" Margin="0,0,14,0" Name="PlaceableButton">
+				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+			</Button>
+			
+			<TextBlock Grid.Row="6" Text="TRYB:" Foreground="#DDDDDD" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
+			<TextBlock Grid.Row="6" Text="STAWIANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0" Name="ModeText"/>
+			
+			<TextBlock Grid.Row="7" Text="LMB: POJEDYŃCZO" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="FirstTip"/>
+			<TextBlock Grid.Row="8" Text="RMB: MALOWANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="SecondTip"/>
+			<TextBlock Grid.Row="9" Text="NIEDOSTĘPNE DLA OBIEKTÓW" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="ThirdTip"/>
+			
+			<Button HorizontalAlignment="Left" Content="Terrain" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="10" Style="{StaticResource TerrainButton}" Margin="0,0,0,0" Name="TerrainSwitch"/>
+			<Button HorizontalAlignment="Center" Content="Structure" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="10" Style="{StaticResource StructureButton}" Margin="0,0,0,0" Name="StructureSwitch"/>
+			<Button HorizontalAlignment="Right" Content="Foliage" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="10" Style="{StaticResource FoliageButton}" Margin="0,0,0,0" Name="FoliageSwitch"/>
+			
+			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="11" 
+			          SelectionChanged="ChangeDropdownSelection" 
+			          FontStretch="Expanded" Background="#6688CC"
+			          Foreground="#DDDDDD"
+			          HorizontalContentAlignment="Center" 
+			          VerticalContentAlignment="Center" 
+			          FontSize="14" FontWeight="Bold" 
+			          Style="{DynamicResource ComboBoxStyle}">
+				
+			          <ComboBox.Resources>
+					<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="Brown" />
+				</ComboBox.Resources>
+				<ComboBox.ItemContainerStyle>
+					<Style TargetType="ComboBoxItem">
+					<Setter Property="Background" Value="#6688CC"/>
+					<Setter Property="BorderBrush" Value="#6688CC"/>
+					</Style>
+				</ComboBox.ItemContainerStyle>
+			</ComboBox>
 
-      <Grid.RowDefinitions>
-        <RowDefinition Height="40"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="300"/>
-      </Grid.RowDefinitions>
+			<ScrollViewer x:Name="SelectorScroll" Grid.Row="12" VerticalAlignment="Stretch" Background="#888888">
+				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			</ScrollViewer>
+			
 
-      <TextBlock Text="TRYB KREACJI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+		</Grid>
 
-      <Button Content="Zapisz Grę" Width="75" Grid.Row="1" Height="20" />
-      <Button Content="Wczytaj Grę" Width="75" Grid.Row="2" Height="20"/>
-      <Button Content="Nowa Gra" Width="75" Grid.Row="3" Height="20"/>
-      <Button Content="Od Nowa" Width="75" Grid.Row="4" Height="20"/>
-      <Button Content="Ustawienia" Width="75" Grid.Row="5" Height="20"/>
-      <Button Content="Wyloguj" Width="75" Grid.Row="6" Height="20"/>
-
-      <ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="7" SelectionChanged="CategorySelector_SelectionChanged"/>
-
-      <ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Top" MinHeight="30" Background="#888888">
-        <Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-      </ScrollViewer>
-      <Button Name="Filler" Content="Button" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="75" Click="Filler_Click"/>
-
-    </Grid>
-
-  </Grid>
+	</Grid>
+>>>>>>> main
 
 </Window>

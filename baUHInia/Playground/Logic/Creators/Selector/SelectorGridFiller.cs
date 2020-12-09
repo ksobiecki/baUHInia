@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Logic.Creators.Selector
 {
@@ -36,16 +38,15 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         public void CreateGameObjectInsideSubGrid(TileObject tileObject)
         {
             (sbyte x, sbyte y) = tileObject.Sprite.SpriteMinCoordinates();
+            (_, byte my) = tileObject.Sprite.SpriteWidthHeight();
             foreach (Offset offset in tileObject.Sprite.Offsets)
             {
                 string element = tileObject.Sprite.Names[offset.I];
-                //TODO: change
-                Button button =
-                    _selectorCreator.CreateSelectorTile(element, tileObject.Sprite.Bitmaps[element], tileObject.Tag);
-                button.Margin = new Thickness(-1);
-                button.Padding = new Thickness(-1.2);
+                Button button = _selectorCreator.CreateSelectorTile(element, tileObject[element], tileObject.Tag);
+                button.Margin = new Thickness(-1, 0, -1, 0);
+                button.Padding = new Thickness(-1.1);
                 Grid.SetColumn(button, offset.X - x);
-                Grid.SetRow(button, offset.Y - y);
+                Grid.SetRow(button, my - offset.Y + y);
                 _subGrid.Children.Add(button);
             }
         }

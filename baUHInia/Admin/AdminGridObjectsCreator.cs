@@ -1,51 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
-using baUHInia.Playground.Model;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
 {
     public class AdminGridObjectsCreator
     {
-        private AdminInGridClickableObject[] GameObjectsList { get; }
+        public List<AdminInGridClickableObject> GameObjectsList { get; }
         private Grid ObjectsGrid { get; }
         private Boolean isAvailable;
 
-        public AdminGridObjectsCreator(GameObject[] gameObjects, bool isAvailable, Grid objectsGrid, IAdminOnClickObject adminOnClickObject)
+        public AdminGridObjectsCreator(GameObject[] gameObjects, bool isAvailable, Grid objectsGrid,
+            IAdminOnClickObject adminOnClickObject)
         {
             this.isAvailable = isAvailable;
             ObjectsGrid = objectsGrid;
-            GameObjectsList = new AdminInGridClickableObject[gameObjects.Length];
+            GameObjectsList = new List<AdminInGridClickableObject>(gameObjects.Length);
             for (var i = 0; i < gameObjects.Length; i++)
             {
-                GameObjectsList[i] = new AdminInGridClickableObject(gameObjects[i], isAvailable, adminOnClickObject);
+                GameObjectsList.Insert(i,
+                    new AdminInGridClickableObject(gameObjects[i], isAvailable, adminOnClickObject));
             }
-            
         }
 
         public void CreateGrid()
         {
+            ObjectsGrid.Children.Clear();
             int cols = 12;
-            int rows = GameObjectsList.Length / cols + 1;
-            for (var i = 0; i < cols; i++)
-            {
-                ObjectsGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-            for (var i = 0; i < rows; i++)
-            {
-                ObjectsGrid.RowDefinitions.Add(new RowDefinition());
-            }
 
             int row = 0;
             int col = 0;
-            for (var i = 0; i < GameObjectsList.Length; i++)
+            for (var i = 0; i < GameObjectsList.Count; i++)
             {
-                if (i == 13)
-                {
-                    ObjectsGrid.RowDefinitions.Add(new RowDefinition());
-                    row++;
-                    col = 0;
-                }
                 Button button = GameObjectsList[i].ClickableGameObject;
                 Grid.SetRow(button, row);
                 Grid.SetColumn(button, col);
@@ -58,22 +46,15 @@ namespace baUHInia.Admin
                 }
             }
         }
-        public void CreateGrid(List<int> categoryBreaksLineIndex)
+
+        public void CreateGridWithCategoryBreaks(List<int> categoryBreaksLineIndex)
         {
+            ObjectsGrid.Children.Clear();
             int cols = 12;
-            int rows = GameObjectsList.Length / cols + 1;
-            for (var i = 0; i < cols; i++)
-            {
-                ObjectsGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-            for (var i = 0; i < rows; i++)
-            {
-                ObjectsGrid.RowDefinitions.Add(new RowDefinition());
-            }
 
             int row = 0;
             int col = 0;
-            for (var i = 0; i < GameObjectsList.Length; i++)
+            for (var i = 0; i < GameObjectsList.Count; i++)
             {
                 if (categoryBreaksLineIndex.Contains(i))
                 {
@@ -81,11 +62,16 @@ namespace baUHInia.Admin
                     row++;
                     col = 0;
                 }
-                Button button = GameObjectsList[i].ClickableGameObject;
-                Grid.SetRow(button, row);
-                Grid.SetColumn(button, col);
-                ObjectsGrid.Children.Add(button);
-                col++;
+
+                if (isAvailable == GameObjectsList[i].IsAvailable)
+                {
+                    Button button = GameObjectsList[i].ClickableGameObject;
+                    Grid.SetRow(button, row);
+                    Grid.SetColumn(button, col);
+                    ObjectsGrid.Children.Add(button);
+                    col++;
+                }
+
                 if (col == cols)
                 {
                     col = 0;
@@ -93,6 +79,40 @@ namespace baUHInia.Admin
                 }
             }
         }
+
+        public void InitializeGridDefinitions()
+        {
+            int cols = 12;
+            int rows = GameObjectsList.Count / cols + 1;
+            for (var i = 0; i < cols; i++)
+            {
+                ObjectsGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            for (var i = 0; i < rows; i++)
+            {
+                ObjectsGrid.RowDefinitions.Add(new RowDefinition());
+            }
+        }
+
+        public void ChangeAvailability(AdminInGridClickableObject gameObject)
+        {
+            GameObjectsList.Find(
+                    x => x.GameObject.TileObject.Name == gameObject.GameObject.TileObject.Name
+                    ).IsAvailable = !gameObject.IsAvailable;
+        }
+
+        public void AddObject(AdminInGridClickableObject gameObject)
+        {
+            GameObjectsList.Add(gameObject);
+        }
+
+        public void RemoveObject(AdminInGridClickableObject gameObject)
+        {
+            GameObjectsList.Remove(gameObject);
+        }
+
+        public GameObject[] GetGameObjects() => GameObjectsList.Select(c => c.GameObject).ToArray();
+
     }
-    
 }

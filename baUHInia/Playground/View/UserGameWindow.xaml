@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:baUHInia"
         mc:Ignorable="d"
         Title="HeatIsland" Name="Window" Width="800" Height="600">
 
@@ -73,7 +72,6 @@
 			<ScrollViewer x:Name="SelectorScroll" Grid.Row="8" VerticalAlignment="Top" MinHeight="30">
 				<Grid Name="UserSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#888888"/>
 			</ScrollViewer>
-			<Button Name="Filler" Content="Button" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="75" Click="Filler_Click"/>
 
 
 

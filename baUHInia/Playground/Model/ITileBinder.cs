@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Media;
 using baUHInia.Authorisation;
+using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Model
 {
@@ -21,6 +24,8 @@ namespace baUHInia.Playground.Model
         
         LoginData Credentials { get; }
         
-        int AvailableFounds { get; }
+        int AvailableFounds { get; set; }
+
+        void ChangeInteractionMode(string text, Brush color);
     }
 }

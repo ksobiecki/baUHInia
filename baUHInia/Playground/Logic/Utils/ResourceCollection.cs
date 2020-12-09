@@ -41,7 +41,7 @@ namespace baUHInia.Playground.Logic.Utils
             .ToArray();
 
         public string GetPossibleConfig(string subCategory) =>
-            _configs.FirstOrDefault(str => str.Contains(subCategory));
+            _configs.FirstOrDefault(str => str.EndsWith('/' + subCategory + ".json"));
 
         public Dictionary<string, BitmapImage> LoadBitmaps(string category, string subCategory, string resourceDir) =>
             _elementsOfCategory

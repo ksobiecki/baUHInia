@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Tiles;
 
@@ -14,13 +15,15 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         private readonly Grid _selectorGrid;
 
-        protected VerticalSelectorGridCreator(ITileBinder binder)
+        protected VerticalSelectorGridCreator(ITileBinder binder, List<TileCategory> categories)
         {
-            _selectorCreator = new SelectorCreator(binder.Selection);
+            _selectorCreator = new SelectorCreator(binder.Selection, categories);
             _selectorGrid = binder.SelectorGrid;
+            _selectorGrid.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
         public abstract void CreateSelectionPanel(TileCategory tileCategory, ITileBinder tileBinder);
+        public void UpdateTileGroup(List<TileCategory> categories) => _selectorCreator.UpdateTileGroup(categories);
 
         protected void CreateGroups(IEnumerable<string> groups, List<TileObject> tileObjects, ref int rowIndex)
         {
@@ -48,7 +51,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
                 gridRowIndex += 2;
             }
         }
-        
+
         protected void ClearSelectorGrid()
         {
             _selectorGrid.Children.Clear();
@@ -60,14 +63,18 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         {
             _selectorGrid.RowDefinitions.Add(new RowDefinition());
             _selectorGrid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
-            Label label = new Label {Content = subcategory, Height = 30};
+            Label label = new Label
+            {
+                Content = subcategory, Height = 30, FontSize = 13, FontWeight = FontWeights.Bold,
+                Foreground = Brushes.DarkSlateGray
+            };
             Grid.SetRow(label, gridRowIndex);
             _selectorGrid.Children.Add(label);
         }
 
         private Grid AddSubGridToSelectorGrid(int height, int width, int gridRowIndex)
         {
-            Grid grid = new Grid {Height = width == height ? 100 : (height + 1) * 32, Width = 100};
+            Grid grid = new Grid {Height = width == height ? 100 : (height + 1) * 33.33, Width = 100};
             Grid.SetRow(grid, gridRowIndex + 1);
             DivideGridToAccommodateTileObject(grid, width, height);
             _selectorGrid.Children.Add(grid);
@@ -81,7 +88,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         }
 
         private static TileObject[] GetElementsOfGroup(IEnumerable<TileObject> tileObjects, string group) => tileObjects
-            .Where(o => o.Group == group)
+            .Where(o => o.Config.Group == group)
             .ToArray();
     }
 }

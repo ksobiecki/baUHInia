@@ -74,8 +74,7 @@ namespace baUHInia.Database
             {
                 code = +Rozlacz();
                 return code + 51;//84 - nazwa uzytkownika zajeta; 51 - blad dodania uzytkownika; //52 - blad polaczenia
-            }
-            code = +Rozlacz();
+            }           
             return code; //0 = git,33 =nazwa zjeta
         }
 

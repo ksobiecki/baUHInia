@@ -90,7 +90,7 @@ namespace baUHInia.Authorisation
             }
             else if (resultcheck == 102)
             {
-                MessageBox.Show("Błąd pobierania danych użytkowników", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Błąd pobierania danych użytkowników", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error); 
                 loginLoginBox.Text = "";
                 loginPasswordBox.Text = "";
                 return;
@@ -164,7 +164,7 @@ namespace baUHInia.Authorisation
             }
             ShowAddQuestionDialog();
             int resultadding = bazaDanych.DodajUzytkownika(login, passwd, Admin, pytanie, odpowiedz);
-            if (resultadding == 33)
+            if (resultadding == 0)
             {
                 var result = MessageBox.Show("Pomyślnie utworzono konto.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Question);
                 if (result == DialogResult.OK)
@@ -180,7 +180,7 @@ namespace baUHInia.Authorisation
                     app.Show();
                 }
             }
-            else if (resultadding == 84)
+            else if (resultadding == 33)
             {
                 MessageBox.Show("Użytkownik z wybranym loginem już istnieje w systemie.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 registerLoginBox.Text = "";
@@ -188,7 +188,7 @@ namespace baUHInia.Authorisation
                 registerSecondPasswordBox.Text = "";
                 return;
             }
-            else if (resultadding == 51)
+            else 
             {
                 MessageBox.Show("Błąd dodania użytkownika", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 registerLoginBox.Text = "";

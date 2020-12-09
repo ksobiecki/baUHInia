@@ -76,7 +76,7 @@ namespace baUHInia.Database
                 return code + 51;//84 - nazwa uzytkownika zajeta; 51 - blad dodania uzytkownika; //52 - blad polaczenia
             }
             code = +Rozlacz();
-            return code; //0 = git
+            return code; //0 = git,33 =nazwa zjeta
         }
 
         public Tuple<int, String> PobierzPytanie(String login)
@@ -335,14 +335,15 @@ namespace baUHInia.Database
             return true;
         }
 
-        public bool addGame(int user_id, string game_contents, int map_id)
+        public bool addGame(int user_id, string nazwa,string game_contents, int map_id)
         {
             try
             {
                 Polacz();
-                sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracz,serial,map_id) values(@gracz,@serial,@mapa)");
+                sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracz,serial,map_id,nazwa) values(@gracz,@serial,@mapa,@nazwa)");
                 sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
                 sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
+                sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
                 sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
                 sqlDataAdapter.InsertCommand.Connection = polaczenie;
                 sqlDataAdapter.InsertCommand.ExecuteNonQuery();
@@ -360,7 +361,7 @@ namespace baUHInia.Database
             try
             {
                 Polacz();
-                string query = "select serial from Mapy where nazwa = @nazwa ";
+                string query = "select serial from Gry where nazwa = @nazwa ";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 sqlCommand.Parameters.AddWithValue("@nazwa", nazwa);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
@@ -376,6 +377,29 @@ namespace baUHInia.Database
                 return false;
             }
 
+        }
+
+        public int GetScore(string nazwa)
+        {
+            int punkty = 0;
+            try
+            {
+                Polacz();
+                string query = "select wynik from Gry where nazwa = @nazwa ";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@nazwa", nazwa);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    punkty = reader.GetInt32(0);
+                }
+                Rozlacz();
+                return punkty;
+            }
+            catch (SqlException)
+            {
+                return 0;
+            }
         }
     }
 }

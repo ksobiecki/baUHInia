@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
+using baUHInia.MapLogic.Model;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
+using baUHInia.Playground.Logic.Creators.Tiles;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
@@ -27,14 +30,12 @@ namespace baUHInia.Playground.View
         private IAdminSelectorTabCreator _admin;
         private IGameMapManager _manager;
 
-        //private UIElement _storedGui;
         private Grid MenuGrid { get; set; }
         private Grid AdminGrid { get; set; }
         private Grid SaveMapGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
 
         private Grid GameMapGrid { get; set; }
-        //private Grid CurrentGrid { get; set; }
 
         public AdminGameWindow(LoginData credentials)
         {
@@ -43,7 +44,6 @@ namespace baUHInia.Playground.View
             AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
             InitializeProperties(credentials);
-            //SaveButton.Click += (o, arg) => _manager.SaveMap(this);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -201,11 +201,15 @@ namespace baUHInia.Playground.View
         {
             if (SaveMapGrid == null)
             {
+                Console.WriteLine("HERERERERERERERERERERERERERERERERERERERERERER");
                 SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
                 Border border = SaveMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
                 ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
-                ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = AdminGrid; };
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
+                {
+                    GameScroll.Content = AdminGrid;
+                };
             }
 
             SideGrid.Visibility = Visibility.Collapsed;
@@ -214,12 +218,19 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            //_manager.LoadMap()
+            Map map = _manager.LoadMap("mapka_test");
+            GameMapGrid.Children.Clear();
+            AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
+            GameMapGrid = GameScroll.Content as Grid;
+            Selection.Reset();
+            SideGrid.Visibility = Visibility.Visible;
+            Console.WriteLine("Passed loading");
         }
 
         private void SaveMap(object sender, RoutedEventArgs args)
         {
             _manager.SaveMap(this);
+            Console.WriteLine("Passed saving");
         }
 
         private void NewMap(object source, RoutedEventArgs args)

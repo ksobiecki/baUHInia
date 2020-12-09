@@ -25,7 +25,7 @@ namespace baUHInia.Playground.Model.Selectors
 
         public void RedoChanges() => MarkTileAsUnHovered();
 
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null)
         {
             Hover = hoveredTile;
             MarkTileAsHovered();

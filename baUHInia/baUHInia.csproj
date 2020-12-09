@@ -156,7 +156,6 @@
       <DependentUpon>ChoiceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Playground\Logic\Creators\ISelectionWindowCreator.cs" />
-    <Compile Include="Playground\Logic\Creators\PlacerGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\AdminSelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\ISelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
@@ -166,6 +165,7 @@
     <Compile Include="Playground\Logic\Creators\Tiles\GameTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GenericTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\MapTileBehaviourSetter.cs" />
+    <Compile Include="Playground\Logic\Creators\Tiles\PlacerGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\TileCreator.cs" />
     <Compile Include="Playground\Logic\Creators\IGameGridCreator.cs" />
     <Compile Include="Playground\Logic\Loaders\ResourceLoader.cs" />

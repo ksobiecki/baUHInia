@@ -3,7 +3,6 @@ using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,23 +31,23 @@ namespace baUHInia.MapLogic.Helper
             {
                 for (int j = 0; j < tileGrid.GetLength(1); j++)
                 {
-                    if (!indexer.ContainsValue(tileGrid[i, j].GetName()))
+                    if (!indexer.ContainsValue(tileGrid[i, j].GetTextureName()))
                     {
-                        indexer.Add(key, tileGrid[i, j].GetName());
+                        indexer.Add(key, tileGrid[i, j].GetTextureName());
 
-                        JArray jsonTile = new JArray();
-                        jsonTile.Add(key);
-                        jsonTile.Add(tileGrid[i, j].Placeable ? 1 : 0);
+                        JArray jsonTile = new JArray {key, tileGrid[i, j].Placeable ? 1 : 0};
                         jsonTileGrid.Add(jsonTile);
                         jsonIntTileGrid.Add(key);
                         key++;
                     }
                     else
                     {
-                        jsonIntTileGrid.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
-                        JArray jsonTile = new JArray();
-                        jsonTile.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetName()).Key);
-                        jsonTile.Add(tileGrid[i, j].Placeable ? 1 : 0);
+                        jsonIntTileGrid.Add(indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetTextureName()).Key);
+                        JArray jsonTile = new JArray
+                        {
+                            indexer.FirstOrDefault(x => x.Value == tileGrid[i, j].GetTextureName()).Key,
+                            tileGrid[i, j].Placeable ? 1 : 0
+                        };
                         jsonTileGrid.Add(jsonTile);
                     }
                 }
@@ -58,15 +57,13 @@ namespace baUHInia.MapLogic.Helper
             jsonMap["Indexer"] = DictionaryToJson(indexer);
         }
 
-        public static JArray DictionaryToJson(Dictionary<int, string> indexer)
+        private static JArray DictionaryToJson(Dictionary<int, string> indexer)
         {
             JArray a = new JArray();
 
             for (int i = 0; i < indexer.Count; i++)
             {
-                JObject o = new JObject();
-                o["Key"] = i;
-                o["Value"] = indexer[i];
+                JObject o = new JObject {["Key"] = i, ["Value"] = indexer[i]};
                 a.Add(o);
             }
 
@@ -82,9 +79,9 @@ namespace baUHInia.MapLogic.Helper
             {
                 for (int j = 0; j < tileGrid.GetLength(1); j++)
                 {
-                    if (!indexer.ContainsValue(tileGrid[i, j].GetName()))
+                    if (!indexer.ContainsValue(tileGrid[i, j].GetTextureName()))
                     {
-                        indexer.Add(key, tileGrid[i, j].GetName());
+                        indexer.Add(key, tileGrid[i, j].GetTextureName());
                         key++;
                     }
                 }
@@ -100,10 +97,12 @@ namespace baUHInia.MapLogic.Helper
 
             foreach (Placement placement in placedObjects)
             {
-                JObject jsonPlacement = new JObject();
-                jsonPlacement["Name"] = placement.GameObject.TileObject.Name;
-                jsonPlacement["X"] = placement.Position.x;
-                jsonPlacement["Y"] = placement.Position.y;
+                JObject jsonPlacement = new JObject
+                {
+                    ["Name"] = placement.GameObject.TileObject.Name,
+                    ["X"] = placement.Position.x,
+                    ["Y"] = placement.Position.y
+                };
                 jsonPlacements.Add(jsonPlacement);
             }
 
@@ -115,10 +114,12 @@ namespace baUHInia.MapLogic.Helper
             JArray jsonAvailableObjects = new JArray();
             foreach (GameObject gameObject in availableTiles)
             {
-                JObject jsonTile = new JObject();
-                jsonTile["Name"] = gameObject.TileObject.Name;
-                jsonTile["Price"] = gameObject.Price;
-                jsonTile["ChangeValue"] = gameObject.ChangeValue;
+                JObject jsonTile = new JObject
+                {
+                    ["Name"] = gameObject.TileObject.Name,
+                    ["Price"] = gameObject.Price,
+                    ["ChangeValue"] = gameObject.ChangeValue
+                };
                 jsonAvailableObjects.Add(jsonTile);
             }
 

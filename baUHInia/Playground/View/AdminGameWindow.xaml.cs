@@ -275,7 +275,7 @@ namespace baUHInia.Playground.View
 
         private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
-            UserGameWindow userWindow = new UserGameWindow {Owner = this};
+            UserGameWindow userWindow = new UserGameWindow(LoginData.GetInstance()) {Owner = this};
             Hide(); // not required if using the child events below
             userWindow.ShowDialog();
         }

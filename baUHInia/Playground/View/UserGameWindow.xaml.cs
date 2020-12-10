@@ -34,8 +34,9 @@ namespace baUHInia.Playground.View
         //private ISimulate _simulator;
 
         //TODO: add credentials
-        public UserGameWindow()
+        public UserGameWindow(LoginData credentials)
         {
+            //dodałem tylko tak z dupy troche to LoginData credentials, zobacz, czy może być tak, masz references na górze jc.
             InitializeComponent();
             //InitializeSelection();
             ShowStartupPanel();

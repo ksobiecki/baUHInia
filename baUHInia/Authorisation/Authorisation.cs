@@ -114,7 +114,7 @@ namespace baUHInia.Authorisation
                     ld.hash = passwd;
                     isMapVisible = true;
                     Hide();
-                    UserGameWindow app = new UserGameWindow();
+                    UserGameWindow app = new UserGameWindow(ld);
                     app.Show();
                 }
             }
@@ -230,7 +230,7 @@ namespace baUHInia.Authorisation
                     }
                     else
                     {
-                        UserGameWindow app = new UserGameWindow();
+                        UserGameWindow app = new UserGameWindow(ld);
                         app.Show();
                     }
                     

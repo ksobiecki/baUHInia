@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.verifyQuestionBttn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.verifyQuestionBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.verifyAnswerBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.verifyQuestionBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.verifyQuestionBttn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,31 +51,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pytanie pomocnicze";
             // 
-            // verifyQuestionBttn
+            // verifyAnswerBox
             // 
-            this.verifyQuestionBttn.Location = new System.Drawing.Point(10, 107);
-            this.verifyQuestionBttn.Name = "verifyQuestionBttn";
-            this.verifyQuestionBttn.Size = new System.Drawing.Size(75, 23);
-            this.verifyQuestionBttn.TabIndex = 0;
-            this.verifyQuestionBttn.Text = "Wyślij";
-            this.verifyQuestionBttn.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Twoje pytanie pomocnicze";
-            // 
-            // verifyQuestionBox
-            // 
-            this.verifyQuestionBox.Enabled = false;
-            this.verifyQuestionBox.Location = new System.Drawing.Point(10, 37);
-            this.verifyQuestionBox.Name = "verifyQuestionBox";
-            this.verifyQuestionBox.Size = new System.Drawing.Size(228, 20);
-            this.verifyQuestionBox.TabIndex = 2;
+            this.verifyAnswerBox.Location = new System.Drawing.Point(10, 81);
+            this.verifyAnswerBox.Name = "verifyAnswerBox";
+            this.verifyAnswerBox.Size = new System.Drawing.Size(228, 20);
+            this.verifyAnswerBox.TabIndex = 4;
+            this.verifyAnswerBox.Enter += new System.EventHandler(this.newQuestionTextClicked);
+            this.verifyAnswerBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.form_KeyDown);
             // 
             // label2
             // 
@@ -86,12 +69,31 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Wprowadź odpowiedź na pytanie pomocnicze";
             // 
-            // verifyAnswerBox
+            // verifyQuestionBox
             // 
-            this.verifyAnswerBox.Location = new System.Drawing.Point(10, 81);
-            this.verifyAnswerBox.Name = "verifyAnswerBox";
-            this.verifyAnswerBox.Size = new System.Drawing.Size(228, 20);
-            this.verifyAnswerBox.TabIndex = 4;
+            this.verifyQuestionBox.Enabled = false;
+            this.verifyQuestionBox.Location = new System.Drawing.Point(10, 37);
+            this.verifyQuestionBox.Name = "verifyQuestionBox";
+            this.verifyQuestionBox.Size = new System.Drawing.Size(228, 20);
+            this.verifyQuestionBox.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(133, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Twoje pytanie pomocnicze";
+            // 
+            // verifyQuestionBttn
+            // 
+            this.verifyQuestionBttn.Location = new System.Drawing.Point(10, 107);
+            this.verifyQuestionBttn.Name = "verifyQuestionBttn";
+            this.verifyQuestionBttn.Size = new System.Drawing.Size(75, 23);
+            this.verifyQuestionBttn.TabIndex = 0;
+            this.verifyQuestionBttn.Text = "Wyślij";
+            this.verifyQuestionBttn.UseVisualStyleBackColor = true;
             // 
             // VerifyQuestion
             // 

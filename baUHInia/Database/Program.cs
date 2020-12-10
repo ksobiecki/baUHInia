@@ -117,6 +117,7 @@ namespace baUHInia.Database
                 {
                     if (reader.GetString(1) == odpowiedz)
                     {
+                        Rozlacz();
                         return 200; //odpowiedz prawidolowa
                     }
                 }
@@ -175,9 +176,10 @@ namespace baUHInia.Database
         //    return loginData;
         //}
 
-        public int CheckUser(string nazwa, string haslo)
+        public Tuple<int, int> CheckUser(string nazwa, string haslo)
         {
             int code = 0;
+            int uid = 0;
             try
             {
                 code = Polacz();
@@ -186,28 +188,32 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-
+                   
                     if (reader.GetString(0) == nazwa && reader.GetString(1) == haslo)
                     {
                         if (reader.GetBoolean(2) == true)
                         {
                             Rozlacz();
-                            return 32; //uzytkownik podal poprawne dane, uzytkownik jest administratorem
+                            Console.WriteLine("admin");
+                            return new Tuple<int, int>(32, uid); //uzytkownik podal poprawne dane, uzytkownik jest administratorem
+
                         }
                         else
                         {
                             Rozlacz();
-                            return 31; //uzytkownik podal poprawne dane, uzytkownik nie jest administratorem
+                            Console.WriteLine("nie-admin");
+                            return new Tuple<int, int>(31, uid); ; //uzytkownik podal poprawne dane, uzytkownik nie jest administratorem
                         }
                     }
+                    uid++;
                 }
                 code = Rozlacz();
             }
             catch (SqlException)
             {
-                return code + 102;//blad 102 = blad pobrania danych uzytkownikow; 103 = blad polaczenia
+                return new Tuple<int, int>(code + 102, 0);//blad 102 = blad pobrania danych uzytkownikow; 103 = blad polaczenia
             }
-            return 50; //dane niepoprwane
+            return new Tuple<int, int>(50, 0); //dane niepoprwane
         }
 
         private int CheckUsernameOccupation(String nazwa)

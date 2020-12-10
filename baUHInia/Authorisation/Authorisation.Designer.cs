@@ -40,12 +40,13 @@
             this.registerButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.recoverPasswdBttn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.loginPasswordBox = new System.Windows.Forms.TextBox();
             this.loginLoginBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.recoverPasswdBttn = new System.Windows.Forms.Button();
+            this.rememberMeChkbx = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -61,7 +62,7 @@
             this.groupBox2.Controls.Add(this.registerPasswordBox);
             this.groupBox2.Controls.Add(this.registerLoginBox);
             this.groupBox2.Controls.Add(this.registerButton);
-            this.groupBox2.Location = new System.Drawing.Point(12, 178);
+            this.groupBox2.Location = new System.Drawing.Point(12, 199);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(153, 193);
             this.groupBox2.TabIndex = 3;
@@ -85,6 +86,7 @@
             this.registerSecondPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.registerSecondPasswordBox.TabIndex = 6;
             this.registerSecondPasswordBox.UseSystemPasswordChar = true;
+            this.registerSecondPasswordBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.register_KeyDown);
             // 
             // label5
             // 
@@ -121,6 +123,7 @@
             this.registerPasswordBox.TabIndex = 5;
             this.registerPasswordBox.UseSystemPasswordChar = true;
             this.registerPasswordBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.registerPasswordBox_MouseClick);
+            this.registerPasswordBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.register_KeyDown);
             // 
             // registerLoginBox
             // 
@@ -129,6 +132,7 @@
             this.registerLoginBox.Size = new System.Drawing.Size(138, 20);
             this.registerLoginBox.TabIndex = 4;
             this.registerLoginBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.registerLoginBox_MouseClick);
+            this.registerLoginBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.register_KeyDown);
             // 
             // registerButton
             // 
@@ -142,7 +146,7 @@
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(6, 131);
+            this.loginButton.Location = new System.Drawing.Point(5, 150);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(138, 23);
             this.loginButton.TabIndex = 3;
@@ -152,6 +156,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rememberMeChkbx);
             this.groupBox1.Controls.Add(this.recoverPasswdBttn);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label6);
@@ -160,10 +165,20 @@
             this.groupBox1.Controls.Add(this.loginButton);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(153, 160);
+            this.groupBox1.Size = new System.Drawing.Size(153, 181);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logowanie";
+            // 
+            // recoverPasswdBttn
+            // 
+            this.recoverPasswdBttn.Location = new System.Drawing.Point(6, 120);
+            this.recoverPasswdBttn.Name = "recoverPasswdBttn";
+            this.recoverPasswdBttn.Size = new System.Drawing.Size(137, 23);
+            this.recoverPasswdBttn.TabIndex = 6;
+            this.recoverPasswdBttn.Text = "Przypomnij Hasło";
+            this.recoverPasswdBttn.UseVisualStyleBackColor = true;
+            this.recoverPasswdBttn.Click += new System.EventHandler(this.recoverPasswdBttn_Click);
             // 
             // label2
             // 
@@ -190,6 +205,7 @@
             this.loginPasswordBox.Size = new System.Drawing.Size(138, 20);
             this.loginPasswordBox.TabIndex = 2;
             this.loginPasswordBox.UseSystemPasswordChar = true;
+            this.loginPasswordBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.login_KeyDown);
             // 
             // loginLoginBox
             // 
@@ -197,32 +213,33 @@
             this.loginLoginBox.Name = "loginLoginBox";
             this.loginLoginBox.Size = new System.Drawing.Size(138, 20);
             this.loginLoginBox.TabIndex = 1;
+            this.loginLoginBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.login_KeyDown);
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::baUHInia.Properties.Resources.icon;
             this.pictureBox1.Location = new System.Drawing.Point(171, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(373, 359);
+            this.pictureBox1.Size = new System.Drawing.Size(385, 380);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
-            // recoverPasswdBttn
+            // rememberMeChkbx
             // 
-            this.recoverPasswdBttn.Location = new System.Drawing.Point(7, 101);
-            this.recoverPasswdBttn.Name = "recoverPasswdBttn";
-            this.recoverPasswdBttn.Size = new System.Drawing.Size(137, 23);
-            this.recoverPasswdBttn.TabIndex = 6;
-            this.recoverPasswdBttn.Text = "Przypomnij Hasło";
-            this.recoverPasswdBttn.UseVisualStyleBackColor = true;
-            this.recoverPasswdBttn.Click += new System.EventHandler(this.recoverPasswdBttn_Click);
+            this.rememberMeChkbx.AutoSize = true;
+            this.rememberMeChkbx.Location = new System.Drawing.Point(7, 101);
+            this.rememberMeChkbx.Name = "rememberMeChkbx";
+            this.rememberMeChkbx.Size = new System.Drawing.Size(103, 17);
+            this.rememberMeChkbx.TabIndex = 7;
+            this.rememberMeChkbx.Text = "Zapamiętaj mnie";
+            this.rememberMeChkbx.UseVisualStyleBackColor = true;
             // 
             // Authorisation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(549, 383);
+            this.ClientSize = new System.Drawing.Size(561, 398);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox1);
@@ -259,5 +276,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox isAdmin;
         private System.Windows.Forms.Button recoverPasswdBttn;
+        private System.Windows.Forms.CheckBox rememberMeChkbx;
     }
 }

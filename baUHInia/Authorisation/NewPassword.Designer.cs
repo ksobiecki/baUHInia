@@ -38,6 +38,8 @@
             this.newPasswordBox.Name = "newPasswordBox";
             this.newPasswordBox.Size = new System.Drawing.Size(160, 20);
             this.newPasswordBox.TabIndex = 1;
+            this.newPasswordBox.Enter += new System.EventHandler(this.newPasswordTextClicked);
+            this.newPasswordBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.form_KeyDown);
             // 
             // changePasswdBttn
             // 

@@ -26,6 +26,11 @@ namespace baUHInia.Authorisation
         {
             Form DEBUG = new DEBUG.DEBUG();
             DEBUG.Show();
+            if (Properties.Settings.Default.login != string.Empty)
+            {
+                loginLoginBox.Text = Properties.Settings.Default.login;
+                loginPasswordBox.Text = Properties.Settings.Default.password;
+            }
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -55,54 +60,86 @@ namespace baUHInia.Authorisation
             passwd = ComputeSha256Hash(loginPasswordBox.Text);
             Console.WriteLine(login);
             Console.WriteLine(passwd);
-            int resultcheck = bazaDanych.CheckUser(login, passwd);
-            if (resultcheck == 32)
+            var resultcheck = bazaDanych.CheckUser(login, passwd);
+            if (resultcheck.Item1 == 32)
             {
                 var result = MessageBox.Show("Pomyślnie zalogowano.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (result == DialogResult.OK)
                 {
+                    if (rememberMeChkbx.Checked)
+                    {
+                        Properties.Settings.Default.login = loginLoginBox.Text;
+                        Properties.Settings.Default.password = loginPasswordBox.Text;
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        Properties.Settings.Default.login = "";
+                        Properties.Settings.Default.password = "";
+                        Properties.Settings.Default.Save();
+                    }
                     LoginData ld = LoginData.GetInstance();
-                    ld.UserID = 0;
+                    ld.UserID = resultcheck.Item2;
                     ld.isAdmin = true;
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
                     Hide();
-                    AdminGameWindow app = new AdminGameWindow(null);
+                    AdminGameWindow app = new AdminGameWindow(ld);
                     app.Show();
+
                 }
             }
-            if (resultcheck == 31)
+            if (resultcheck.Item1 == 31)
             {
                 var result = MessageBox.Show("Pomyślnie zalogowano.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (result == DialogResult.OK)
                 {
+                    if (rememberMeChkbx.Checked)
+                    {
+                        Properties.Settings.Default.login = loginLoginBox.Text;
+                        Properties.Settings.Default.password = loginPasswordBox.Text;
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        Properties.Settings.Default.login = "";
+                        Properties.Settings.Default.password = "";
+                        Properties.Settings.Default.Save();
+                    }
                     LoginData ld = LoginData.GetInstance();
-                    ld.UserID = 0;
+                    ld.UserID = resultcheck.Item2;
                     ld.isAdmin = false;
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
                     Hide();
-                    AdminGameWindow app = new AdminGameWindow(null);
+                    UserGameWindow app = new UserGameWindow();
                     app.Show();
                 }
             }
-            else if (resultcheck == 102)
+            else if (resultcheck.Item1 == 102)
             {
                 MessageBox.Show("Błąd pobierania danych użytkowników", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error); 
                 loginLoginBox.Text = "";
                 loginPasswordBox.Text = "";
                 return;
             }
-            else if (resultcheck == 103)
+            else if (resultcheck.Item1 == 103)
             {
                 MessageBox.Show("Błąd połączenia", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 loginLoginBox.Text = "";
                 loginPasswordBox.Text = "";
                 return;
             }
-            else 
+            else if (resultcheck.Item1 == 50)
+            {
+                MessageBox.Show("Błędne dane autoryzacyjne.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                loginLoginBox.Text = "";
+                loginPasswordBox.Text = "";
+                return;
+            }
+            else
             {
                 MessageBox.Show("Nieznany błąd", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 loginLoginBox.Text = "";
@@ -163,6 +200,16 @@ namespace baUHInia.Authorisation
                 Admin = true;
             }
             ShowAddQuestionDialog();
+            if (this.pytanie == "")
+            {
+                MessageBox.Show("Pytanie nie może być puste.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (this.odpowiedz == "")
+            {
+                MessageBox.Show("Odpowiedź nie może być pusta.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             int resultadding = bazaDanych.DodajUzytkownika(login, passwd, Admin, pytanie, odpowiedz);
             if (resultadding == 0)
             {
@@ -171,13 +218,22 @@ namespace baUHInia.Authorisation
                 {
                     LoginData ld = LoginData.GetInstance();
                     ld.UserID = 0;
-                    ld.isAdmin = true;
+                    ld.isAdmin = Admin;
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
                     Hide();
-                    AdminGameWindow app = new AdminGameWindow(null);
-                    app.Show();
+                    if (ld.isAdmin)
+                    {
+                        AdminGameWindow app = new AdminGameWindow(ld);
+                        app.Show();
+                    }
+                    else
+                    {
+                        UserGameWindow app = new UserGameWindow();
+                        app.Show();
+                    }
+                    
                 }
             }
             else if (resultadding == 33)
@@ -251,10 +307,32 @@ namespace baUHInia.Authorisation
             }
             this.pytanie = answer.Item2;
             ShowVerifyQuestionDialog();
-            var resultpasswd = bazaDanych.newPasssword(this.loginLoginBox.Text, this.odpowiedz);
+            if (this.odpowiedz=="")
+            {
+                MessageBox.Show("Odpowiedź nie może być pusta.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            bazaDanych.Rozlacz();   //nie jest to optymalne rozwiązanie, ale no
+            var resultpasswd = bazaDanych.SprawdzPytanie(this.loginLoginBox.Text, this.odpowiedz);
             if (resultpasswd == 200)
             {
                 ShowNewPasswdDialog();
+                if (this.nowehaslo == "")
+                {
+                    MessageBox.Show("Nowe hasło nie może być puste.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                } 
+                else if ((!this.nowehaslo.Any(c => char.IsDigit(c))) || (!this.nowehaslo.Any(c => char.IsLower(c))) || (!this.nowehaslo.Any(c => char.IsUpper(c))) || (this.nowehaslo.Any(c => char.IsWhiteSpace(c))) || (this.nowehaslo.Length < 8))
+                {
+                    MessageBox.Show("Wprowadzone hasło:\n1. Musi zawierać co najmniej jedną cyfrę\n2. Musi zawierać co najmniej jedną wielką literę\n3. Musi zawierać co najmniej jedną małą literę\n4. Musi zawierać co najmniej 8 znaków\n5. Nie może zawierać spacji.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    registerPasswordBox.Text = "";
+                    registerSecondPasswordBox.Text = "";
+                    return;
+                }
+                else
+                {
+                    this.nowehaslo = ComputeSha256Hash(this.nowehaslo);
+                }
                 var newpasswdresult = bazaDanych.newPasssword(this.loginLoginBox.Text, this.nowehaslo);
                 if (newpasswdresult == 0)
                 {
@@ -281,7 +359,6 @@ namespace baUHInia.Authorisation
 
             if (aq.ShowDialog(this) == DialogResult.OK)
             {
-
                 this.pytanie = aq.questionBox.Text;
                 this.odpowiedz = aq.answerBox.Text;
             }
@@ -317,6 +394,16 @@ namespace baUHInia.Authorisation
 
             np.Dispose();
             
+        }
+        private void login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                loginButton.PerformClick();
+        }
+        private void register_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                registerButton.PerformClick();
         }
     }
 }

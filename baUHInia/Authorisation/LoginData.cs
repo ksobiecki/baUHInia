@@ -12,6 +12,8 @@ namespace baUHInia.Authorisation
         private static LoginData _instance;
 
         public int UserID { get; set; }
+        //bardzo prosiłbym o nie posługiwanie się UserID bo nie ufam tej wartości XD
+        //lepiej bierzcie po loginie niżej.
         public String name { get; set; }
         public String hash { get; set; }
         public Boolean isAdmin { get; set; }

@@ -66,6 +66,8 @@
             this.answerBox.Name = "answerBox";
             this.answerBox.Size = new System.Drawing.Size(232, 20);
             this.answerBox.TabIndex = 3;
+            this.answerBox.Enter += new System.EventHandler(this.newQuestionTextClicked);
+            this.answerBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.form_KeyDown);
             // 
             // label2
             // 
@@ -91,6 +93,8 @@
             this.questionBox.Name = "questionBox";
             this.questionBox.Size = new System.Drawing.Size(233, 20);
             this.questionBox.TabIndex = 0;
+            this.questionBox.Enter += new System.EventHandler(this.newQuestionTextClicked);
+            this.questionBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.form_KeyDown);
             // 
             // AddQuestion
             // 

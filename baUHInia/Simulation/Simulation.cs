@@ -29,6 +29,7 @@ namespace baUHInia.Simulation
         private const float declinationSun = 21.56f; //stopnie
         private const float solarRadiationDirect = 1128.60f; //W/m^2
         private const float solarRadiationDiffuse = 193.55f; 
+        //test
 
 
         //Wartości obiektów:

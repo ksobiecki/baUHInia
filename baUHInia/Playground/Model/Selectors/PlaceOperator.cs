@@ -23,6 +23,7 @@ namespace baUHInia.Playground.Model.Selectors
             bool isElement = _selection.TileObject.Config.IsElement;
             if (isElement && located)
             {
+                //TODO: remove
                 Console.WriteLine("CANNOT PLACE THERE!");
                 return;
             }
@@ -65,28 +66,26 @@ namespace baUHInia.Playground.Model.Selectors
         }
 
         // ReSharper disable once CoVariantArrayConversion
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (sbyte x, sbyte y)? pos = null)
         {
             Config config = _selection.TileObject.Config;
             bool isElement = config.IsElement;
             for (int i = 0; i < config.Offsets.Length; i++)
             {
-                (int x, int y) = pos ?? _selection.GetCoords(hoveredTile, i);
+                //TODO: all stacked up
+                (int x, int y) = pos != null
+                    ? (pos.Value.x + config.Offsets[i].X, pos.Value.y - config.Offsets[i].Y)
+                    : _selection.GetCoords(hoveredTile, i);
+
                 if (Selection.IsOutsideGrid(x, y, tileGrid)) continue;
                 if (isElement) UpdateChangedElementList(x, y, i);
                 else UpdateChangedTileList(tileGrid[y, x], i);
             }
         }
 
-        public void SelectOperator()
-        {
-            
-        }
+        public void SelectOperator() { }
 
-        public void DeselectOperator()
-        {
-            
-        }
+        public void DeselectOperator() { }
 
         private void UpdateChangedTileList(Placer tileAtCoords, int index)
         {

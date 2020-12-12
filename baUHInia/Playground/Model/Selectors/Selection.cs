@@ -17,7 +17,7 @@ namespace baUHInia.Playground.Model.Selectors
         public List<Element>[,] ElementsLayers { get; set; }
         public LinkedList<Placer> ChangedPlacers { get; private set; }
         public State SelectionState { get; private set; }
-
+        
 
         private IOperator[] Operators { get; }
         private IOperator CurrentOperator { get; set; }
@@ -68,7 +68,7 @@ namespace baUHInia.Playground.Model.Selectors
         public void RedoChanges() => CurrentOperator.RedoChanges();
 
 
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null) =>
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (sbyte x, sbyte y)? pos = null) =>
             CurrentOperator.UpdateChangedPlacerList(hoveredTile, tileGrid, pos);
 
         public (int x, int y) GetCoords(Placer tileBeforeOffset, int offsetIndex)

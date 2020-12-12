@@ -219,10 +219,11 @@ namespace baUHInia.Playground.View
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             Map map = _manager.LoadMap("mapka_test");
+            if (GameMapGrid == null) CreateNewMap(null, null);
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
             GameMapGrid = GameScroll.Content as Grid;
-            Selection.Reset();
+            //Selection.Reset();
             SideGrid.Visibility = Visibility.Visible;
             Console.WriteLine("Passed loading");
         }

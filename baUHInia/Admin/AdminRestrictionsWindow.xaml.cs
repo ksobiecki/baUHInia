@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Tiles;
@@ -114,13 +116,42 @@ namespace baUHInia.Admin
 
         public void Save(object obj, RoutedEventArgs routedEventArgs)
         {
-            _budget = int.Parse(AdminBudget.Text);
-            
+            if (int.TryParse(AdminBudget.Text, out _budget))
+            {
+                _budget = int.Parse(AdminBudget.Text);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
+                (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
+            }
         }
 
-        public Button GetReturnButton() => ReturnBtn;
-        public Button GetApplyButton() => ApplyBtn;
+        public System.Windows.Controls.Button GetReturnButton() => ReturnBtn;
+        public System.Windows.Controls.Button GetApplyButton() => ApplyBtn;
 
         public int GetBudget() => _budget;
+
+        //unused method, but worth to keep it here
+        private void Number_PreviewTextInput(object sender, KeyPressEventArgs e)
+       {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as System.Windows.Controls.TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AdminBudget_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }

@@ -187,6 +187,17 @@
     <Compile Include="Playground\Model\Tiles\Tile.cs" />
     <Compile Include="Playground\Model\Tiles\TileCategory.cs" />
     <Compile Include="Playground\Model\Tiles\TileObject.cs" />
+    <Compile Include="Simulation\ISimulate.cs" />
+    <Compile Include="Simulation\ResultInfo.xaml.cs">
+      <DependentUpon>ResultInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Simulation\ScoreTemperature.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Simulation\ScoreTemperature.Designer.cs">
+      <DependentUpon>ScoreTemperature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simulation\Simulation.cs" />
     <Compile Include="Statistics\Statistics.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,6 +248,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simulation\ScoreTemperature.resx">
+      <DependentUpon>ScoreTemperature.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Statistics\Statistics.resx">
       <DependentUpon>Statistics.cs</DependentUpon>
@@ -315,6 +329,10 @@
     <Page Include="Admin\AdminRestrictionsWindow.xaml" />
     <Page Include="Playground\View\UserGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Simulation\ResultInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

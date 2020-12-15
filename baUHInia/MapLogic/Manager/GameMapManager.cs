@@ -16,11 +16,15 @@ using baUHInia.Playground.Model.Wrappers;
 using System.IO;
 using baUHInia.MapLogic.Helper;
 using System.Text;
+using baUHInia.Database;
 
 namespace baUHInia.MapLogic.Manager
 {
     class GameMapManager : IGameMapManager
     {
+        // Database
+        private BazaDanych db;
+
         // Logic
         private string Choice;
         private string Keyword;
@@ -29,7 +33,7 @@ namespace baUHInia.MapLogic.Manager
 
         // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
         private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
-        private Map[] Maps;
+        private string[] MapNames;
         private Game[] Games;
 
         // Layout
@@ -42,12 +46,13 @@ namespace baUHInia.MapLogic.Manager
 
         public GameMapManager()
         {
+            db = new BazaDanych();
+
             // Debug purposes, remove later.
-            Maps = new Map[50];
+            MapNames = new string[0];
             Games = new Game[50];
             for (int i = 0; i < 50; i++)
             {
-                Maps[i] = new Map("Some map nr" + i);
                 Games[i] = new Game("Some game nr" + i);
             }
 
@@ -80,11 +85,11 @@ namespace baUHInia.MapLogic.Manager
 
         public Grid GetMapLoadGrid()
         {
-            // TODO get maps from database.
-
             Mode = 0;
             Choice = "";
             Keyword = "";
+
+            MapNames = db.getMapNames();
 
             LoadContainerGrid.Children.Clear();
             LoadContainerGrid.Children.Add(SearchGrid);
@@ -124,10 +129,13 @@ namespace baUHInia.MapLogic.Manager
 
         public Map LoadMap(string name)
         {
-            string readText = File.ReadAllText("C:/test_map.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
+            //string readText = File.ReadAllText("C:/test_map.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
             // TODO get credentials from database.
 
-            JObject jsonMap = JObject.Parse(readText);
+            string jsonStringMap = null;
+            db.GetMap(ref jsonStringMap, Choice);
+
+            JObject jsonMap = JObject.Parse(jsonStringMap);
 
             int size = 0;
             int availableMoney = 0;
@@ -172,8 +180,12 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
             SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
-            File.WriteAllText("C:/test_map.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
-            Console.WriteLine(jsonMap.ToString(Formatting.None));
+            //File.WriteAllText("C:/test_map.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
+
+            BazaDanych db = new BazaDanych();
+            Console.WriteLine("Saving result: " + db.DodajMape(123, "test_map_1", jsonMap.ToString(Formatting.None)));
+
+            //Console.WriteLine(jsonMap.ToString(Formatting.None));
 
             return true;
         }
@@ -293,14 +305,15 @@ namespace baUHInia.MapLogic.Manager
 
             if (Mode == 0)
             {
-                Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
+                //Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
+                string[] filteredMapNames = MapNames.Where(m => m.Contains(Keyword)).ToArray();
 
-                foreach (Map map in filteredMaps)
+                foreach (string name in filteredMapNames)
                 {
                     ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
                     Grid.SetRow(listItemGrid, index);
-                    listItemGrid.Children.Add(CreateListItemButton(map.Name));
+                    listItemGrid.Children.Add(CreateListItemButton(name));
                     ListGrid.Children.Add(listItemGrid);
                     index++;
                 }
@@ -325,6 +338,15 @@ namespace baUHInia.MapLogic.Manager
 
         private Button CreateListItemButton(string name)
         {
+            TextBlock nameTextBlock = new TextBlock
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                FontFamily = new FontFamily("Segoe UI"),
+                FontWeight = FontWeights.Bold,
+                Text = name
+            };
+
             Button listItemButton = new Button
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -335,9 +357,7 @@ namespace baUHInia.MapLogic.Manager
                 BorderThickness = new Thickness(0, 1, 0, 0),
                 BorderBrush = (Brush) new BrushConverter().ConvertFrom("#FFA7A7A7"),
                 Foreground = Brushes.White,
-                FontFamily = new FontFamily("Segoe UI"),
-                FontWeight = FontWeights.Bold,
-                Content = name
+                Content = nameTextBlock // Has to be a TextBlock, otherwise cuts out some special characters.
             };
             listItemButton.Click += ListItemButtonClick;
             listItemButton.ClickMode = ClickMode.Press;
@@ -359,7 +379,8 @@ namespace baUHInia.MapLogic.Manager
             Button sender = (Button)s;
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
-            Choice = sender.Content.ToString();
+            Choice = ((TextBlock)sender.Content).Text.ToString();
+            Console.WriteLine(Choice);
         }
 
         private void SearchTextChanged(object s, EventArgs e)

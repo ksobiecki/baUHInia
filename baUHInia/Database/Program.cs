@@ -183,7 +183,7 @@ namespace baUHInia.Database
             try
             {
                 code = Polacz();
-                String query = "SELECT nazwa,haslo,is_admin from Uzytkownicy";
+                String query = "SELECT nazwa,haslo,is_admin,id_user from Uzytkownicy";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
@@ -191,6 +191,7 @@ namespace baUHInia.Database
                    
                     if (reader.GetString(0) == nazwa && reader.GetString(1) == haslo)
                     {
+                        uid = reader.GetInt32(3);
                         if (reader.GetBoolean(2) == true)
                         {
                             Rozlacz();
@@ -266,7 +267,7 @@ namespace baUHInia.Database
             {
                 return code + 10; //43 nazwa mapy zajeta //(11-122) - blad polaczenia
             }
-            return 0;
+            return code;
         }
 
         private int CheckMapNameOccupation(String nazwa)
@@ -281,7 +282,10 @@ namespace baUHInia.Database
                 while (reader.Read())
                 {
                     if (reader.GetString(0) == nazwa)
-                        return 33; //nazwa uzytkownika zajeta
+                    {
+                        Rozlacz();
+                        return 33; //nazwa mapy zajeta
+                    }
                 }
                 code = Rozlacz();
             }
@@ -295,8 +299,8 @@ namespace baUHInia.Database
 
         public string[] getMapNames()
         {
-            string[] vs = null;
-            int index = 0;
+            List<string> vs = new List<string>();
+           
             try
             {
                 Polacz();
@@ -305,8 +309,8 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    vs[index] = reader.GetString(0);
-                    index++;
+                    vs.Add(reader.GetString(0));
+                    
                 }
                 Rozlacz();
             }
@@ -314,7 +318,31 @@ namespace baUHInia.Database
             {
 
             }
-            return vs;
+            return vs.ToArray();
+        }
+
+        public int GetMapID(string nazwa)
+        {
+            int id = 0;
+            try 
+            {
+                Polacz();
+                string query = "select id_mapy from Mapy where nazwa = @nazwa ";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@nazwa", nazwa);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    id = reader.GetInt32(0);
+                }
+                Rozlacz();
+            }
+            
+            catch (SqlException)
+            {
+                return 0;
+            }
+            return id; //jak zero to nie dobrze
         }
 
         public bool GetMap(ref string jsnon, string nazwa)
@@ -344,21 +372,52 @@ namespace baUHInia.Database
         {
             try
             {
-                Polacz();
-                sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracz,serial,map_id,nazwa) values(@gracz,@serial,@mapa,@nazwa)");
-                sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
-                sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
-                sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
-                sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
-                sqlDataAdapter.InsertCommand.Connection = polaczenie;
-                sqlDataAdapter.InsertCommand.ExecuteNonQuery();
-                Rozlacz();
+                if (CheckGameNameOccupation(nazwa, user_id) == 0)
+                {
+                    Polacz();
+                    sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracz,serial,map_id,nazwa) values(@gracz,@serial,@mapa,@nazwa)");
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
+                    sqlDataAdapter.InsertCommand.Connection = polaczenie;
+                    sqlDataAdapter.InsertCommand.ExecuteNonQuery();
+                    Rozlacz();
+                }
             }
             catch (SqlException)
             {
                 return false;
             }
             return true;
+        }
+
+        private int CheckGameNameOccupation(String nazwa,int gracz)
+        {
+            int code = 0;
+            try
+            {
+                code = Polacz();
+                string query = "SELECT nazwa from Gry where id_gracza = @gracz";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@gracz", gracz);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader.GetString(0) == nazwa)
+                    {
+                        Rozlacz();
+                        return 33; //nazwa gry zajeta
+                    }
+                }
+                code = Rozlacz();
+            }
+            catch (SqlException)
+            {
+                code += 100;
+                return code; //blad 100 = blad pobrania nazwy uzytkownika; 101 = blad polaczenia
+            }
+            return 0;
         }
 
         public bool GetGame(string nazwa, int gracz, ref string jsongame)

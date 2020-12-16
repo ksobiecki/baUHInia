@@ -48,7 +48,8 @@ namespace baUHInia.Admin
         private GameObject[] InitializeGameObjects()
         {
             List<GameObject> allGameObjects = new List<GameObject>();
-            List<TileCategory> categoryList = ResourceHolder.Get.Terrain;
+            ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
+            List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
 
 
             foreach (var category in categoryList)

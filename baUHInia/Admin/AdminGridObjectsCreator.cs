@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
@@ -18,10 +20,9 @@ namespace baUHInia.Admin
             this.isAvailable = isAvailable;
             ObjectsGrid = objectsGrid;
             GameObjectsList = new List<AdminInGridClickableObject>(gameObjects.Length);
-            for (var i = 0; i < gameObjects.Length; i++)
+            foreach (var gameObject in gameObjects)
             {
-                GameObjectsList.Insert(i,
-                    new AdminInGridClickableObject(gameObjects[i], isAvailable, adminOnClickObject));
+                GameObjectsList.Add(new AdminInGridClickableObject(gameObject, isAvailable, adminOnClickObject));
             }
         }
 
@@ -32,12 +33,39 @@ namespace baUHInia.Admin
 
             int row = 0;
             int col = 0;
-            for (var i = 0; i < GameObjectsList.Count; i++)
+            foreach (var gameObject in GameObjectsList)
             {
-                Button button = GameObjectsList[i].ClickableGameObject;
-                Grid.SetRow(button, row);
-                Grid.SetColumn(button, col);
-                ObjectsGrid.Children.Add(button);
+                if (gameObject.ClickableGameObject.Count == 1)
+                {
+                    var button = gameObject.ClickableGameObject[0];
+                    Grid.SetRow(button, row);
+                    Grid.SetColumn(button, col);
+                    ObjectsGrid.Children.Add(button);
+                }
+                else
+                {
+                    var subGrid = new Grid();
+                    (int width, int height) = gameObject.GameObject.TileObject.Sprite.SpriteWidthHeight();
+                    (sbyte x, sbyte y) = gameObject.GameObject.TileObject.Sprite.SpriteMinCoordinates();
+                    
+                    for (var i = 0; i <= height; i++) subGrid.RowDefinitions.Add(new RowDefinition());
+                    for (var i = 0; i <= width; i++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                    for (var i = 0; i < gameObject.ClickableGameObject.Count; i++)
+                    {
+                        var button = gameObject.ClickableGameObject[i];
+                        button.Margin = new Thickness(-1, 0, -1, 0);
+                        button.Padding = new Thickness(-1.1);
+                        Grid.SetColumn(button, gameObject.GameObject.TileObject.Config.Offsets[i].X - x);
+                        Grid.SetRow(button, height - gameObject.GameObject.TileObject.Config.Offsets[i].Y + y);
+                     
+                        subGrid.Children.Add(button);
+                    }
+                    Grid.SetRow(subGrid, row);
+                    Grid.SetColumn(subGrid, col);
+                    ObjectsGrid.Children.Add(subGrid);
+                }
+
+
                 col++;
                 if (col == cols)
                 {
@@ -65,10 +93,38 @@ namespace baUHInia.Admin
 
                 if (isAvailable == GameObjectsList[i].IsAvailable)
                 {
-                    Button button = GameObjectsList[i].ClickableGameObject;
-                    Grid.SetRow(button, row);
-                    Grid.SetColumn(button, col);
-                    ObjectsGrid.Children.Add(button);
+                    //todo do funkcji
+                    if (GameObjectsList[i].ClickableGameObject.Count == 1)
+                    {
+                        var button = GameObjectsList[i].ClickableGameObject[0];
+                        Grid.SetRow(button, row);
+                        Grid.SetColumn(button, col);
+                        ObjectsGrid.Children.Add(button);
+                    }
+                    else
+                    {
+                        var subGrid = new Grid();
+                        (int width, int height) = GameObjectsList[i].GameObject.TileObject.Sprite.SpriteWidthHeight();
+                        (sbyte x, sbyte y) = GameObjectsList[i].GameObject.TileObject.Sprite.SpriteMinCoordinates();
+                    
+                        for (var j = 0; j <= height; j++) subGrid.RowDefinitions.Add(new RowDefinition());
+                        for (var j = 0; j <= width; j++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                        for (var j = 0; j < GameObjectsList[i].ClickableGameObject.Count; j++)
+                        {
+                            var button = GameObjectsList[i].ClickableGameObject[j];
+                            button.Margin = new Thickness(-1, 0, -1, 0);
+                            button.Padding = new Thickness(-1.1);
+                            Grid.SetColumn(button, GameObjectsList[i].GameObject.TileObject.Config.Offsets[j].X - x);
+                            Grid.SetRow(button, height - GameObjectsList[i].GameObject.TileObject.Config.Offsets[j].Y + y);
+                     
+                            subGrid.Children.Add(button);
+                        }
+                        Grid.SetRow(subGrid, row);
+                        Grid.SetColumn(subGrid, col);
+                        ObjectsGrid.Children.Add(subGrid);
+                    }
+                    
+                    
                     col++;
                 }
 
@@ -98,8 +154,8 @@ namespace baUHInia.Admin
         public void ChangeAvailability(AdminInGridClickableObject gameObject)
         {
             GameObjectsList.Find(
-                    x => x.GameObject.TileObject.Name == gameObject.GameObject.TileObject.Name
-                    ).IsAvailable = !gameObject.IsAvailable;
+                x => x.GameObject.TileObject.Name == gameObject.GameObject.TileObject.Name
+            ).IsAvailable = !gameObject.IsAvailable;
         }
 
         public void AddObject(AdminInGridClickableObject gameObject)
@@ -113,6 +169,5 @@ namespace baUHInia.Admin
         }
 
         public GameObject[] GetGameObjects() => GameObjectsList.Select(c => c.GameObject).ToArray();
-
     }
 }

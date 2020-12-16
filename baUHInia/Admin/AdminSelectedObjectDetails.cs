@@ -27,24 +27,28 @@ namespace baUHInia.Admin
             selectedObjectDetails.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(195)});
         }
 
-        public void Display(GameObject gameObject)
+        public void Display(AdminInGridClickableObject gameObject)
         {
             selectedObjectDetails.Children.Clear();
 
-            var image = new System.Windows.Controls.Button
-            {
-                Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[0]]},
-                Background = Brushes.Transparent,
-                BorderBrush = Brushes.Transparent,
-                Margin = new Thickness(-30, 0, 0, 0)
-            };
+           // var image = new System.Windows.Controls.Button
+           // {
+           //     Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[0]]},
+           //     Background = Brushes.Transparent,
+           //     BorderBrush = Brushes.Transparent,
+           //     Margin = new Thickness(-30, 0, 0, 0)
+           // };
+    
+           var image = gameObject.CreateOfButtons(gameObject.GameObject);
+           image.Height = 100;
+           image.Width = 100;
             Grid.SetRow(image, 0);
             Grid.SetColumnSpan(image, 2);
 
             var nameLabel = new TextBlock {Text = "Nazwa: "};
             Grid.SetRow(nameLabel, 1);
             Grid.SetColumn(nameLabel, 0);
-            var name = new TextBlock {Text = shorten(gameObject.TileObject.Name, 20)};
+            var name = new TextBlock {Text = shorten(gameObject.GameObject.TileObject.Name, 20)};
             Grid.SetRow(name, 1);
             Grid.SetColumn(name, 1);
             nameLabel.Padding = new Thickness(10, 0, 0, 5);
@@ -55,7 +59,7 @@ namespace baUHInia.Admin
             var priceLabel = new TextBlock {Text = "Cena: "};
             Grid.SetRow(priceLabel, 2);
             Grid.SetColumn(priceLabel, 0);
-            var price = new System.Windows.Controls.TextBox { Text = gameObject.Price.ToString()};
+            var price = new System.Windows.Controls.TextBox { Text = gameObject.GameObject.Price.ToString()};
             Grid.SetRow(price, 2);
             Grid.SetColumn(price, 1);
             price.PreviewTextInput += Int_PreviewTextInput;
@@ -65,7 +69,7 @@ namespace baUHInia.Admin
             var ratioLabel = new TextBlock {Text = "Wpływ na temp: "};
             Grid.SetRow(ratioLabel, 3);
             Grid.SetColumn(ratioLabel, 0);
-            var ratio = new System.Windows.Controls.TextBox { Text = gameObject.ChangeValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)};
+            var ratio = new System.Windows.Controls.TextBox { Text = gameObject.GameObject.ChangeValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)};
             Grid.SetRow(ratio, 3);
             Grid.SetColumn(ratio, 1);
             ratio.PreviewTextInput += Decimal_PreviewTextInput;

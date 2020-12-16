@@ -11,7 +11,7 @@ namespace baUHInia.Admin
 {
     public class AdminInGridClickableObject
     {
-        public List<Button> ClickableGameObject { get; }
+        public Grid ClickableGameObject { get; }
         public GameObject GameObject { get; }
         public Boolean IsAvailable { get; set; }
 
@@ -29,8 +29,11 @@ namespace baUHInia.Admin
             _iAdminOnClickObject = iAdminOnClickObject;
         }
 
-        private List<Button> CreateButton(GameObject gameObject)
+        private Grid CreateButton(GameObject gameObject)
         {
+            Grid subGrid = new Grid();
+            subGrid.RowDefinitions.Add(new RowDefinition());
+            subGrid.ColumnDefinitions.Add(new ColumnDefinition());
             Button button = new Button
             {
                 Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[0]]},
@@ -40,12 +43,21 @@ namespace baUHInia.Admin
                 Padding = new Thickness(-1.2)
             };
             button.Click += OnClick;
-            return new List<Button> {button};
+            Grid.SetColumn(button, 0);
+            Grid.SetRow(button, 0);
+            subGrid.Children.Add(button);
+            return subGrid;
         }
 
-        private List<Button> CreateOfButtons(GameObject gameObject)
+        public Grid CreateOfButtons(GameObject gameObject)
         {
-            var list = new List<Button>();
+            
+            (int width, int height) = gameObject.TileObject.Sprite.SpriteWidthHeight();
+            (sbyte x, sbyte y) = gameObject.TileObject.Sprite.SpriteMinCoordinates();
+            var subGrid = new Grid();        
+            for (var i = 0; i <= height; i++) subGrid.RowDefinitions.Add(new RowDefinition());
+            for (var i = 0; i <= width; i++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            
             foreach (var offset in gameObject.TileObject.Config.Offsets)
             {
                 Button button = new Button
@@ -53,14 +65,18 @@ namespace baUHInia.Admin
                     Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[offset.I]]},
                     Background = Brushes.Transparent,
                     BorderBrush = Brushes.Transparent,
-                    Margin = new Thickness(1),
+                   // Margin = new Thickness(-1, 0, -1, 0),
                     Padding = new Thickness(-1.2)
                 };
                 button.Click += OnClick;
-                list.Add(button);
+                Grid.SetColumn(button, offset.X - x);
+                Grid.SetRow(button, height - offset.Y + y);
+                subGrid.Children.Add(button);
             }
-
-            return list;
+            
+            subGrid.Margin = new Thickness(1);
+            
+            return subGrid;
         }
 
         private void OnClick(object obj, RoutedEventArgs routedEventArgs)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -55,6 +56,7 @@ namespace baUHInia.Playground.View
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
         public LoginData Credentials { get; private set; }
+        public bool IsInAdminMode { get; } = true;
         public int AvailableFounds { get; set; }
 
         //============================ PREDEFINED ACTIONS ============================//
@@ -201,7 +203,6 @@ namespace baUHInia.Playground.View
         {
             if (SaveMapGrid == null)
             {
-                Console.WriteLine("HERERERERERERERERERERERERERERERERERERERERERER");
                 SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
                 Border border = SaveMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
@@ -223,8 +224,8 @@ namespace baUHInia.Playground.View
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
             GameMapGrid = GameScroll.Content as Grid;
-            //Selection.Reset();
             SideGrid.Visibility = Visibility.Visible;
+            _admin = new AdminRestrictionsWindow(this);
             Console.WriteLine("Passed loading");
         }
 
@@ -258,6 +259,8 @@ namespace baUHInia.Playground.View
                 {
                     AvailableObjects = _admin.GetModifiedAvailableObjects();
                     AvailableFounds = _admin.GetBudget();
+                    //TODO: change to > 3
+                    if (AvailableObjects.Count == 0) return;
                     CreateSaveWindow(null, null);
                 };
                 AdminGrid = _admin.GetAdminSelectorTableGrid();
@@ -277,8 +280,8 @@ namespace baUHInia.Playground.View
         private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
             UserGameWindow userWindow = new UserGameWindow(LoginData.GetInstance()) {Owner = this};
+            userWindow.Show();
             Hide(); // not required if using the child events below
-            userWindow.ShowDialog();
         }
 
         private void ReturnToMenu(object sender, RoutedEventArgs args)

@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
+using baUHInia.Playground.View;
 
 namespace baUHInia.Playground.Model.Selectors
 {
@@ -18,6 +19,8 @@ namespace baUHInia.Playground.Model.Selectors
         public LinkedList<Placer> ChangedPlacers { get; private set; }
         public State SelectionState { get; private set; }
         
+        public bool Admin { get; }
+        
 
         private IOperator[] Operators { get; }
         private IOperator CurrentOperator { get; set; }
@@ -31,6 +34,7 @@ namespace baUHInia.Playground.Model.Selectors
             ChangedPlacers = new LinkedList<Placer>();
             Operators = new IOperator[] {new PlaceOperator(this), new DeleteOperator(this), new BlockOperator(this)};
             CurrentOperator = Operators[0];
+            Admin = binder.IsInAdminMode;
         }
 
         public void Reset()

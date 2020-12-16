@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
@@ -13,6 +13,7 @@ namespace baUHInia.Playground.Model.Selectors
     public class PlaceOperator : IOperator
     {
         private readonly Selection _selection;
+        private Tile _currentTile;
 
         public PlaceOperator(Selection selection) => _selection = selection;
 
@@ -21,6 +22,23 @@ namespace baUHInia.Playground.Model.Selectors
             (int x, int y) position = (Grid.GetColumn(button), Grid.GetRow(button));
             bool located = _selection.Binder.PlacedObjects.FirstOrDefault(e => e.Position == position) != null;
             bool isElement = _selection.TileObject.Config.IsElement;
+            
+            _currentTile?.ShowIfAvailable(1.0f, Brushes.Navy, Brushes.Maroon);
+            //TODO: refactor
+            bool same = _currentTile == _selection.Binder.TileGrid[position.y, position.x];
+            _currentTile = _selection.Binder.TileGrid[position.y, position.x];
+
+            if (!_currentTile.Placeable && !_selection.Admin)
+            {
+                if (same)
+                {
+                    _currentTile = null;
+                    return;
+                }
+                _currentTile.ShowIfAvailable(0.25f, Brushes.Navy, Brushes.Maroon);
+                return;
+            }
+                
             if (isElement && located)
             {
                 //TODO: remove
@@ -85,7 +103,7 @@ namespace baUHInia.Playground.Model.Selectors
 
         public void SelectOperator() { }
 
-        public void DeselectOperator() { }
+        public void DeselectOperator() {  }
 
         private void UpdateChangedTileList(Placer tileAtCoords, int index)
         {

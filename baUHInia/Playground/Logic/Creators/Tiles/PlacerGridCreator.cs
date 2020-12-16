@@ -123,7 +123,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             //TODO: implement
         }
 
-        private void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
+        public void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
         {
             //TODO: change
             List<Element>[,] elementsLayers = new List<Element>[boardDensity, boardDensity];

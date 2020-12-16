@@ -24,6 +24,8 @@ namespace baUHInia.Playground.Model
         
         LoginData Credentials { get; }
         
+        bool IsInAdminMode { get; }
+        
         int AvailableFounds { get; set; }
 
         void ChangeInteractionMode(string text, Brush color);

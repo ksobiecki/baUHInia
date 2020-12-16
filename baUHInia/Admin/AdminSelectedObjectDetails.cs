@@ -31,17 +31,9 @@ namespace baUHInia.Admin
         {
             selectedObjectDetails.Children.Clear();
 
-           // var image = new System.Windows.Controls.Button
-           // {
-           //     Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[0]]},
-           //     Background = Brushes.Transparent,
-           //     BorderBrush = Brushes.Transparent,
-           //     Margin = new Thickness(-30, 0, 0, 0)
-           // };
-    
-           var image = gameObject.CreateOfButtons(gameObject.GameObject);
-           image.Height = 100;
-           image.Width = 100;
+            var image = gameObject.CreateOfButtons(gameObject.GameObject);
+           image.Height = 99;
+           image.Width = 99;
             Grid.SetRow(image, 0);
             Grid.SetColumnSpan(image, 2);
 

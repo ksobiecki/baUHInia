@@ -173,6 +173,13 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveMap(ITileBinder tileBinder)
         {
+
+            if (Keyword == "") // Temporary use of Keyword for name, TODO change when save grid is ready.
+            {
+                Console.WriteLine("Name cannot be empty."); // TODO display error.
+                return false;
+            }
+
             JObject jsonMap = new JObject();
 
             SerializationHelper.JsonAddBasicData(jsonMap, tileBinder);
@@ -183,7 +190,7 @@ namespace baUHInia.MapLogic.Manager
             //File.WriteAllText("C:/test_map.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
 
             BazaDanych db = new BazaDanych();
-            Console.WriteLine("Saving result: " + db.DodajMape(123, "test_map_1", jsonMap.ToString(Formatting.None)));
+            Console.WriteLine("Saving result for " + Keyword + ": " + db.DodajMape(123, Keyword, jsonMap.ToString(Formatting.None))); // Temporary use of Keyword for name, TODO change when save grid is ready.
 
             //Console.WriteLine(jsonMap.ToString(Formatting.None));
 
@@ -211,29 +218,21 @@ namespace baUHInia.MapLogic.Manager
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(30, 80, 30, 80),
-                Background = Brushes.Blue
+                Background = Brushes.Red
             };
 
             TextBox nameTextBox = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Top,
+                VerticalAlignment = VerticalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(10, 0, 10, 0),
-                Height = 30
+                Height = 30,
             };
 
-            Button saveButton = new Button
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(0, 30, 0, 0),
-                Content = "Zapisz"
-            };
+            nameTextBox.TextChanged += SearchTextChanged;
 
             SaveGrid.Children.Add(nameTextBox);
-            SaveGrid.Children.Add(saveButton);
         }
 
         private void CreateSearchGrid()

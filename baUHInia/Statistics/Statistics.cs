@@ -85,7 +85,7 @@ namespace baUHInia.Statistics
             sortOrder = SortOrder.Ascending;
         }
 
-        class UserScore
+        public class UserScore
         {
             string username;
             string map;

@@ -31,6 +31,7 @@ namespace baUHInia.Authorisation
             {
                 loginLoginBox.Text = Properties.Settings.Default.login;
                 loginPasswordBox.Text = Properties.Settings.Default.password;
+                rememberMeChkbx.Checked = true;
             }
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -91,7 +92,7 @@ namespace baUHInia.Authorisation
 
                 }
             }
-            if (resultcheck.Item1 == 31)
+            else if (resultcheck.Item1 == 31)
             {
                 var result = MessageBox.Show("Pomyślnie zalogowano.", "Autoryzacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (result == DialogResult.OK)

@@ -28,8 +28,7 @@ namespace baUHInia.MapLogic.Manager
         // Logic
         private string Choice;
         private string Keyword;
-        private Map[] mockupMaps;
-        private Game[] mockupGames;
+        private bool ClearSelection = true;
 
         // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
         private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
@@ -43,6 +42,7 @@ namespace baUHInia.MapLogic.Manager
         private ScrollViewer ListScrollViewer;
         private Grid ListGrid;
         private Grid SaveGrid;
+        TextBox nameTextBox;
 
         public GameMapManager()
         {
@@ -91,6 +91,7 @@ namespace baUHInia.MapLogic.Manager
 
             MapNames = db.getMapNames();
 
+            SaveContainerGrid.Children.Clear();
             LoadContainerGrid.Children.Clear();
             LoadContainerGrid.Children.Add(SearchGrid);
             LoadContainerGrid.Children.Add(ListScrollViewer);
@@ -104,7 +105,18 @@ namespace baUHInia.MapLogic.Manager
         public Grid GetMapSaveGrid()
         {
             Mode = 1;
+            Choice = "";
+            Keyword = "";
+
+            MapNames = db.getMapNames();
+
+            LoadContainerGrid.Children.Clear();
             SaveContainerGrid.Children.Clear();
+            SaveContainerGrid.Children.Add(SearchGrid);
+            SaveContainerGrid.Children.Add(ListScrollViewer);
+            ListScrollViewer.Content = ListGrid;
+
+            PopulateListGrid();
             CreateSaveGrid();
             SaveContainerGrid.Children.Add(SaveGrid);
             return SaveContainerGrid;
@@ -117,6 +129,11 @@ namespace baUHInia.MapLogic.Manager
 
         public Game LoadGame(string name)
         {
+            if (Choice == "")
+            {
+                throw new Exception("Name cannot be empty.");
+            }
+
             string readText = File.ReadAllText("C:/test_game.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
 
             JObject jsonGame = JObject.Parse(readText);
@@ -131,6 +148,11 @@ namespace baUHInia.MapLogic.Manager
         {
             //string readText = File.ReadAllText("C:/test_map.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
             // TODO get credentials from database.
+
+            if (Choice == "")
+            {
+                throw new Exception("Name cannot be empty.");
+            }
 
             string jsonStringMap = null;
             db.GetMap(ref jsonStringMap, Choice);
@@ -162,6 +184,11 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveGame(ITileBinder tileBinder)
         {
+            if (Choice == "")
+            {
+                throw new Exception("Name cannot be empty.");
+            }
+
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
@@ -173,11 +200,9 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveMap(ITileBinder tileBinder)
         {
-
-            if (Keyword == "") // Temporary use of Keyword for name, TODO change when save grid is ready.
+            if (Choice == "")
             {
-                Console.WriteLine("Name cannot be empty."); // TODO display error.
-                return false;
+                throw new Exception("Name cannot be empty.");
             }
 
             JObject jsonMap = new JObject();
@@ -190,7 +215,18 @@ namespace baUHInia.MapLogic.Manager
             //File.WriteAllText("C:/test_map.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
 
             BazaDanych db = new BazaDanych();
-            Console.WriteLine("Saving result for " + Keyword + ": " + db.DodajMape(123, Keyword, jsonMap.ToString(Formatting.None))); // Temporary use of Keyword for name, TODO change when save grid is ready.
+            int result = db.DodajMape(123, Choice, jsonMap.ToString(Formatting.None));
+
+            if (result == 33)
+            {
+               return db.updateMap(123, jsonMap.ToString(Formatting.None), Choice);
+            }
+
+            if (result != 0)
+            {
+                Console.WriteLine("Attempt to save map '" + Choice + "' in database failed - code: " + result + ".");
+                return false;
+            }
 
             //Console.WriteLine(jsonMap.ToString(Formatting.None));
 
@@ -217,20 +253,21 @@ namespace baUHInia.MapLogic.Manager
             SaveGrid = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Background = Brushes.Red
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Height = 30,
+                Background = Brushes.Blue,
             };
 
-            TextBox nameTextBox = new TextBox
+            nameTextBox = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Stretch,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Padding = new Thickness(10, 0, 10, 0),
-                Height = 30,
+                Margin = new Thickness(0, 0, 0, 0),
+                Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7"),
+                Padding = new Thickness(5, 0, 5, 0),
             };
-
-            nameTextBox.TextChanged += SearchTextChanged;
+            nameTextBox.TextChanged += SaveTextChanged;
 
             SaveGrid.Children.Add(nameTextBox);
         }
@@ -302,7 +339,7 @@ namespace baUHInia.MapLogic.Manager
 
             int index = 0;
 
-            if (Mode == 0)
+            if (Mode == 0 || Mode == 1)
             {
                 //Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
                 string[] filteredMapNames = MapNames.Where(m => m.Contains(Keyword)).ToArray();
@@ -317,7 +354,7 @@ namespace baUHInia.MapLogic.Manager
                     index++;
                 }
             }
-            else if (Mode == 2)
+            else if (Mode == 2 || Mode == 3)
             {
                 Game[] filteredGames = Games.Where(g => g.Name.Contains(Keyword)).ToArray();
 
@@ -379,7 +416,11 @@ namespace baUHInia.MapLogic.Manager
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
             Choice = ((TextBlock)sender.Content).Text.ToString();
-            Console.WriteLine(Choice);
+            ClearSelection = false;
+            if (Mode == 1 || Mode == 3)
+            {
+                nameTextBox.Text = Choice;
+            }
         }
 
         private void SearchTextChanged(object s, EventArgs e)
@@ -388,10 +429,31 @@ namespace baUHInia.MapLogic.Manager
             Keyword = sender.Text;
         }
 
+        private void SaveTextChanged(object s, EventArgs e)
+        {
+            TextBox sender = (TextBox)s;
+            Choice = sender.Text;
+
+            if (ClearSelection)
+            {
+                foreach (Grid listItemGrid in ListGrid.Children)
+                {
+                    Button listItemButton = (Button)listItemGrid.Children[0];
+                    listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
+                    listItemButton.Foreground = Brushes.White;
+                }
+            }
+            else
+            {
+                ClearSelection = true;
+            }
+        }
+
         private void SearchButtonClick(object s, EventArgs e)
         {
             Choice = "";
             PopulateListGrid();
         }
+        
     }
 }

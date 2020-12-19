@@ -24,8 +24,10 @@ namespace baUHInia.MapLogic.Manager
         // Logic
         private string Choice;
         private string Keyword;
+            private string duppa="duppa";
         private Map[] mockupMaps;
         private Game[] mockupGames;
+        TextBox nameTextBox;
 
         // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
         private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
@@ -99,7 +101,14 @@ namespace baUHInia.MapLogic.Manager
         public Grid GetMapSaveGrid()
         {
             Mode = 1;
+            Choice = "";
+            Keyword = "";
             SaveContainerGrid.Children.Clear();
+            SaveContainerGrid.Children.Add(SearchGrid);
+            SaveContainerGrid.Children.Add(ListScrollViewer);
+            ListScrollViewer.Content = ListGrid;
+
+            PopulateListGrid();
             CreateSaveGrid();
             SaveContainerGrid.Children.Add(SaveGrid);
             return SaveContainerGrid;
@@ -198,30 +207,26 @@ namespace baUHInia.MapLogic.Manager
             SaveGrid = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(30, 80, 30, 80),
-                Background = Brushes.Blue
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Height = 30,
+                Background = Brushes.Blue,
             };
 
-            TextBox nameTextBox = new TextBox
+            nameTextBox = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Top,
+                VerticalAlignment = VerticalAlignment.Stretch,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Padding = new Thickness(10, 0, 10, 0),
-                Height = 30
-            };
+                Margin = new Thickness(0, 0, 0, 0),
+                Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7"),
+                Padding = new Thickness(5, 0, 5, 0),
+        };
+            nameTextBox.TextChanged += SaveTextChanged;
+            nameTextBox.Text = "auto";
 
-            Button saveButton = new Button
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(0, 30, 0, 0),
-                Content = "Zapisz"
-            };
+
 
             SaveGrid.Children.Add(nameTextBox);
-            SaveGrid.Children.Add(saveButton);
         }
 
         private void CreateSearchGrid()
@@ -291,7 +296,7 @@ namespace baUHInia.MapLogic.Manager
 
             int index = 0;
 
-            if (Mode == 0)
+            if (Mode == 0 || Mode == 1)
             {
                 Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
 
@@ -305,7 +310,7 @@ namespace baUHInia.MapLogic.Manager
                     index++;
                 }
             }
-            else if (Mode == 2)
+            else if (Mode == 2 || Mode == 3)
             {
                 Game[] filteredGames = Games.Where(g => g.Name.Contains(Keyword)).ToArray();
 
@@ -360,6 +365,10 @@ namespace baUHInia.MapLogic.Manager
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
             Choice = sender.Content.ToString();
+            if (Mode == 1 || Mode == 3)
+            {
+                nameTextBox.Text = Choice;
+            }
         }
 
         private void SearchTextChanged(object s, EventArgs e)
@@ -368,10 +377,17 @@ namespace baUHInia.MapLogic.Manager
             Keyword = sender.Text;
         }
 
+        private void SaveTextChanged(object s, EventArgs e)
+        {
+            TextBox sender = (TextBox)s;
+            Choice = sender.Text;
+        }
+
         private void SearchButtonClick(object s, EventArgs e)
         {
             Choice = "";
             PopulateListGrid();
         }
+        
     }
 }

@@ -24,10 +24,7 @@ namespace baUHInia.MapLogic.Manager
         // Logic
         private string Choice;
         private string Keyword;
-            private string duppa="duppa";
-        private Map[] mockupMaps;
-        private Game[] mockupGames;
-        TextBox nameTextBox;
+        private bool ClearSelection = true;
 
         // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
         private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
@@ -41,6 +38,7 @@ namespace baUHInia.MapLogic.Manager
         private ScrollViewer ListScrollViewer;
         private Grid ListGrid;
         private Grid SaveGrid;
+        TextBox nameTextBox;
 
         public GameMapManager()
         {
@@ -220,11 +218,8 @@ namespace baUHInia.MapLogic.Manager
                 Margin = new Thickness(0, 0, 0, 0),
                 Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7"),
                 Padding = new Thickness(5, 0, 5, 0),
-        };
+            };
             nameTextBox.TextChanged += SaveTextChanged;
-            nameTextBox.Text = "auto";
-
-
 
             SaveGrid.Children.Add(nameTextBox);
         }
@@ -365,6 +360,7 @@ namespace baUHInia.MapLogic.Manager
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
             Choice = sender.Content.ToString();
+            ClearSelection = false;
             if (Mode == 1 || Mode == 3)
             {
                 nameTextBox.Text = Choice;
@@ -381,6 +377,20 @@ namespace baUHInia.MapLogic.Manager
         {
             TextBox sender = (TextBox)s;
             Choice = sender.Text;
+
+            if (ClearSelection)
+            {
+                foreach (Grid listItemGrid in ListGrid.Children)
+                {
+                    Button listItemButton = (Button)listItemGrid.Children[0];
+                    listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
+                    listItemButton.Foreground = Brushes.White;
+                }
+            }
+            else
+            {
+                ClearSelection = true;
+            }
         }
 
         private void SearchButtonClick(object s, EventArgs e)

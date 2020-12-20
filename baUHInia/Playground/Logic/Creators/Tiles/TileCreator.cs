@@ -27,6 +27,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             Button button = CreateButton(tileObject.Name, tileObject[0]/*to["grass.png"]*/);
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
             button.VerticalAlignment = VerticalAlignment.Stretch;
+            button.Style = Application.Current.FindResource("MenuButton") as Style;
             ApplyBehaviourToTile(button);
             Tile tile = new Tile(button, null);
             tile.SetPositionInGrid(GameGrid, xPos, yPos);

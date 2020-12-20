@@ -9,7 +9,7 @@ namespace baUHInia.Playground.Model.Selectors
 
         void RedoChanges();
 
-        void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null);
+        void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (sbyte x, sbyte y)? pos = null);
 
         void SelectOperator();
 

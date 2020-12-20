@@ -47,7 +47,6 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         public List<GameObject> LoadMapIntoTheGameGrid(ITileBinder tileBinder, Map map)
         {
-            
             Grid gameGrid = new Grid {Width = BoardResolution.x, Height = BoardResolution.y};
             tileBinder.GameViewer.Content = gameGrid;
 
@@ -60,15 +59,21 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
             tileBinder.AvailableFounds = map.AvailableMoney;
             FillGameGridWithTiles(tileBinder, map);
+            //TODO: maybe change
+            InitializeElementsLayer(gameGrid, tileBinder.Selection, map.TileGrid.GetUpperBound(0));
 
             tileBinder.Selection.ChangeState(State.Place);
-            Placement[] placers = map.PlacedObjects ??  new Placement[0];
+            Placement[] placers = map.PlacedObjects ?? new Placement[0];
             foreach (Placement placement in placers)
             {
-                tileBinder.Selection.UpdateChangedPlacerList(null, tileBinder.TileGrid, placement.Position);
+                tileBinder.Selection.TileObject = placement.GameObject.TileObject;
+                (sbyte, sbyte) position = ((sbyte) placement.Position.x, (sbyte) placement.Position.y);
+                tileBinder.Selection.UpdateChangedPlacerList(null, tileBinder.TileGrid, position);
                 Button btn = tileBinder.TileGrid[placement.Position.y, placement.Position.x].GetUiElement() as Button;
                 tileBinder.Selection.ApplyTiles(btn, false);
+                tileBinder.Selection.ChangedPlacers.Clear();
             }
+
             return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
 
@@ -78,7 +83,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         }
 
         //============================= GAME GRID ================================//
-        
+
         public void CreateGameGridInWindow(Tile[,] tileFields, ScrollViewer window) { }
 
         private void FillGameGridWithTiles(Tile[,] tileFields)
@@ -118,7 +123,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             //TODO: implement
         }
 
-        private void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
+        public void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
         {
             //TODO: change
             List<Element>[,] elementsLayers = new List<Element>[boardDensity, boardDensity];

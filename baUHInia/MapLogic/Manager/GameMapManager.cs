@@ -12,6 +12,7 @@ using System.IO;
 using baUHInia.MapLogic.Helper;
 using System.Text;
 using baUHInia.Database;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.MapLogic.Manager
 {
@@ -25,101 +26,84 @@ namespace baUHInia.MapLogic.Manager
         private string Keyword;
         private bool ClearSelection = true;
 
-        // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
-        private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
+        // Modes - 0: MapLoad, 1: MapSave 2: GameLoad, 3: GameSave.
+
         private string[] MapNames;
-        private Game[] Games;
+        private Tuple<int,string> Games;
+
 
         // Layout
-        private Grid LoadContainerGrid;
-        private Grid SaveContainerGrid;
-        private Grid SearchGrid;
-        private ScrollViewer ListScrollViewer;
-        private Grid ListGrid;
-        private Grid SaveGrid;
-        TextBox nameTextBox;
+        private Grid LoadMapContainerGrid;
+        private Grid SaveMapContainerGrid;
+        private Grid LoadGameContainerGrid;
+        private Grid SaveGameContainerGrid;
+
+        private TextBox SaveMapNameTextBox;
+        private TextBox SaveGameNameTextBox;
 
         public GameMapManager()
         {
+            Choice = "";
+            Keyword = "";
+
             db = new BazaDanych();
-
-            // Debug purposes, remove later.
-            MapNames = new string[0];
-            Games = new Game[50];
-            for (int i = 0; i < 50; i++)
-            {
-                Games[i] = new Game("Some game nr" + i);
-            }
-
-            CreateContainerGrids();
-            CreateSearchGrid();
-            CreateListScrollViewer();
-            CreateListGrid();
-
-            Choice = "";
-            Keyword = "";
-        }
-
-        public Grid GetGameLoadGrid()
-        {
-            // TODO get games from database.
-
-            Mode = 2;
-            Choice = "";
-            Keyword = "";
-
-            LoadContainerGrid.Children.Clear();
-            LoadContainerGrid.Children.Add(SearchGrid);
-            LoadContainerGrid.Children.Add(ListScrollViewer);
-            ListScrollViewer.Content = ListGrid;
-
-            PopulateListGrid();
-
-            return LoadContainerGrid;
         }
 
         public Grid GetMapLoadGrid()
         {
-            Mode = 0;
             Choice = "";
             Keyword = "";
 
             MapNames = db.getMapNames();
 
-            SaveContainerGrid.Children.Clear();
-            LoadContainerGrid.Children.Clear();
-            LoadContainerGrid.Children.Add(SearchGrid);
-            LoadContainerGrid.Children.Add(ListScrollViewer);
-            ListScrollViewer.Content = ListGrid;
+            LoadMapContainerGrid = CreateContainerGrid();
+            ScrollViewer loadListScrollViewer = CreateListScrollViewer();
+            Grid loadListGrid = CreateListGrid();
+            Grid loadSearchGrid = CreateSearchGrid(loadListGrid,0);
 
-            PopulateListGrid();
+            LoadMapContainerGrid.Children.Add(loadSearchGrid);
+            LoadMapContainerGrid.Children.Add(loadListScrollViewer);
+            loadListScrollViewer.Content = loadListGrid;
 
-            return LoadContainerGrid;
+            PopulateListGrid(loadListGrid,0);
+
+            return LoadMapContainerGrid;
         }
 
         public Grid GetMapSaveGrid()
         {
-            Mode = 1;
             Choice = "";
             Keyword = "";
 
             MapNames = db.getMapNames();
 
-            LoadContainerGrid.Children.Clear();
-            SaveContainerGrid.Children.Clear();
-            SaveContainerGrid.Children.Add(SearchGrid);
-            SaveContainerGrid.Children.Add(ListScrollViewer);
-            ListScrollViewer.Content = ListGrid;
+            SaveMapContainerGrid = CreateContainerGrid();
+            ScrollViewer saveListScrollViewer = CreateListScrollViewer();
+            Grid saveListGrid = CreateListGrid();
+            Grid saveSearchGrid = CreateSearchGrid(saveListGrid,1);
+            Grid nameGrid = CreateNameGrid();
+            SaveMapNameTextBox = CreateNameTextBox(saveListGrid);
 
-            PopulateListGrid();
-            CreateSaveGrid();
-            SaveContainerGrid.Children.Add(SaveGrid);
-            return SaveContainerGrid;
+            nameGrid.Children.Add(SaveMapNameTextBox);
+            SaveMapContainerGrid.Children.Add(saveSearchGrid);
+            SaveMapContainerGrid.Children.Add(saveListScrollViewer);
+            saveListScrollViewer.Content = saveListGrid;
+            SaveMapContainerGrid.Children.Add(nameGrid);
+
+            PopulateListGrid(saveListGrid,1);
+
+            return SaveMapContainerGrid;
         }
+
+        public Grid GetGameLoadGrid()
+        {
+            throw new NotImplementedException(); // Need get game names method.
+        }
+
 
         public Grid GetGameSaveGrid()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); // Need get game names method.
         }
 
         public Game LoadGame(string name)
@@ -148,6 +132,8 @@ namespace baUHInia.MapLogic.Manager
                 throw new Exception("Name cannot be empty.");
             }
 
+            Console.WriteLine(Choice);
+
             string jsonStringMap = null;
             db.GetMap(ref jsonStringMap, Choice);
 
@@ -168,6 +154,11 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonGetAvailableTiles(jsonMap, out var availableTiles);
 
             SerializationHelper.JsonGetPlacedObjects(jsonMap, out var placedObjects);
+
+            for (int i = 0; i < placedObjects.GetLength(0); i++)
+            {
+                Console.WriteLine(((Placement)placedObjects[i]).GameObject.TileObject.Name);
+            }
 
             return new Map(123, 123, name, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
         }
@@ -209,7 +200,7 @@ namespace baUHInia.MapLogic.Manager
 
             if (result == 33)
             {
-               return db.updateMap(123, jsonMap.ToString(Formatting.None), Choice);
+                return db.updateMap(123, jsonMap.ToString(Formatting.None), Choice);
             }
 
             if (result != 0)
@@ -223,32 +214,29 @@ namespace baUHInia.MapLogic.Manager
             return true;
         }
 
-        private void CreateContainerGrids()
+        private Grid CreateContainerGrid()
         {
-            LoadContainerGrid = new Grid
+            return new Grid
             {
-                HorizontalAlignment = HorizontalAlignment.Stretch, 
-                VerticalAlignment = VerticalAlignment.Stretch
-            };
-
-            SaveContainerGrid = new Grid
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch, 
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch
             };
         }
 
-        private void CreateSaveGrid()
+        private Grid CreateNameGrid()
         {
-            SaveGrid = new Grid
+            return new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Height = 30,
                 Background = Brushes.Blue,
             };
+        }
 
-            nameTextBox = new TextBox
+        private TextBox CreateNameTextBox(Grid listGrid)
+        {
+            TextBox nameTextBox = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
@@ -257,14 +245,14 @@ namespace baUHInia.MapLogic.Manager
                 Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7"),
                 Padding = new Thickness(5, 0, 5, 0),
             };
-            nameTextBox.TextChanged += SaveTextChanged;
+            nameTextBox.TextChanged += (s,a) => { NameTextChanged(s,listGrid); };
 
-            SaveGrid.Children.Add(nameTextBox);
+            return nameTextBox;
         }
 
-        private void CreateSearchGrid()
+        private Grid CreateSearchGrid(Grid listGrid, int mode)
         {
-            SearchGrid = new Grid
+            Grid searchGrid = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
@@ -295,15 +283,17 @@ namespace baUHInia.MapLogic.Manager
             searchButton.Foreground = Brushes.White;
             searchButton.FontFamily = new FontFamily("Segoe UI");
             searchButton.FontWeight = FontWeights.Bold;
-            searchButton.Click += SearchButtonClick;
+            searchButton.Click += (s,a) => { SearchButtonClick(listGrid,mode); };
 
-            SearchGrid.Children.Add(searchTextBox);
-            SearchGrid.Children.Add(searchButton);
+            searchGrid.Children.Add(searchTextBox);
+            searchGrid.Children.Add(searchButton);
+
+            return searchGrid;
         }
 
-        private void CreateListScrollViewer()
+        private ScrollViewer CreateListScrollViewer()
         {
-            ListScrollViewer = new ScrollViewer
+            return new ScrollViewer
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
@@ -312,9 +302,9 @@ namespace baUHInia.MapLogic.Manager
             };
         }
 
-        private void CreateListGrid()
+        private Grid CreateListGrid()
         {
-            ListGrid = new Grid
+            return new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
@@ -322,47 +312,45 @@ namespace baUHInia.MapLogic.Manager
             };
         }
 
-        private void PopulateListGrid()
+        private void PopulateListGrid(Grid listGrid,int mode)
         {
-            ListGrid.RowDefinitions.Clear();
-            ListGrid.Children.Clear();
+            listGrid.RowDefinitions.Clear();
+            listGrid.Children.Clear();
 
             int index = 0;
 
-            if (Mode == 0 || Mode == 1)
+            if (mode == 0 || mode == 1)
             {
-                //Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
                 string[] filteredMapNames = MapNames.Where(m => m.Contains(Keyword)).ToArray();
 
                 foreach (string name in filteredMapNames)
                 {
-                    ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
                     Grid.SetRow(listItemGrid, index);
-                    listItemGrid.Children.Add(CreateListItemButton(name));
-                    ListGrid.Children.Add(listItemGrid);
+                    listItemGrid.Children.Add(CreateListItemButton(name,listGrid));
+                    listGrid.Children.Add(listItemGrid);
                     index++;
                 }
             }
-            else if (Mode == 2 || Mode == 3)
+            /*else if (mode == 2 || mode == 3)
             {
-                Game[] filteredGames = Games.Where(g => g.Name.Contains(Keyword)).ToArray();
+                string[] filteredGames = Games.Where(g => g.Name.Contains(Keyword)).ToArray();
 
                 foreach (Game game in filteredGames)
                 {
-                    ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
-                    Button listItemButton = CreateListItemButton(game.Name);
+                    //Button listItemButton = CreateListItemButton(game.Name);
                     Grid.SetRow(listItemGrid, index);
-                    listItemGrid.Children.Add(listItemButton);
-                    ListGrid.Children.Add(listItemGrid);
+                    //listItemGrid.Children.Add(listItemButton);
+                    listGrid.Children.Add(listItemGrid);
                     index++;
                 }
-            }
-            
+            }*/
         }
 
-        private Button CreateListItemButton(string name)
+        private Button CreateListItemButton(string name, Grid listGrid)
         {
             TextBlock nameTextBlock = new TextBlock
             {
@@ -385,7 +373,7 @@ namespace baUHInia.MapLogic.Manager
                 Foreground = Brushes.White,
                 Content = nameTextBlock // Has to be a TextBlock, otherwise cuts out some special characters.
             };
-            listItemButton.Click += ListItemButtonClick;
+            listItemButton.Click += (s,a) => { ListItemButtonClick(s,listGrid); };
             listItemButton.ClickMode = ClickMode.Press;
 
             return listItemButton;
@@ -393,9 +381,9 @@ namespace baUHInia.MapLogic.Manager
 
         // Event handlers
 
-        private void ListItemButtonClick(object s, EventArgs e)
+        private void ListItemButtonClick(object s, Grid listGrid)
         {
-            foreach (Grid listItemGrid in ListGrid.Children)
+            foreach (Grid listItemGrid in listGrid.Children)
             {
                 Button listItemButton = (Button)listItemGrid.Children[0];
                 listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
@@ -407,9 +395,15 @@ namespace baUHInia.MapLogic.Manager
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
             Choice = ((TextBlock)sender.Content).Text.ToString();
             ClearSelection = false;
-            if (Mode == 1 || Mode == 3)
+
+            if (!(SaveMapNameTextBox is null))
             {
-                nameTextBox.Text = Choice;
+                SaveMapNameTextBox.Text = Choice;
+            }
+
+            if (!(SaveGameNameTextBox is null))
+            {
+                SaveGameNameTextBox.Text = Choice;
             }
         }
 
@@ -419,14 +413,14 @@ namespace baUHInia.MapLogic.Manager
             Keyword = sender.Text;
         }
 
-        private void SaveTextChanged(object s, EventArgs e)
+        private void NameTextChanged(object s, Grid listGrid)
         {
             TextBox sender = (TextBox)s;
             Choice = sender.Text;
 
             if (ClearSelection)
             {
-                foreach (Grid listItemGrid in ListGrid.Children)
+                foreach (Grid listItemGrid in listGrid.Children)
                 {
                     Button listItemButton = (Button)listItemGrid.Children[0];
                     listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
@@ -439,10 +433,10 @@ namespace baUHInia.MapLogic.Manager
             }
         }
 
-        private void SearchButtonClick(object s, EventArgs e)
+        private void SearchButtonClick(Grid listGrid, int mode)
         {
             Choice = "";
-            PopulateListGrid();
+            PopulateListGrid(listGrid,mode);
         }
         
     }

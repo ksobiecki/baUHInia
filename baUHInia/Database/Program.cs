@@ -444,7 +444,7 @@ namespace baUHInia.Database
 
         }
 
-        public List<Tuple<int, string>> getGameNamesAndID()
+        public Tuple<int, string>[] getGameNamesAndID()
         {
             List<Tuple<int, string>> vs = new List<Tuple<int, string>>();
 
@@ -465,7 +465,7 @@ namespace baUHInia.Database
             {
                 return null;
             }
-            return vs;
+            return vs.ToArray();
         }
 
         public int GetScore(string nazwa)

@@ -421,14 +421,14 @@ namespace baUHInia.Database
             return 0;
         }
 
-        public bool GetGame(string nazwa, int gracz, ref string jsongame)
+        public bool GetGame(int ID, ref string jsongame)
         {
             try
             {
                 Polacz();
-                string query = "select serial from Gry where nazwa = @nazwa ";
+                string query = "select serial from Gry where id_gry = @ID ";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
-                sqlCommand.Parameters.AddWithValue("@nazwa", nazwa);
+                sqlCommand.Parameters.AddWithValue("@ID", ID);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 if (reader.Read())
                 {
@@ -442,6 +442,30 @@ namespace baUHInia.Database
                 return false;
             }
 
+        }
+
+        public List<Tuple<int, string>> getGameNamesAndID()
+        {
+            List<Tuple<int, string>> vs = new List<Tuple<int, string>>();
+
+            try
+            {
+                Polacz();
+                string query = "select id_gry,nazwa from Gry";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    vs.Add(new Tuple<int, string>(reader.GetInt32(0), reader.GetString(1)));
+
+                }
+                Rozlacz();
+            }
+            catch (SqlException)
+            {
+                return null;
+            }
+            return vs;
         }
 
         public int GetScore(string nazwa)
@@ -534,5 +558,7 @@ namespace baUHInia.Database
                 return false;
             }
         }
+
+
     }
 }

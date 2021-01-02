@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+using baUHInia.Statistics;
 
 
 
@@ -74,7 +75,7 @@ namespace baUHInia.Database
             {
                 code = +Rozlacz();
                 return code + 51;//84 - nazwa uzytkownika zajeta; 51 - blad dodania uzytkownika; //52 - blad polaczenia
-            }           
+            }
             return code; //0 = git,33 =nazwa zjeta
         }
 
@@ -183,14 +184,15 @@ namespace baUHInia.Database
             try
             {
                 code = Polacz();
-                String query = "SELECT nazwa,haslo,is_admin from Uzytkownicy";
+                String query = "SELECT nazwa,haslo,is_admin,id_user from Uzytkownicy";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                   
+
                     if (reader.GetString(0) == nazwa && reader.GetString(1) == haslo)
                     {
+                        uid = reader.GetInt32(3);
                         if (reader.GetBoolean(2) == true)
                         {
                             Rozlacz();
@@ -266,7 +268,7 @@ namespace baUHInia.Database
             {
                 return code + 10; //43 nazwa mapy zajeta //(11-122) - blad polaczenia
             }
-            return 0;
+            return code;
         }
 
         private int CheckMapNameOccupation(String nazwa)
@@ -281,7 +283,10 @@ namespace baUHInia.Database
                 while (reader.Read())
                 {
                     if (reader.GetString(0) == nazwa)
-                        return 33; //nazwa uzytkownika zajeta
+                    {
+                        Rozlacz();
+                        return 33; //nazwa mapy zajeta
+                    }
                 }
                 code = Rozlacz();
             }
@@ -295,8 +300,8 @@ namespace baUHInia.Database
 
         public string[] getMapNames()
         {
-            string[] vs = null;
-            int index = 0;
+            List<string> vs = new List<string>();
+
             try
             {
                 Polacz();
@@ -305,8 +310,8 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    vs[index] = reader.GetString(0);
-                    index++;
+                    vs.Add(reader.GetString(0));
+
                 }
                 Rozlacz();
             }
@@ -314,7 +319,31 @@ namespace baUHInia.Database
             {
 
             }
-            return vs;
+            return vs.ToArray();
+        }
+
+        public int GetMapID(string nazwa)
+        {
+            int id = 0;
+            try
+            {
+                Polacz();
+                string query = "select id_mapy from Mapy where nazwa = @nazwa ";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@nazwa", nazwa);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    id = reader.GetInt32(0);
+                }
+                Rozlacz();
+            }
+
+            catch (SqlException)
+            {
+                return 0;
+            }
+            return id; //jak zero to nie dobrze
         }
 
         public bool GetMap(ref string jsnon, string nazwa)
@@ -340,19 +369,22 @@ namespace baUHInia.Database
             return true;
         }
 
-        public bool addGame(int user_id, string nazwa,string game_contents, int map_id)
+        public bool addGame(int user_id, string nazwa, string game_contents, int map_id)
         {
             try
             {
-                Polacz();
-                sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracz,serial,map_id,nazwa) values(@gracz,@serial,@mapa,@nazwa)");
-                sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
-                sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
-                sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
-                sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
-                sqlDataAdapter.InsertCommand.Connection = polaczenie;
-                sqlDataAdapter.InsertCommand.ExecuteNonQuery();
-                Rozlacz();
+                if (CheckGameNameOccupation(nazwa, user_id) == 0)
+                {
+                    Polacz();
+                    sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracza,serial,map_id,nazwa) values(@gracz,@serial,@mapa,@nazwa)");
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
+                    sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
+                    sqlDataAdapter.InsertCommand.Connection = polaczenie;
+                    sqlDataAdapter.InsertCommand.ExecuteNonQuery();
+                    Rozlacz();
+                }
             }
             catch (SqlException)
             {
@@ -361,14 +393,42 @@ namespace baUHInia.Database
             return true;
         }
 
-        public bool GetGame(string nazwa, int gracz, ref string jsongame)
+        private int CheckGameNameOccupation(String nazwa, int gracz)
+        {
+            int code = 0;
+            try
+            {
+                code = Polacz();
+                string query = "SELECT nazwa from Gry where id_gracza = @gracz";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@gracz", gracz);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader.GetString(0) == nazwa)
+                    {
+                        Rozlacz();
+                        return 33; //nazwa gry zajeta
+                    }
+                }
+                code = Rozlacz();
+            }
+            catch (SqlException)
+            {
+                code += 100;
+                return code; //blad 100 = blad pobrania nazwy uzytkownika; 101 = blad polaczenia
+            }
+            return 0;
+        }
+
+        public bool GetGame(int ID, ref string jsongame)
         {
             try
             {
                 Polacz();
-                string query = "select serial from Gry where nazwa = @nazwa ";
+                string query = "select serial from Gry where id_gry = @ID ";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
-                sqlCommand.Parameters.AddWithValue("@nazwa", nazwa);
+                sqlCommand.Parameters.AddWithValue("@ID", ID);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 if (reader.Read())
                 {
@@ -382,6 +442,30 @@ namespace baUHInia.Database
                 return false;
             }
 
+        }
+
+        public Tuple<int, string>[] getGameNamesAndID()
+        {
+            List<Tuple<int, string>> vs = new List<Tuple<int, string>>();
+
+            try
+            {
+                Polacz();
+                string query = "select id_gry,nazwa from Gry";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    vs.Add(new Tuple<int, string>(reader.GetInt32(0), reader.GetString(1)));
+
+                }
+                Rozlacz();
+            }
+            catch (SqlException)
+            {
+                return null;
+            }
+            return vs.ToArray();
         }
 
         public int GetScore(string nazwa)
@@ -406,5 +490,75 @@ namespace baUHInia.Database
                 return 0;
             }
         }
+
+        public List<Statistics.Statistics.UserScore> GetUserScores()
+        {
+            List<Statistics.Statistics.UserScore> userScores = new List<Statistics.Statistics.UserScore>();
+            try
+            {
+                Polacz();
+                string query = "select g.wynik,m.nazwa,u.nazwa from Mapy as m,Gry as g,Uzytkownicy as u where g.id_gracza = u.id_user and g.map_id = m.id_mapy";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    int wynik = reader.GetInt32(0);  //wynik
+                    string mapa = reader.GetString(1); //nazwa mapy 
+                    string user = reader.GetString(2); //nazwa uzytkownika
+                    userScores.Add(new Statistics.Statistics.UserScore(mapa, user, wynik.ToString()));
+                }
+                Rozlacz();
+            }
+            catch (SqlException)
+            {
+                Rozlacz();
+                return null;
+            }
+            return userScores;
+        }
+
+        public bool updateMap(int autorID, string json, string mapName)
+        {
+            try
+            {
+                Polacz();
+                string query = "update Mapy set serial = @json where nazwa = @mapName and id_autora = @autorID";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@json", json);
+                sqlCommand.Parameters.AddWithValue("@mapName", mapName);
+                sqlCommand.Parameters.AddWithValue("@autorID", autorID);
+                sqlCommand.ExecuteNonQuery();
+                Rozlacz();
+                return true;
+            }
+            catch (SqlException)
+            {
+                Rozlacz();
+                return false;
+            }
+        }
+
+        public bool updateGame(int palyerID, string json, string gameName)
+        {
+            try
+            {
+                Polacz();
+                string query = "update Gry set serial = @json where nazwa = @gameName and id_gracza = @palyerID";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@json", json);
+                sqlCommand.Parameters.AddWithValue("@gameName", gameName);
+                sqlCommand.Parameters.AddWithValue("@palyerID", palyerID);
+                sqlCommand.ExecuteNonQuery();
+                Rozlacz();
+                return true;
+            }
+            catch (SqlException)
+            {
+                Rozlacz();
+                return false;
+            }
+        }
+
+
     }
 }

@@ -49,7 +49,7 @@ namespace baUHInia.Admin
         {
             List<GameObject> allGameObjects = new List<GameObject>();
             ResourceHolder.Get.ChangeResourceType(ResourceType.Terrain);
-           // ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
+            ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
 
 

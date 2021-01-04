@@ -15,6 +15,7 @@ using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
+using baUHInia.Simulation;
 
 namespace baUHInia.Playground.View
 {
@@ -24,8 +25,9 @@ namespace baUHInia.Playground.View
 
         private ISelectorGridCreator _selectorGridCreator;
         private IGameGridCreator _gameGridCreator;
-
+        
         private IGameMapManager _manager;
+        private ISimulate _simulator;
         //TODO: element zoom-in
 
         private Grid MenuGrid { get; set; }
@@ -63,13 +65,13 @@ namespace baUHInia.Playground.View
 
         private void BackToGame(object sender, RoutedEventArgs args)
         {
-            SideGrid.Visibility = Visibility.Visible;
+            ChangeDisplayMode(true);
             GameScroll.Content = GameMapGrid;
         }
 
         private void AdjustWindowSizeAndPosition()
         {
-            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            WindowState = WindowState.Maximized;
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
 
@@ -94,7 +96,7 @@ namespace baUHInia.Playground.View
             UserReturnBtn.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#DDDDDD");
             UserReturnBtn.Click += BackToGame;
 
-            SideGrid.Visibility = Visibility.Visible;
+            ChangeDisplayMode(true);
             TileGrid = new Tile[BoardDensity, BoardDensity];
             TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
@@ -135,6 +137,12 @@ namespace baUHInia.Playground.View
             PlacedObjects = new List<Placement>();
             //TODO: remove
             AvailableObjects = new List<GameObject>();
+            
+            AccountName.Text += "\t\t" + credentials.name;
+            AccountType.Text += "\t" + (credentials.isAdmin ? "WŁADZE MIASTA" : "MIESZKANIEC");
+            Mode.Text += "\t\t" + "MIESZKAŃCA";
+            
+            _simulator = new Simulation.Simulation();
         }
 
         //=============================== FUNCTIONALITY ==============================//
@@ -198,12 +206,18 @@ namespace baUHInia.Playground.View
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;
-                    SideGrid.Visibility = Visibility.Visible;
+                    ChangeDisplayMode(true);
                 };
             }
 
-            SideGrid.Visibility = Visibility.Collapsed;
+            ChangeDisplayMode(false);
             GameScroll.Content = SaveGameGrid;
+        }
+
+        private void Simulate(object sender, RoutedEventArgs args)
+        {
+            _simulator.Sim(this, BoardDensity);
+            //Points.Text = _simulator.returnScoreTemperature();
         }
 
         private void LoadMap(object sender, RoutedEventArgs args)
@@ -214,7 +228,11 @@ namespace baUHInia.Playground.View
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
             GameMapGrid = GameScroll.Content as Grid;
-            SideGrid.Visibility = Visibility.Visible;
+            
+            ChangeDisplayMode(true);
+            AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
+            MapName.Text = map.Name;
+            
             ((PlacerGridCreator) _gameGridCreator).InitializeElementsLayer(
                 GameScroll.Content as Grid, 
                 Selection,
@@ -252,17 +270,21 @@ namespace baUHInia.Playground.View
 
         private void ReturnToMenu(object sender, RoutedEventArgs args)
         {
-            SideGrid.Visibility = Visibility.Collapsed;
+            ChangeDisplayMode(false);
             GameScroll.Content = MenuGrid;
         }
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            //TODO: change after Authorisation module is finished
             Close();
-            DEBUG.DEBUG debug = new DEBUG.DEBUG();
-            debug.Show();
+            Authorisation.Authorisation authorization = new Authorisation.Authorisation();
+            authorization.Show();
             Owner.Close();
+        }
+
+        private void ChangeDisplayMode(bool visible)
+        {
+            Bar.Visibility = SideGrid.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

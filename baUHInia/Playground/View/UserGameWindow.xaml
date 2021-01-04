@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="HeatIsland" Name="Window" Width="800" Height="600"
-        WindowState="Maximized">
+        WindowState="Maximized" WindowStartupLocation="CenterOwner">
 
 	<Window.Resources>
 		<Grid x:Key="LoadMapTemplate">
@@ -49,7 +49,33 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<ScrollViewer Name="GameScroll" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Name="Bar" Grid.Row="0" Visibility="Collapsed">
+            <Image Source="/baUHInia;component/res/money_initial.ico" Width="29" Height="29" HorizontalAlignment="Left" Margin="32,3,0,3"/>
+            <TextBlock Name="AllCash" VerticalAlignment="Center" Margin="70,0,0,0" Text="0" Foreground="Azure" FontSize="16"/>
+            <Image Source="/baUHInia;component/res/money_current.ico" Width="26" Height="26" HorizontalAlignment="Left" Margin="162,0,0,0"/>
+            <TextBlock Name="CurrentCash" VerticalAlignment="Center" Margin="200,0,0,0" Text="0" Foreground="Azure" FontSize="16"/>
+            <Image Source="/baUHInia;component/res/temperature.ico" Width="29" Height="29" HorizontalAlignment="Left" Margin="292,0,0,0"/>
+            <TextBlock Name="Points" VerticalAlignment="Center" Margin="330,0,0,0" Text="0" Foreground="Azure" FontSize="16"/>
+            <Button Width="80" Height="26" Content="SYMULUJ" Click="Simulate" FontSize="12" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" HorizontalAlignment="Left" Margin="380,0,0,0" Style="{StaticResource MenuButton}">
+                <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+            </Button>
+            
+			<Grid Margin="0,0,170,0" HorizontalAlignment="Right">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Image Source="/baUHInia;component/res/map.ico" Width="29" Height="29" />
+				<TextBlock Name="MapName" VerticalAlignment="Center" Margin="25,0,0,0" Text="" Foreground="Azure" FontSize="16" Grid.Column="1"/>
+			</Grid>
+        </Grid>
+
+		<ScrollViewer Name="GameScroll" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="auto" BorderThickness="4" HorizontalAlignment="Stretch" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1">
 
 			<Grid Name="AdminMainMenu" Margin="50,50,50,50" VerticalAlignment="Center" HorizontalAlignment="Center">
 				
@@ -57,11 +83,12 @@
 					<ColumnDefinition />
 					<ColumnDefinition />
 					<ColumnDefinition />
+					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 				
 				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition/>
+					<RowDefinition />
+					<RowDefinition />
 				</Grid.RowDefinitions>
 
 				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,30,25" Grid.Column="0" Grid.Row="0">
@@ -124,13 +151,27 @@
 					</Grid>
 				</Border>
 				
+				<Image Grid.Column="3" Grid.Row="0" Source="/baUHInia;component/res/user.ico" Width="256" Height="256" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="80,0,0,20"/>
+				
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,25,0,0" Grid.Column="3" Grid.Row="1">
+					<Grid Height="100" Width="270"  Background="#4466AA"  HorizontalAlignment="Left">
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+						</Grid.RowDefinitions>
+						<TextBlock Name="AccountName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="#CCCCCC" Text="KONTO:"/>
+						<TextBlock Name="AccountType" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="#CCCCCC" Text="TYP KONTA:" Grid.Row="1"/>
+						<TextBlock Name="Mode"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="#CCCCCC" Text="TRYB:" Grid.Row="2" />
+					</Grid>
+				</Border>
 				
 			</Grid>
 			
 		
 		</ScrollViewer>
 
-		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,0,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Collapsed">
+		<Grid Name="SideGrid" Grid.Column="1" HorizontalAlignment="Left" MinHeight="570" Margin="0.4,-36,-0.4,0" VerticalAlignment="Stretch" Width="140"  MaxWidth="140" Visibility="Collapsed" Grid.Row="1">
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>

@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
+using System.Windows.Forms.Integration;
+using System.Windows.Interop;
 
 namespace baUHInia.Authorisation
 {
@@ -86,9 +88,10 @@ namespace baUHInia.Authorisation
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
-                    Hide();
                     AdminGameWindow app = new AdminGameWindow(ld);
+                    ElementHost.EnableModelessKeyboardInterop(app);
                     app.Show();
+                    Close();
 
                 }
             }
@@ -115,9 +118,10 @@ namespace baUHInia.Authorisation
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
-                    Hide();
                     UserGameWindow app = new UserGameWindow(ld);
+                    ElementHost.EnableModelessKeyboardInterop(app);
                     app.Show();
+                    Close();
                 }
             }
             else if (resultcheck.Item1 == 102)

@@ -52,10 +52,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         {
             button.MouseEnter += _behaviourSetter.OnFieldMouseEnter;
             button.MouseLeave += _behaviourSetter.OnFieldMouseLeave;
-            //button.MouseDown += _behaviourSetter.OnTileMouseClick;
             button.PreviewMouseUp += _behaviourSetter.OnTileMouseClick;
             button.PreviewMouseDown += _behaviourSetter.OnTileMouseClick;
-            //button.Click += _behaviourSetter.OnTileMouseClick;
         }
     }
 }

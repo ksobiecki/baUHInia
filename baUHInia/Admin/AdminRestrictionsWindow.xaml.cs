@@ -48,7 +48,9 @@ namespace baUHInia.Admin
         private GameObject[] InitializeGameObjects()
         {
             List<GameObject> allGameObjects = new List<GameObject>();
-            List<TileCategory> categoryList = ResourceHolder.Get.Terrain;
+            ResourceHolder.Get.ChangeResourceType(ResourceType.Terrain);
+           // ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
+            List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
 
 
             foreach (var category in categoryList)
@@ -99,7 +101,7 @@ namespace baUHInia.Admin
         public void OnObjectClick(AdminInGridClickableObject selectedObject)
         {
             _selectedObject = selectedObject;
-            _objectDetails.Display(selectedObject.GameObject);
+            _objectDetails.Display(selectedObject);
         }
 
         public void SubmitChanges(int price, float ratio)

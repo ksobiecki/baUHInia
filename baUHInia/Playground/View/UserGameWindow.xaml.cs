@@ -15,26 +15,31 @@ using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
+using baUHInia.Simulation;
+using baUHInia.Admin;
+using Button = System.Windows.Controls.Button;
 
 namespace baUHInia.Playground.View
 {
     public partial class UserGameWindow : ITileBinder
     {
         private const byte BoardDensity = 50;
-
+        
         private ISelectorGridCreator _selectorGridCreator;
         private IGameGridCreator _gameGridCreator;
-
+        
         private IGameMapManager _manager;
+        private ISimulate _simulator;
         //TODO: element zoom-in
-
+        
         private Grid MenuGrid { get; set; }
-
+        
         private Grid SaveGameGrid { get; set; }
-
+        
         private Grid LoadGameGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
         private Grid GameMapGrid { get; set; }
+        
 
         public UserGameWindow(LoginData credentials)
         {
@@ -42,6 +47,7 @@ namespace baUHInia.Playground.View
             StoreMenuGrid();
             AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
+            AddLoadCardAndInitializeManager();
             InitializeProperties(credentials);
         }
 
@@ -54,30 +60,30 @@ namespace baUHInia.Playground.View
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
         public LoginData Credentials { get; private set; }
-        public bool IsInAdminMode { get; } = false;
+        public bool IsInAdminMode { get; } = true;
         public int AvailableFounds { get; set; }
 
         //============================ PREDEFINED ACTIONS ============================//
 
         private void StoreMenuGrid() => MenuGrid = GameScroll.Content as Grid;
-
+        
         private void BackToGame(object sender, RoutedEventArgs args)
         {
-            SideGrid.Visibility = Visibility.Visible;
+            ChangeDisplayMode(true);
             GameScroll.Content = GameMapGrid;
         }
-
+        
         private void AdjustWindowSizeAndPosition()
         {
-            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            WindowState = WindowState.Maximized;
             Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
-
+        
         private void InitializeInteractionChangers()
         {
             DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
         }
-
+        
         private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
         {
             TileCategory category = !(CategorySelector.SelectedItem is string item)
@@ -85,7 +91,7 @@ namespace baUHInia.Playground.View
                 : ResourceHolder.Get.GetCategoryByName(item);
             _selectorGridCreator.CreateSelectionPanel(category, this);
         }
-
+        
         private void CreateGameBoard()
         {
             UserReturnText.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#CCCCCC");
@@ -93,66 +99,76 @@ namespace baUHInia.Playground.View
             UserReturnBtn.Style = FindResource("MenuButton") as Style;
             UserReturnBtn.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#DDDDDD");
             UserReturnBtn.Click += BackToGame;
-
-            SideGrid.Visibility = Visibility.Visible;
+        
+            ChangeDisplayMode(true);
             TileGrid = new Tile[BoardDensity, BoardDensity];
             TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
             _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
             GameMapGrid = GameScroll.Content as Grid;
         }
-
+        
         private void CreateSelectorGrid()
         {
             List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
             _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
         }
-
+        
         public void ChangeInteractionMode(string text, Brush color)
         {
             string[] strings = text.Split('/');
             if (strings.Length < 4) return;
-
+        
             (ModeText.Text, FirstTip.Text, SecondTip.Text, ThirdTip.Text) =
                 (strings[0], strings[1], strings[2], strings[3]);
-
+        
             (ModeText.Foreground, FirstTip.Foreground, SecondTip.Foreground, ThirdTip.Foreground) =
                 (color, color, color, color);
         }
-
+        
         //============================== INITIAL WINDOW ==============================//
-
+        
         private void AddLoadCardAndInitializeManager()
         {
             _manager = new GameMapManager();
             //TODO:
             //InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
         }
-
+        
         private void InitializeProperties(LoginData credentials)
         {
             Credentials = credentials;
             PlacedObjects = new List<Placement>();
-            //TODO: remove
             AvailableObjects = new List<GameObject>();
+            
+            AccountName.Text += "\t\t" + credentials.name;
+            AccountType.Text += "\t" + (credentials.isAdmin ? "WŁADZE MIASTA" : "MIESZKANIEC");
+            Mode.Text += "\t\t" + "MIESZKAŃCA";
+
+            //TODO: FIND ANSWER
+            new AdminRestrictionsWindow(this);
+            
+            UnlockAdminFeatures(credentials.isAdmin);
+            
+            _simulator = new Simulation.Simulation();
         }
-
+        
         //=============================== FUNCTIONALITY ==============================//
-
+        
         private void CreateNewMap(object sender, RoutedEventArgs args)
         {
             CreateGameBoard();
             CreateSelectorGrid();
             InitializeInteractionChangers();
         }
-
+        
         private void UpdateSelectorComboBox(ResourceType type)
         {
             ResourceHolder.Get.ChangeResourceType(type);
             List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
-
+        
             List<TileObject> tileObjects = AvailableObjects.Select(o => o.TileObject).ToList();
-
+        
             foreach (TileCategory tileCategory in categories)
             {
                 var objectsToRemove = tileCategory.TileObjects.Where(t => !tileObjects.Contains(t)).ToList();
@@ -161,17 +177,17 @@ namespace baUHInia.Playground.View
                     tileCategory.TileObjects.Remove(tileObject);
                 }
             }
-
+        
             //TODO: test
             categories.RemoveAll(c => c.TileObjects.Count == 0);
             
-
+        
             CategorySelector.ItemsSource = categories.Select(c => c.Name).ToList();
             CategorySelector.SelectedIndex = 0;
             _selectorGridCreator.UpdateTileGroup(categories);
             _selectorGridCreator.CreateSelectionPanel(categories[0], this);
         }
-
+        
         private void CreateLoadWindow(object source, RoutedEventArgs args)
         {
             if (LoadMapGrid == null)
@@ -182,10 +198,10 @@ namespace baUHInia.Playground.View
                 ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
-
+        
             GameScroll.Content = LoadMapGrid;
         }
-
+        
         private void CreateSaveWindow(object source, RoutedEventArgs args)
         {
             if (SaveGameGrid == null)
@@ -198,14 +214,20 @@ namespace baUHInia.Playground.View
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;
-                    SideGrid.Visibility = Visibility.Visible;
+                    ChangeDisplayMode(true);
                 };
             }
-
-            SideGrid.Visibility = Visibility.Collapsed;
+        
+            ChangeDisplayMode(false);
             GameScroll.Content = SaveGameGrid;
         }
-
+        
+        private void Simulate(object sender, RoutedEventArgs args)
+        {
+            _simulator.Sim(this, BoardDensity);
+            //Points.Text = _simulator.returnScoreTemperature();
+        }
+        
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             Map map = _manager.LoadMap("mapka_test");
@@ -214,7 +236,11 @@ namespace baUHInia.Playground.View
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
             GameMapGrid = GameScroll.Content as Grid;
-            SideGrid.Visibility = Visibility.Visible;
+            
+            ChangeDisplayMode(true);
+            AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
+            MapName.Text = map.Name;
+            
             ((PlacerGridCreator) _gameGridCreator).InitializeElementsLayer(
                 GameScroll.Content as Grid, 
                 Selection,
@@ -223,46 +249,69 @@ namespace baUHInia.Playground.View
             UpdateSelectorComboBox(ResourceType.Foliage);
             Console.WriteLine("Passed loading");
         }
-
+        
         private void SaveGame(object sender, RoutedEventArgs args)
         {
             _manager.SaveGame(this);
             //TODO: implement
             Console.WriteLine("Passed saving");
         }
-
+        
         private void ClearMap(object source, RoutedEventArgs args)
         {
             CreateGameBoard();
             Selection.Reset();
             PlacedObjects.Clear();
         }
-
+        
         private void ShowStatistics(object sender, RoutedEventArgs args)
         {
             Statistics.Statistics statistics = new Statistics.Statistics();
             statistics.Show();
         }
-
+        
         private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
             Owner.Show();
             Close();
         }
-
+        
         private void ReturnToMenu(object sender, RoutedEventArgs args)
         {
-            SideGrid.Visibility = Visibility.Collapsed;
+            ChangeDisplayMode(false);
             GameScroll.Content = MenuGrid;
         }
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            //TODO: change after Authorisation module is finished
-            Close();
-            DEBUG.DEBUG debug = new DEBUG.DEBUG();
-            debug.Show();
-            Owner.Close();
+            try { //Close();
+                //Owner?.Close();
+                this.Hide();
+                Authorisation.Authorisation authorization = new Authorisation.Authorisation();
+                authorization.Show();
+                this.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+        }
+        
+        private void ChangeDisplayMode(bool visible)
+        {
+            Bar.Visibility = SideGrid.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+        
+        private void UnlockAdminFeatures(bool isAdmin)
+        {
+            if (!isAdmin) return;
+            AdminButton.Style = FindResource("MenuButton") as Style;
+            AdminButton.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#DDDDDD");
+            AdminTitle.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#CCCCCC");
+            AdminButton.Click += ChangeGameMode;
+            AdminImage.Opacity = 1.0f;
         }
     }
 }

@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
+using System.Windows.Forms.Integration;
+using System.Windows.Interop;
 
 namespace baUHInia.Authorisation
 {
@@ -24,9 +26,9 @@ namespace baUHInia.Authorisation
 
         private void Authorisation_Load(object sender, EventArgs e)
         {
-            Form DEBUG = new DEBUG.DEBUG();
-            Console.WriteLine("test");
-            DEBUG.Show();
+            //Form DEBUG = new DEBUG.DEBUG();
+            //Console.WriteLine("test");
+            //DEBUG.Show();
             if (Properties.Settings.Default.login != string.Empty)
             {
                 loginLoginBox.Text = Properties.Settings.Default.login;
@@ -86,9 +88,10 @@ namespace baUHInia.Authorisation
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
-                    Hide();
                     AdminGameWindow app = new AdminGameWindow(ld);
+                    ElementHost.EnableModelessKeyboardInterop(app);
                     app.Show();
+                    Close();
 
                 }
             }
@@ -115,9 +118,10 @@ namespace baUHInia.Authorisation
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
-                    Hide();
                     UserGameWindow app = new UserGameWindow(ld);
+                    ElementHost.EnableModelessKeyboardInterop(app);
                     app.Show();
+                    Close();
                 }
             }
             else if (resultcheck.Item1 == 102)
@@ -224,16 +228,18 @@ namespace baUHInia.Authorisation
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
-                    Hide();
+                    this.Hide();
                     if (ld.isAdmin)
                     {
                         AdminGameWindow app = new AdminGameWindow(ld);
                         app.Show();
+                        this.Close();
                     }
                     else
                     {
                         UserGameWindow app = new UserGameWindow(ld);
                         app.Show();
+                        this.Close();
                     }
                     
                 }

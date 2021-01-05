@@ -12,7 +12,8 @@ using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
 {
-    public partial class AdminRestrictionsWindow : IAdminOnClickObject, IAdminChangeObjectDetails, IAdminSelectorTabCreator
+    public partial class AdminRestrictionsWindow : IAdminOnClickObject, IAdminChangeObjectDetails,
+        IAdminSelectorTabCreator
     {
         private readonly AdminGridObjectsCreator _allGameObjects;
         private readonly AdminGridObjectsCreator _availableForUserGameObjects;
@@ -30,7 +31,7 @@ namespace baUHInia.Admin
                 AllGameObjectsGrid,
                 this
             );
-            
+
             _availableForUserGameObjects = new AdminGridObjectsCreator(
                 iTileBinder.AvailableObjects.ToArray(),
                 true,
@@ -48,7 +49,7 @@ namespace baUHInia.Admin
         private GameObject[] InitializeGameObjects()
         {
             List<GameObject> allGameObjects = new List<GameObject>();
-            ResourceHolder.Get.ChangeResourceType(ResourceType.Terrain);
+            //ResourceHolder.Get.ChangeResourceType(ResourceType.Terrain);
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
 
@@ -90,7 +91,8 @@ namespace baUHInia.Admin
             else
             {
                 _allGameObjects.ChangeAvailability(_selectedObject);
-                AdminInGridClickableObject copy = new AdminInGridClickableObject(_selectedObject.GameObject, true, this);
+                AdminInGridClickableObject
+                    copy = new AdminInGridClickableObject(_selectedObject.GameObject, true, this);
                 OnObjectClick(copy);
                 _availableForUserGameObjects.AddObject(copy);
                 _availableForUserGameObjects.CreateGrid();
@@ -111,10 +113,10 @@ namespace baUHInia.Admin
         }
 
         public Grid GetAdminSelectorTableGrid() => AdminRestrictionsGrid;
-        
+
 
         public List<GameObject> GetModifiedAvailableObjects() => _availableForUserGameObjects.GetGameObjects().ToList();
-        
+
 
         public void Save(object obj, RoutedEventArgs routedEventArgs)
         {
@@ -125,7 +127,16 @@ namespace baUHInia.Admin
             else
             {
                 System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
-                (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
+
+                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
+
+            }
+
+            if(_availableForUserGameObjects.GameObjectsList.Count < 3)
+            {
+                System.Windows.MessageBox.Show("Prosze udostępnić użytkownikowi przynajmniej 3 obiekty", "Za mało obiektów",
+
+                    (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
             }
         }
 
@@ -136,7 +147,9 @@ namespace baUHInia.Admin
 
         //unused method, but worth to keep it here
         private void Number_PreviewTextInput(object sender, KeyPressEventArgs e)
-       {
+
+        {
+
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
                 (e.KeyChar != '.'))
             {

@@ -7,6 +7,7 @@ using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
+using baUHInia.Playground.View;
 
 namespace baUHInia.Playground.Model.Selectors
 {
@@ -28,7 +29,7 @@ namespace baUHInia.Playground.Model.Selectors
             bool same = _currentTile == _selection.Binder.TileGrid[position.y, position.x];
             _currentTile = _selection.Binder.TileGrid[position.y, position.x];
 
-            if (!_currentTile.Placeable && !_selection.Admin)
+            if (!_currentTile.Placeable && _selection.Binder.GetType() == typeof(UserGameWindow))
             {
                 if (same)
                 {

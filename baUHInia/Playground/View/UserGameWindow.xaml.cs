@@ -231,6 +231,8 @@ namespace baUHInia.Playground.View
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             Map map = _manager.LoadMap("mapka_test");
+            
+            
             Selection = new Selection(null, this);
             if (GameMapGrid == null) CreateNewMap(null, null);
             GameMapGrid.Children.Clear();
@@ -248,6 +250,10 @@ namespace baUHInia.Playground.View
             Selection.TileObject = AvailableObjects[0].TileObject;
             UpdateSelectorComboBox(ResourceType.Foliage);
             Console.WriteLine("Passed loading");
+            foreach (var sth in TileGrid)
+            {
+                if (!sth.Placeable) Console.WriteLine("Yes Placeable");
+            }
         }
         
         private void SaveGame(object sender, RoutedEventArgs args)

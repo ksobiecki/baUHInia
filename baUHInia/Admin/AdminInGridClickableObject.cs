@@ -51,13 +51,12 @@ namespace baUHInia.Admin
 
         public Grid CreateOfButtons(GameObject gameObject)
         {
-            
             (int width, int height) = gameObject.TileObject.Sprite.SpriteWidthHeight();
             (sbyte x, sbyte y) = gameObject.TileObject.Sprite.SpriteMinCoordinates();
-            var subGrid = new Grid();        
+            var subGrid = new Grid();
             for (var i = 0; i <= height; i++) subGrid.RowDefinitions.Add(new RowDefinition());
             for (var i = 0; i <= width; i++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            
+
             foreach (var offset in gameObject.TileObject.Config.Offsets)
             {
                 Button button = new Button
@@ -65,7 +64,7 @@ namespace baUHInia.Admin
                     Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[offset.I]]},
                     Background = Brushes.Transparent,
                     BorderBrush = Brushes.Transparent,
-                   // Margin = new Thickness(-1, 0, -1, 0),
+                    // Margin = new Thickness(-1, 0, -1, 0),
                     Padding = new Thickness(-1.2)
                 };
                 button.Click += OnClick;
@@ -73,9 +72,9 @@ namespace baUHInia.Admin
                 Grid.SetRow(button, height - offset.Y + y);
                 subGrid.Children.Add(button);
             }
-            
+
             subGrid.Margin = new Thickness(1);
-            
+
             return subGrid;
         }
 

@@ -286,9 +286,10 @@ namespace baUHInia.Playground.View
         {
             try { //Close();
                 //Owner?.Close();
+                this.Hide();
                 Authorisation.Authorisation authorization = new Authorisation.Authorisation();
                 authorization.Show();
-                Hide();
+                this.Close();
             }
             catch (Exception e)
             {

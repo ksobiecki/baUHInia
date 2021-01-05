@@ -228,16 +228,18 @@ namespace baUHInia.Authorisation
                     ld.name = login;
                     ld.hash = passwd;
                     isMapVisible = true;
-                    Hide();
+                    this.Hide();
                     if (ld.isAdmin)
                     {
                         AdminGameWindow app = new AdminGameWindow(ld);
                         app.Show();
+                        this.Close();
                     }
                     else
                     {
                         UserGameWindow app = new UserGameWindow(ld);
                         app.Show();
+                        this.Close();
                     }
                     
                 }

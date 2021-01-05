@@ -6,13 +6,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Linq;
 using System.Collections.Generic;
-using baUHInia.Playground.Model.Tiles;
-
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using baUHInia.Playground.Model.Wrappers;
 using System.IO;
 using baUHInia.MapLogic.Helper;
 using System.Text;
@@ -115,9 +110,8 @@ namespace baUHInia.MapLogic.Manager
             string readText = File.ReadAllText("C:/test_game.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
 
             JObject jsonGame = JObject.Parse(readText);
-            Placement[] placedObjects = null;
 
-            SerializationHelper.JsonGetPlacedObjects(jsonGame, placedObjects);
+            SerializationHelper.JsonGetPlacedObjects(jsonGame, out var placedObjects);
 
             return new Game(123, 123, 123, name, placedObjects, null);
         }
@@ -141,13 +135,9 @@ namespace baUHInia.MapLogic.Manager
 
             SerializationHelper.JsonGetTileGridAndDictionary(jsonMap, indexer, tileGrid, placeableGrid);
 
-            GameObject[] availableTiles = null;
+            SerializationHelper.JsonGetAvailableTiles(jsonMap, out var availableTiles);
 
-            SerializationHelper.JsonGetAvailableTiles(jsonMap, availableTiles);
-
-            Placement[] placedObjects = null;
-
-            SerializationHelper.JsonGetPlacedObjects(jsonMap, placedObjects);
+            SerializationHelper.JsonGetPlacedObjects(jsonMap, out var placedObjects);
 
             return new Map(123, 123, name, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
         }

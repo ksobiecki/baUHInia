@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
+using baUHInia.Playground.View;
 
 namespace baUHInia.Playground.Model.Selectors
 {
@@ -17,7 +18,9 @@ namespace baUHInia.Playground.Model.Selectors
         public List<Element>[,] ElementsLayers { get; set; }
         public LinkedList<Placer> ChangedPlacers { get; private set; }
         public State SelectionState { get; private set; }
-
+        
+        public bool Admin { get; }
+        
 
         private IOperator[] Operators { get; }
         private IOperator CurrentOperator { get; set; }
@@ -31,6 +34,7 @@ namespace baUHInia.Playground.Model.Selectors
             ChangedPlacers = new LinkedList<Placer>();
             Operators = new IOperator[] {new PlaceOperator(this), new DeleteOperator(this), new BlockOperator(this)};
             CurrentOperator = Operators[0];
+            Admin = binder.IsInAdminMode;
         }
 
         public void Reset()
@@ -68,7 +72,7 @@ namespace baUHInia.Playground.Model.Selectors
         public void RedoChanges() => CurrentOperator.RedoChanges();
 
 
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null) =>
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (sbyte x, sbyte y)? pos = null) =>
             CurrentOperator.UpdateChangedPlacerList(hoveredTile, tileGrid, pos);
 
         public (int x, int y) GetCoords(Placer tileBeforeOffset, int offsetIndex)

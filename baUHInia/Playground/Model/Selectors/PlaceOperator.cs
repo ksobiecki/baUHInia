@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
@@ -13,6 +13,7 @@ namespace baUHInia.Playground.Model.Selectors
     public class PlaceOperator : IOperator
     {
         private readonly Selection _selection;
+        private Tile _currentTile;
 
         public PlaceOperator(Selection selection) => _selection = selection;
 
@@ -21,8 +22,26 @@ namespace baUHInia.Playground.Model.Selectors
             (int x, int y) position = (Grid.GetColumn(button), Grid.GetRow(button));
             bool located = _selection.Binder.PlacedObjects.FirstOrDefault(e => e.Position == position) != null;
             bool isElement = _selection.TileObject.Config.IsElement;
+            
+            _currentTile?.ShowIfAvailable(1.0f, Brushes.Navy, Brushes.Maroon);
+            //TODO: refactor
+            bool same = _currentTile == _selection.Binder.TileGrid[position.y, position.x];
+            _currentTile = _selection.Binder.TileGrid[position.y, position.x];
+
+            if (!_currentTile.Placeable && !_selection.Admin)
+            {
+                if (same)
+                {
+                    _currentTile = null;
+                    return;
+                }
+                _currentTile.ShowIfAvailable(0.25f, Brushes.Navy, Brushes.Maroon);
+                return;
+            }
+                
             if (isElement && located)
             {
+                //TODO: remove
                 Console.WriteLine("CANNOT PLACE THERE!");
                 return;
             }
@@ -65,28 +84,26 @@ namespace baUHInia.Playground.Model.Selectors
         }
 
         // ReSharper disable once CoVariantArrayConversion
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (sbyte x, sbyte y)? pos = null)
         {
             Config config = _selection.TileObject.Config;
             bool isElement = config.IsElement;
             for (int i = 0; i < config.Offsets.Length; i++)
             {
-                (int x, int y) = pos ?? _selection.GetCoords(hoveredTile, i);
+                //TODO: all stacked up
+                (int x, int y) = pos != null
+                    ? (pos.Value.x + config.Offsets[i].X, pos.Value.y - config.Offsets[i].Y)
+                    : _selection.GetCoords(hoveredTile, i);
+
                 if (Selection.IsOutsideGrid(x, y, tileGrid)) continue;
                 if (isElement) UpdateChangedElementList(x, y, i);
                 else UpdateChangedTileList(tileGrid[y, x], i);
             }
         }
 
-        public void SelectOperator()
-        {
-            
-        }
+        public void SelectOperator() { }
 
-        public void DeselectOperator()
-        {
-            
-        }
+        public void DeselectOperator() {  }
 
         private void UpdateChangedTileList(Placer tileAtCoords, int index)
         {

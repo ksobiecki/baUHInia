@@ -98,7 +98,7 @@ namespace baUHInia.Playground.Model.Selectors
             bool isOccupied = isElement && located;
 
             // ReSharper disable once InvertIf
-            if (isNotPlaceable || isOccupied || !_selection.UpdateCost())
+            if (isNotPlaceable || isOccupied || !_selection.UpdateCost(true))
             {
                 if (sameElement) _currentTile = null;
                 else _currentTile.ShowIfAvailable(0.25f, Brushes.Maroon, Brushes.Maroon);

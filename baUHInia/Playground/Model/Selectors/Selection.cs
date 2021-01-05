@@ -82,12 +82,12 @@ namespace baUHInia.Playground.Model.Selectors
 
         public bool IsUserWindow() => Binder.GetType() == typeof(UserGameWindow);
 
-        public bool UpdateCost()
+        public bool UpdateCost(bool buy)
         {
             if (!IsUserWindow()) return true;
             TextBlock currentCash = ((UserGameWindow) Binder).CurrentCash;
             int cost = Binder.AvailableObjects?.FirstOrDefault(a => a.TileObject == TileObject).Price ?? 0;
-            int money = int.Parse(currentCash.Text) - cost;
+            int money = int.Parse(currentCash.Text) - (buy ? cost : -cost);
 
             if (money < 0)
             {

@@ -437,7 +437,6 @@ namespace baUHInia.MapLogic.Manager
             ChoiceId = sender.Name;
 
             Console.WriteLine("Choice: " + Choice);
-            Console.WriteLine(int.Parse(ChoiceId.Substring(2,ChoiceId.Length-2)));
 
             ClearSelection = false;
 

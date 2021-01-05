@@ -1,10 +1,13 @@
-﻿using System.Text.RegularExpressions;
+
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using baUHInia.Playground.Model.Wrappers;
+using Button = System.Windows.Forms.Button;
 
 namespace baUHInia.Admin
 {
@@ -27,45 +30,60 @@ namespace baUHInia.Admin
             selectedObjectDetails.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(195)});
         }
 
-        public void Display(GameObject gameObject)
+        public void Display(AdminInGridClickableObject gameObject)
         {
             selectedObjectDetails.Children.Clear();
 
-            var image = new System.Windows.Controls.Button
-            {
-                Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[0]]},
-                Background = Brushes.Transparent,
-                BorderBrush = Brushes.Transparent,
-                Margin = new Thickness(-30, 0, 0, 0)
-            };
+            var image = gameObject.CreateOfButtons(gameObject.GameObject);
+
+            (int width, int height) = gameObject.GameObject.TileObject.Sprite.SpriteWidthHeight();
+            width++;
+            height++;
+            var imageRatio = 99.0 / Math.Max(width, height);
+            image.Height = height * imageRatio;
+            image.Width = width  * imageRatio;
+
+
             Grid.SetRow(image, 0);
             Grid.SetColumnSpan(image, 2);
 
             var nameLabel = new TextBlock {Text = "Nazwa: "};
             Grid.SetRow(nameLabel, 1);
             Grid.SetColumn(nameLabel, 0);
-            var name = new TextBlock {Text = shorten(gameObject.TileObject.Name, 20)};
+
+            var name = new TextBlock {Text = shorten(gameObject.GameObject.TileObject.Name, 20)};
+
             Grid.SetRow(name, 1);
             Grid.SetColumn(name, 1);
             nameLabel.Padding = new Thickness(10, 0, 0, 5);
             name.Margin = new Thickness(-50, 0, 40, 3);
-            
 
 
             var priceLabel = new TextBlock {Text = "Cena: "};
             Grid.SetRow(priceLabel, 2);
             Grid.SetColumn(priceLabel, 0);
-            var price = new System.Windows.Controls.TextBox { Text = gameObject.Price.ToString()};
+
+            var price = new System.Windows.Controls.TextBox {Text = gameObject.GameObject.Price.ToString()};
+
             Grid.SetRow(price, 2);
             Grid.SetColumn(price, 1);
             price.PreviewTextInput += Int_PreviewTextInput;
             priceLabel.Padding = new Thickness(10, 0, 0, 5);
-            price.Margin = new Thickness(0, 0, 40, 3); ;
+
+            price.Margin = new Thickness(0, 0, 40, 3);
+            
+
 
             var ratioLabel = new TextBlock {Text = "Wpływ na temp: "};
             Grid.SetRow(ratioLabel, 3);
             Grid.SetColumn(ratioLabel, 0);
-            var ratio = new System.Windows.Controls.TextBox { Text = gameObject.ChangeValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)};
+
+            var ratio = new System.Windows.Controls.TextBox
+            {
+                Text = gameObject.GameObject.ChangeValue.ToString("0.00",
+                    System.Globalization.CultureInfo.InvariantCulture)
+            };
+
             Grid.SetRow(ratio, 3);
             Grid.SetColumn(ratio, 1);
             ratio.PreviewTextInput += Decimal_PreviewTextInput;
@@ -81,8 +99,10 @@ namespace baUHInia.Admin
             };
             save.Click += (sender, args) => SaveChanges(
                 price, ratio, sender, args
-                );
-            
+
+            );
+
+
             Grid.SetRow(save, 4);
             Grid.SetColumnSpan(save, 2);
 
@@ -106,6 +126,44 @@ namespace baUHInia.Admin
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+
+        }
+
+        private void SaveChanges(System.Windows.Controls.TextBox price, System.Windows.Controls.TextBox ratio,
+            object obj, RoutedEventArgs routedEventArgs)
+        {
+            int priceInt;
+            float ratioFloat;
+            string parsedRatio = ratio.Text.Replace(".", ",");
+            if (int.TryParse(price.Text, out priceInt) && float.TryParse(parsedRatio, out ratioFloat))
+            {
+                iAdminChangeObjectDetails.SubmitChanges(priceInt, ratioFloat);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
+                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
+                price.Text = "0";
+                ratio.Text = "0.00";
+            }
+        }
+
+        private string shorten(string input, int trimmedLength)
+        {
+            string output = input;
+            if (input.Length > trimmedLength)
+            {
+                output = "";
+                for (int i = 0; i < trimmedLength; i++)
+                {
+                    output += input[i];
+                }
+
+                ;
+            }
+
+            return output;
+
         }
 
         private void SaveChanges(System.Windows.Controls.TextBox price, System.Windows.Controls.TextBox ratio, object obj, RoutedEventArgs routedEventArgs)

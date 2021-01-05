@@ -46,7 +46,7 @@ namespace baUHInia.Playground.Model.Selectors
             _selection.ChangedPlacers.Clear();
         }
 
-        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (int x, int y)? pos = null)
+        public void UpdateChangedPlacerList(Tile hoveredTile, Tile[,] tileGrid, (sbyte x, sbyte y)? pos = null)
         {
             (int x, int y) = hoveredTile.GetCoords();
             List<Element> layers = _selection.ElementsLayers[y, x];

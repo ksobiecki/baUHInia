@@ -9,9 +9,12 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
     {
         public GameTileBehaviourSetter(Selection selection, Tile[,] tileGrid) : base(selection, tileGrid) { }
 
-        public override void OnTileMouseClick(object sender, MouseEventArgs mouseEventArgs) =>
-            Selection.ApplyTiles(sender as Button,Keyboard.Modifiers == ModifierKeys.Control);
-        
+        public override void OnTileMouseClick(object sender, MouseEventArgs mouseEventArgs)
+        {
+            if (mouseEventArgs.RightButton == MouseButtonState.Pressed && Selection.TileObject != null) return;
+            Selection.ApplyTiles(sender as Button, Keyboard.Modifiers == ModifierKeys.Control);
+        }
+
 
         public override void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)
         {

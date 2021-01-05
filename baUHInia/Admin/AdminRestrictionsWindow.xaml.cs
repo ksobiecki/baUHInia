@@ -127,7 +127,9 @@ namespace baUHInia.Admin
             else
             {
                 System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
+
                     (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
+
             }
         }
 
@@ -138,7 +140,9 @@ namespace baUHInia.Admin
 
         //unused method, but worth to keep it here
         private void Number_PreviewTextInput(object sender, KeyPressEventArgs e)
+
         {
+
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
                 (e.KeyChar != '.'))
             {

@@ -155,7 +155,7 @@ namespace baUHInia.MapLogic.Helper
             }
         }
 
-        public static void JsonGetAvailableTiles(JObject jsonMap, GameObject[] availableTiles)
+        public static void JsonGetAvailableTiles(JObject jsonMap, out GameObject[] availableTiles)
         {
             JArray jsonAvailableTiles = (JArray)jsonMap["AvailableTiles"];
             availableTiles = new GameObject[jsonAvailableTiles.Count];
@@ -172,7 +172,7 @@ namespace baUHInia.MapLogic.Helper
             }
         }
 
-        public static void JsonGetPlacedObjects(JObject jsonMap, Placement[] placedObjects)
+        public static void JsonGetPlacedObjects(JObject jsonMap, out Placement[] placedObjects)
         {
             JArray jsonPlacedObjects = (JArray)jsonMap["PlacedObjects"];
             placedObjects = new Placement[jsonPlacedObjects.Count];

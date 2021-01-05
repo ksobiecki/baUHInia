@@ -56,6 +56,7 @@
 					<ColumnDefinition />
 					<ColumnDefinition />
 					<ColumnDefinition />
+					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 				
 				<Grid.RowDefinitions>
@@ -65,9 +66,9 @@
 
 				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,30,25" Grid.Column="0" Grid.Row="0">
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="WCZYTAJ MAPĘ" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
-						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/loadmap.ico"/>
-						<Button Click="CreateLoadWindow" Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="STATYSTYKI"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/statistics.ico"/>
+						<Button Click="ShowStatistics" Content="Przejdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -75,9 +76,9 @@
 				
 				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,0,30,25" Grid.Column="1" Grid.Row="0">
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="STATYSTYKI"/>
-						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/statistics.ico"/>
-						<Button Click="ShowStatistics" Content="Przejdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="WCZYTAJ MAPĘ" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
+						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/loadmap.ico"/>
+						<Button Click="CreateLoadWindow" Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -87,7 +88,10 @@
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
 						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="NOWA MAPA" Name="NewGameTitle"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/newmap.ico"/>
-						<Button Name="NewGameButton" Click="CreateNewMap" Content="Utwórz" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<Button Click="CreateNewMap" Content="Utwórz" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="20,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
+						</Button>
+						<Button Name="ReturnToGameButton" Content="Wróć" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#AAAAAA" Margin="0,245,20,0" Height="40" Style="{StaticResource MenuButtonNotClickable}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -105,9 +109,9 @@
 				
 				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,25,30,0" Grid.Column="1" Grid.Row="1">
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="TRYB ROZGRYWKI"/>
+						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="MENU MIESZKAŃCA"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/game.ico"/>
-						<Button Click="CreateNewMap" Content="Zagraj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<Button Click="ChangeGameMode" Content="Przejdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -123,7 +127,20 @@
 					</Grid>
 				</Border>
 				
-			
+				<Image Grid.Column="3" Grid.Row="0" Source="/baUHInia;component/res/admin.ico" Width="256" Height="256" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="80,0,0,20"/>
+				
+				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,25,0,0" Grid.Column="3" Grid.Row="1">
+					<Grid Height="100" Width="270"  Background="#4466AA"  HorizontalAlignment="Left">
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+						</Grid.RowDefinitions>
+						<TextBlock Name="AccountName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="#CCCCCC" Text="KONTO:"/>
+						<TextBlock Name="AccountType" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="#CCCCCC" Text="TYP KONTA:" Grid.Row="1"/>
+						<TextBlock Name="Mode"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="#CCCCCC" Text="TRYB:" Grid.Row="2" />
+					</Grid>
+				</Border>
 
 			</Grid>
 			

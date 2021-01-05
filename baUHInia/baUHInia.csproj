@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F9E92683-670E-4282-B949-60ABF0F594C3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>EXE</OutputType>
     <RootNamespace>baUHInia</RootNamespace>
     <AssemblyName>baUHInia</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -265,13 +265,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\1_test_tree.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\2_test_tree.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\3_test_tree.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\4_test_tree.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\5_test_tree.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\6_test_tree.png" />
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\chestnut.json" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\1_summer_oak.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\2_summer_oak.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\3_summer_oak.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\4_summer_oak.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\5_summer_oak.png" />
+    <Resource Include="resources\foliage\DecidousTrees\summer_oak\6_summer_oak.png" />
     <Resource Include="resources\foliage\DecidousTrees\summer_oak\summer_oak.json" />
+    <Resource Include="resources\foliage\DecidousTrees\tester\oak.png" />
+    <Resource Include="resources\foliage\DecidousTrees\tester\tester.json" />
     <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
     <Resource Include="resources\terrain\roads\bottom\bottom.json" />
     <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
@@ -304,8 +307,6 @@
     <Resource Include="resources\terrain\terrain\dirt\dirt.json" />
     <Resource Include="resources\terrain\terrain\grass\grass.json" />
     <Resource Include="resources\terrain\terrain\grass\grass.png" />
-    <Resource Include="resources\terrain\Test\Tester\Tester.json" />
-    <Resource Include="resources\terrain\Test\Tester\oak.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\terrain\roads\double\double.json" />
@@ -357,6 +358,41 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="res\loadmap.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\city.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\loadsavedgame.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\playgame.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\returntogame.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\savegame.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\1_chesnut.png" />
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\2_chesnut.png" />
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\3_chesnut.png" />
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\4_chesnut.png" />
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\5_chesnut.png" />
+    <Resource Include="resources\foliage\DecidousTrees\chestnut\6_chesnut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\admin.ico" />
+    <Resource Include="res\user.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\money_current.ico" />
+    <Resource Include="res\money_initial.ico" />
+    <Resource Include="res\temperature.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\map.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

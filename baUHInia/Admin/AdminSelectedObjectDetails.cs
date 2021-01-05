@@ -166,7 +166,7 @@ namespace baUHInia.Admin
 
         }
 
-        private void SaveChanges(System.Windows.Controls.TextBox price, System.Windows.Controls.TextBox ratio, object obj, RoutedEventArgs routedEventArgs)
+        /*private void SaveChanges(System.Windows.Controls.TextBox price, System.Windows.Controls.TextBox ratio, object obj, RoutedEventArgs routedEventArgs)
         {
             int priceInt;
             float ratioFloat;
@@ -194,7 +194,7 @@ namespace baUHInia.Admin
                 };
             }
             return output;
-        }
+        }*/
 
 
     }

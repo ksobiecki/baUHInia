@@ -131,6 +131,13 @@ namespace baUHInia.Admin
                     (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
 
             }
+
+            if(_availableForUserGameObjects.GameObjectsList.Count < 3)
+            {
+                System.Windows.MessageBox.Show("Prosze udostępnić użytkownikowi przynajmniej 3 obiekty", "Za mało obiektów",
+
+                    (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
+            }
         }
 
         public System.Windows.Controls.Button GetReturnButton() => ReturnBtn;

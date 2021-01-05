@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="HeatIsland" Name="Window" Width="800" Height="600"
-        WindowState="Maximized" WindowStartupLocation="CenterOwner">
+        Title="HeatIsland" Name="Window" Width="800" Height="600">
 
 	<Window.Resources>
 		<Grid x:Key="LoadMapTemplate">
@@ -133,9 +132,9 @@
 				
 				<Border BorderBrush="#4466AA" BorderThickness="10" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,25,30,0" Grid.Column="1" Grid.Row="1">
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
-						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="MENU WŁADZ MIASTA"/>
-						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/city.ico"/>
-						<Button Click="ChangeGameMode" Content="Przejdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<TextBlock Name="AdminTitle" HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#888888" Text="MENU WŁADZ MIASTA"/>
+						<Image Name="AdminImage" HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/city.ico" Opacity="0.25"/>
+						<Button Name="AdminButton" Content="Przejdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#AAAAAA" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButtonNotClickable}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>

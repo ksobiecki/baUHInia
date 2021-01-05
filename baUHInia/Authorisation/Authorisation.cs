@@ -26,9 +26,9 @@ namespace baUHInia.Authorisation
 
         private void Authorisation_Load(object sender, EventArgs e)
         {
-            Form DEBUG = new DEBUG.DEBUG();
-            Console.WriteLine("test");
-            DEBUG.Show();
+            //Form DEBUG = new DEBUG.DEBUG();
+            //Console.WriteLine("test");
+            //DEBUG.Show();
             if (Properties.Settings.Default.login != string.Empty)
             {
                 loginLoginBox.Text = Properties.Settings.Default.login;

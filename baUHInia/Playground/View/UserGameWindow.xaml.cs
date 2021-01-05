@@ -144,7 +144,7 @@ namespace baUHInia.Playground.View
             AccountName.Text += "\t\t" + credentials.name;
             AccountType.Text += "\t" + (credentials.isAdmin ? "WŁADZE MIASTA" : "MIESZKANIEC");
             Mode.Text += "\t\t" + "MIESZKAŃCA";
-            
+
             //TODO: FIND ANSWER
             new AdminRestrictionsWindow(this);
             
@@ -284,10 +284,12 @@ namespace baUHInia.Playground.View
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            try { Close();
+            try { //Close();
                 //Owner?.Close();
                 Authorisation.Authorisation authorization = new Authorisation.Authorisation();
-                authorization.Show();}
+                authorization.Show();
+                Hide();
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);

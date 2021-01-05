@@ -87,6 +87,7 @@ namespace baUHInia.Admin
                 _availableForUserGameObjects.RemoveObject(_selectedObject);
                 _availableForUserGameObjects.CreateGrid();
                 _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
+                
             }
             else
             {
@@ -97,6 +98,7 @@ namespace baUHInia.Admin
                 _availableForUserGameObjects.AddObject(copy);
                 _availableForUserGameObjects.CreateGrid();
                 _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
+                
             }
         }
 

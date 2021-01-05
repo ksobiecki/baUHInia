@@ -36,13 +36,14 @@ namespace baUHInia.Admin
 
             var image = gameObject.CreateOfButtons(gameObject.GameObject);
 
-            (int width, int height) = gameObject.GameObject.TileObject.Sprite.SpriteWidthHeight();
-            width++;
-            height++;
-            var imageRatio = 99.0 / Math.Max(width, height);
-            image.Height = height * imageRatio;
-            image.Width = width  * imageRatio;
-
+           // (int width, int height) = gameObject.GameObject.TileObject.Sprite.SpriteWidthHeight();
+           // width++;
+           // height++;
+           //var imageRatio = 99.0 / Math.Max(width, height);
+           //image.Height = height * imageRatio;
+           //image.Width = width  * imageRatio;
+           image.Width = 99;
+           image.Height = 99;
 
             Grid.SetRow(image, 0);
             Grid.SetColumnSpan(image, 2);

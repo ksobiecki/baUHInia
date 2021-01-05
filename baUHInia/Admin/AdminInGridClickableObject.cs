@@ -54,8 +54,10 @@ namespace baUHInia.Admin
             (int width, int height) = gameObject.TileObject.Sprite.SpriteWidthHeight();
             (sbyte x, sbyte y) = gameObject.TileObject.Sprite.SpriteMinCoordinates();
             var subGrid = new Grid();
-            for (var i = 0; i <= height; i++) subGrid.RowDefinitions.Add(new RowDefinition());
-            for (var i = 0; i <= width; i++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            for (var i = 0; i <= Math.Max(height, width); i++) subGrid.RowDefinitions.Add(new RowDefinition());
+            //for (var i = 0; i <= height; i++) subGrid.RowDefinitions.Add(new RowDefinition());
+            for (var i = 0; i <= Math.Max(height, width); i++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            //for (var i = 0; i <= width; i++) subGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
             foreach (var offset in gameObject.TileObject.Config.Offsets)
             {

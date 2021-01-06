@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Admin
@@ -18,26 +20,27 @@ namespace baUHInia.Admin
             this.isAvailable = isAvailable;
             ObjectsGrid = objectsGrid;
             GameObjectsList = new List<AdminInGridClickableObject>(gameObjects.Length);
-            for (var i = 0; i < gameObjects.Length; i++)
+            foreach (var gameObject in gameObjects)
             {
-                GameObjectsList.Insert(i,
-                    new AdminInGridClickableObject(gameObjects[i], isAvailable, adminOnClickObject));
+                GameObjectsList.Add(new AdminInGridClickableObject(gameObject, isAvailable, adminOnClickObject));
             }
         }
 
         public void CreateGrid()
         {
             ObjectsGrid.Children.Clear();
+
             int cols = 12;
 
             int row = 0;
             int col = 0;
-            for (var i = 0; i < GameObjectsList.Count; i++)
+            foreach (var gameObject in GameObjectsList)
             {
-                Button button = GameObjectsList[i].ClickableGameObject;
-                Grid.SetRow(button, row);
-                Grid.SetColumn(button, col);
-                ObjectsGrid.Children.Add(button);
+                var subGrid = gameObject.ClickableGameObject;
+                Grid.SetRow(subGrid, row);
+                Grid.SetColumn(subGrid, col);
+                ObjectsGrid.Children.Add(subGrid);
+                
                 col++;
                 if (col == cols)
                 {
@@ -65,10 +68,11 @@ namespace baUHInia.Admin
 
                 if (isAvailable == GameObjectsList[i].IsAvailable)
                 {
-                    Button button = GameObjectsList[i].ClickableGameObject;
-                    Grid.SetRow(button, row);
-                    Grid.SetColumn(button, col);
-                    ObjectsGrid.Children.Add(button);
+                    var subGrid = GameObjectsList[i].ClickableGameObject;
+                    Grid.SetRow(subGrid, row);
+                    Grid.SetColumn(subGrid, col);
+                    ObjectsGrid.Children.Add(subGrid);
+
                     col++;
                 }
 
@@ -98,8 +102,8 @@ namespace baUHInia.Admin
         public void ChangeAvailability(AdminInGridClickableObject gameObject)
         {
             GameObjectsList.Find(
-                    x => x.GameObject.TileObject.Name == gameObject.GameObject.TileObject.Name
-                    ).IsAvailable = !gameObject.IsAvailable;
+                x => x.GameObject.TileObject.Name == gameObject.GameObject.TileObject.Name
+            ).IsAvailable = !gameObject.IsAvailable;
         }
 
         public void AddObject(AdminInGridClickableObject gameObject)
@@ -113,6 +117,5 @@ namespace baUHInia.Admin
         }
 
         public GameObject[] GetGameObjects() => GameObjectsList.Select(c => c.GameObject).ToArray();
-
     }
 }

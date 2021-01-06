@@ -15,7 +15,7 @@ namespace baUHInia.MapLogic.View
             InitializeComponent();
             IGameMapManager GameMapManager = new GameMapManager();
             Grid target = this.FindName("TargetGrid") as Grid;
-            target.Children.Add(GameMapManager.GetMapSaveGrid());
+            target.Children.Add(GameMapManager.GetGameSaveGrid());
         }
     }
 }

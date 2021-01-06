@@ -11,10 +11,10 @@ namespace baUHInia.MapLogic.Helper
     public class SerializationHelper
     {
         // Serialization
-        public static void JsonAddBasicData(JObject jsonMap, ITileBinder tileBinder)
+        public static void JsonAddBasicData(JObject jsonMap, ITileBinder tileBinder, string name)
         {
             // TODO how do I get all the IDs?;
-            jsonMap["Name"] = "Placeholder name";
+            jsonMap["Name"] = name;
             jsonMap["Size"] = tileBinder.TileGrid.GetLength(0);
             jsonMap["AvailableMoney"] = tileBinder.AvailableFounds;
         }

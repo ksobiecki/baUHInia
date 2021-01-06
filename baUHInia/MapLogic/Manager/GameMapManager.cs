@@ -11,117 +11,171 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using baUHInia.MapLogic.Helper;
 using System.Text;
+using baUHInia.Database;
+using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.MapLogic.Manager
 {
     class GameMapManager : IGameMapManager
     {
+        // Database
+        private BazaDanych db;
+
         // Logic
         private string Choice;
+        private string ChoiceId;
         private string Keyword;
-        private Map[] mockupMaps;
-        private Game[] mockupGames;
+        private bool ClearSelection = true;
 
-        // Determines if operating on maps or games. Absolutely disgusting solution but thats all I can come up with at the moment.
-        private int Mode; // 0: Map, 1: MapSave 2: GameLoad, 3: GameSave.
-        private Map[] Maps;
-        private Game[] Games;
+        // Modes - 0: MapLoad, 1: MapSave 2: GameLoad, 3: GameSave.
+
+        private string[] MapNames;
+        private Tuple<int,string>[] GameIDsNames;
+
 
         // Layout
-        private Grid LoadContainerGrid;
-        private Grid SaveContainerGrid;
-        private Grid SearchGrid;
-        private ScrollViewer ListScrollViewer;
-        private Grid ListGrid;
-        private Grid SaveGrid;
+        private Grid LoadMapContainerGrid;
+        private Grid SaveMapContainerGrid;
+        private Grid LoadGameContainerGrid;
+        private Grid SaveGameContainerGrid;
+
+        private TextBox SaveMapNameTextBox;
+        private TextBox SaveGameNameTextBox;
 
         public GameMapManager()
         {
-            // Debug purposes, remove later.
-            Maps = new Map[50];
-            Games = new Game[50];
-            for (int i = 0; i < 50; i++)
-            {
-                Maps[i] = new Map("Some map nr" + i);
-                Games[i] = new Game("Some game nr" + i);
-            }
-
-            CreateContainerGrids();
-            CreateSearchGrid();
-            CreateListScrollViewer();
-            CreateListGrid();
-
             Choice = "";
-            Keyword = "";
-        }
-
-        public Grid GetGameLoadGrid()
-        {
-            // TODO get games from database.
-
-            Mode = 2;
-            Choice = "";
+            ChoiceId = "";
             Keyword = "";
 
-            LoadContainerGrid.Children.Clear();
-            LoadContainerGrid.Children.Add(SearchGrid);
-            LoadContainerGrid.Children.Add(ListScrollViewer);
-            ListScrollViewer.Content = ListGrid;
-
-            PopulateListGrid();
-
-            return LoadContainerGrid;
+            db = new BazaDanych();
         }
 
         public Grid GetMapLoadGrid()
         {
-            // TODO get maps from database.
-
-            Mode = 0;
             Choice = "";
             Keyword = "";
 
-            LoadContainerGrid.Children.Clear();
-            LoadContainerGrid.Children.Add(SearchGrid);
-            LoadContainerGrid.Children.Add(ListScrollViewer);
-            ListScrollViewer.Content = ListGrid;
+            MapNames = db.getMapNames();
 
-            PopulateListGrid();
+            LoadMapContainerGrid = CreateContainerGrid();
+            ScrollViewer loadListScrollViewer = CreateListScrollViewer();
+            Grid loadListGrid = CreateListGrid();
+            Grid loadSearchGrid = CreateSearchGrid(loadListGrid,0);
 
-            return LoadContainerGrid;
+            LoadMapContainerGrid.Children.Add(loadSearchGrid);
+            LoadMapContainerGrid.Children.Add(loadListScrollViewer);
+            loadListScrollViewer.Content = loadListGrid;
+
+            PopulateListGrid(loadListGrid,0);
+
+            return LoadMapContainerGrid;
         }
 
         public Grid GetMapSaveGrid()
         {
-            Mode = 1;
-            SaveContainerGrid.Children.Clear();
-            CreateSaveGrid();
-            SaveContainerGrid.Children.Add(SaveGrid);
-            return SaveContainerGrid;
+            Choice = "";
+            Keyword = "";
+
+            MapNames = db.getMapNames();
+
+            SaveMapContainerGrid = CreateContainerGrid();
+            ScrollViewer saveListScrollViewer = CreateListScrollViewer();
+            Grid saveListGrid = CreateListGrid();
+            Grid saveSearchGrid = CreateSearchGrid(saveListGrid,1);
+            Grid nameGrid = CreateNameGrid();
+            SaveMapNameTextBox = CreateNameTextBox(saveListGrid);
+
+            nameGrid.Children.Add(SaveMapNameTextBox);
+            SaveMapContainerGrid.Children.Add(saveSearchGrid);
+            SaveMapContainerGrid.Children.Add(saveListScrollViewer);
+            saveListScrollViewer.Content = saveListGrid;
+            SaveMapContainerGrid.Children.Add(nameGrid);
+
+            PopulateListGrid(saveListGrid,1);
+
+            return SaveMapContainerGrid;
         }
+
+        public Grid GetGameLoadGrid()
+        {
+            GameIDsNames = db.getGameNamesAndID();
+
+            LoadGameContainerGrid = CreateContainerGrid();
+            ScrollViewer loadListScrollViewer = CreateListScrollViewer();
+            Grid loadListGrid = CreateListGrid();
+            Grid loadSearchGrid = CreateSearchGrid(loadListGrid, 2);
+
+            LoadGameContainerGrid.Children.Add(loadSearchGrid);
+            LoadGameContainerGrid.Children.Add(loadListScrollViewer);
+            loadListScrollViewer.Content = loadListGrid;
+
+            PopulateListGrid(loadListGrid, 2);
+
+            return LoadGameContainerGrid;
+        }
+
 
         public Grid GetGameSaveGrid()
         {
-            throw new NotImplementedException();
+            GameIDsNames = db.getGameNamesAndID();
+
+            SaveGameContainerGrid = CreateContainerGrid();
+            ScrollViewer saveListScrollViewer = CreateListScrollViewer();
+            Grid saveListGrid = CreateListGrid();
+            Grid saveSearchGrid = CreateSearchGrid(saveListGrid, 3);
+            Grid nameGrid = CreateNameGrid();
+            SaveGameNameTextBox = CreateNameTextBox(saveListGrid);
+
+            nameGrid.Children.Add(SaveGameNameTextBox);
+            SaveGameContainerGrid.Children.Add(saveSearchGrid);
+            SaveGameContainerGrid.Children.Add(saveListScrollViewer);
+            saveListScrollViewer.Content = saveListGrid;
+            SaveGameContainerGrid.Children.Add(nameGrid);
+
+            PopulateListGrid(saveListGrid, 3);
+
+            return SaveGameContainerGrid;
         }
 
-        public Game LoadGame(string name)
+        public Game LoadGame(string name) // Not tested might not work yet.
         {
-            string readText = File.ReadAllText("C:/test_game.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
+            throw new NotImplementedException();
 
-            JObject jsonGame = JObject.Parse(readText);
+            if (Choice == "" || ChoiceId == "")
+            {
+                throw new Exception("Name or Id cannot be empty.");
+            }
+
+            string jsonStringGame = null;
+            db.GetMap(ref jsonStringGame, Choice);
+
+            JObject jsonGame = JObject.Parse(jsonStringGame);
 
             SerializationHelper.JsonGetPlacedObjects(jsonGame, out var placedObjects);
 
-            return new Game(123, 123, 123, name, placedObjects, null);
+            string gameName = Choice;
+
+            Choice = (string)jsonGame["MapName"]; // Using name instread of id , a temporary solution - or isnt it?
+
+            Map map = LoadMap("co tam pietras pewnie błąd tu masz hehe");
+
+            return new Game(123, 123, 123, gameName, placedObjects, map);
         }
 
         public Map LoadMap(string name)
         {
-            string readText = File.ReadAllText("C:/test_map.txt", Encoding.UTF8); // TODO switch to database methods when they are available.
             // TODO get credentials from database.
 
-            JObject jsonMap = JObject.Parse(readText);
+            if (Choice == "")
+            {
+                throw new Exception("Name cannot be empty.");
+            }
+
+            string jsonStringMap = null;
+            db.GetMap(ref jsonStringMap, Choice);
+
+            JObject jsonMap = JObject.Parse(jsonStringMap);
 
             int size = 0;
             int availableMoney = 0;
@@ -139,15 +193,30 @@ namespace baUHInia.MapLogic.Manager
 
             SerializationHelper.JsonGetPlacedObjects(jsonMap, out var placedObjects);
 
-            return new Map(123, 123, name, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+            for (int i = 0; i < placedObjects.GetLength(0); i++)
+            {
+                Console.WriteLine(((Placement)placedObjects[i]).GameObject.TileObject.Name);
+            }
+
+            return new Map(123, 123, Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
         }
 
         public bool SaveGame(ITileBinder tileBinder)
         {
+            throw new NotImplementedException();
+
+            if (Choice == "" || ChoiceId == "")
+            {
+                throw new Exception("Name or Id cannot be empty.");
+            }
+
+            int id = int.Parse(ChoiceId.Substring(2,ChoiceId.Length-2));
+
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            File.WriteAllText("C:/test_game.txt", jsonGame.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
+            db.addGame(123, Choice, jsonGame.ToString(Formatting.None), 123);
+
             Console.WriteLine(jsonGame.ToString(Formatting.None));
 
             return true;
@@ -155,68 +224,74 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveMap(ITileBinder tileBinder)
         {
+            if (Choice == "")
+            {
+                throw new Exception("Name cannot be empty.");
+            }
+
             JObject jsonMap = new JObject();
 
-            SerializationHelper.JsonAddBasicData(jsonMap, tileBinder);
+            SerializationHelper.JsonAddBasicData(jsonMap, tileBinder, Choice);
             SerializationHelper.JsonAddTileGridAndDictionary(jsonMap, tileBinder.TileGrid);
             SerializationHelper.JsonAddPlacements(jsonMap, tileBinder.PlacedObjects);
             SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
-            File.WriteAllText("C:/test_map.txt", jsonMap.ToString(Formatting.None), Encoding.UTF8); // TODO switch to database methods when they are available.
-            Console.WriteLine(jsonMap.ToString(Formatting.None));
+            BazaDanych db = new BazaDanych();
+            int result = db.DodajMape(123, Choice, jsonMap.ToString(Formatting.None));
+
+            if (result == 33)
+            {
+                return db.updateMap(123, jsonMap.ToString(Formatting.None), Choice);
+            }
+
+            if (result != 0)
+            {
+                Console.WriteLine("Attempt to save map '" + Choice + "' in database failed - code: " + result + ".");
+                return false;
+            }
 
             return true;
         }
 
-        private void CreateContainerGrids()
+        private Grid CreateContainerGrid()
         {
-            LoadContainerGrid = new Grid
+            return new Grid
             {
-                HorizontalAlignment = HorizontalAlignment.Stretch, 
-                VerticalAlignment = VerticalAlignment.Stretch
-            };
-
-            SaveContainerGrid = new Grid
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch, 
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch
             };
         }
 
-        private void CreateSaveGrid()
+        private Grid CreateNameGrid()
         {
-            SaveGrid = new Grid
+            return new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(30, 80, 30, 80),
-                Background = Brushes.Blue
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Height = 30,
+                Background = Brushes.Blue,
             };
+        }
 
+        private TextBox CreateNameTextBox(Grid listGrid)
+        {
             TextBox nameTextBox = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Top,
-                VerticalContentAlignment = VerticalAlignment.Center,
-                Padding = new Thickness(10, 0, 10, 0),
-                Height = 30
-            };
-
-            Button saveButton = new Button
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(0, 30, 0, 0),
-                Content = "Zapisz"
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 0),
+                Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7"),
+                Padding = new Thickness(5, 0, 5, 0),
             };
+            nameTextBox.TextChanged += (s,a) => { NameTextChanged(s,listGrid); };
 
-            SaveGrid.Children.Add(nameTextBox);
-            SaveGrid.Children.Add(saveButton);
+            return nameTextBox;
         }
 
-        private void CreateSearchGrid()
+        private Grid CreateSearchGrid(Grid listGrid, int mode)
         {
-            SearchGrid = new Grid
+            Grid searchGrid = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
@@ -247,15 +322,17 @@ namespace baUHInia.MapLogic.Manager
             searchButton.Foreground = Brushes.White;
             searchButton.FontFamily = new FontFamily("Segoe UI");
             searchButton.FontWeight = FontWeights.Bold;
-            searchButton.Click += SearchButtonClick;
+            searchButton.Click += (s,a) => { SearchButtonClick(listGrid,mode); };
 
-            SearchGrid.Children.Add(searchTextBox);
-            SearchGrid.Children.Add(searchButton);
+            searchGrid.Children.Add(searchTextBox);
+            searchGrid.Children.Add(searchButton);
+
+            return searchGrid;
         }
 
-        private void CreateListScrollViewer()
+        private ScrollViewer CreateListScrollViewer()
         {
-            ListScrollViewer = new ScrollViewer
+            return new ScrollViewer
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
@@ -264,9 +341,9 @@ namespace baUHInia.MapLogic.Manager
             };
         }
 
-        private void CreateListGrid()
+        private Grid CreateListGrid()
         {
-            ListGrid = new Grid
+            return new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
@@ -274,47 +351,56 @@ namespace baUHInia.MapLogic.Manager
             };
         }
 
-        private void PopulateListGrid()
+        private void PopulateListGrid(Grid listGrid,int mode)
         {
-            ListGrid.RowDefinitions.Clear();
-            ListGrid.Children.Clear();
+            listGrid.RowDefinitions.Clear();
+            listGrid.Children.Clear();
 
             int index = 0;
 
-            if (Mode == 0)
+            if (mode == 0 || mode == 1)
             {
-                Map[] filteredMaps = Maps.Where(m => m.Name.Contains(Keyword)).ToArray();
+                string[] filteredMapNames = MapNames.Where(m => m.Contains(Keyword)).ToArray();
 
-                foreach (Map map in filteredMaps)
+                foreach (string name in filteredMapNames)
                 {
-                    ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
                     Grid.SetRow(listItemGrid, index);
-                    listItemGrid.Children.Add(CreateListItemButton(map.Name));
-                    ListGrid.Children.Add(listItemGrid);
+                    listItemGrid.Children.Add(CreateListItemButton(name,listGrid));
+                    listGrid.Children.Add(listItemGrid);
                     index++;
                 }
             }
-            else if (Mode == 2)
+            else if (mode == 2 || mode == 3)
             {
-                Game[] filteredGames = Games.Where(g => g.Name.Contains(Keyword)).ToArray();
+                Tuple<int, string>[] filteredGameIDNames = GameIDsNames.Where(g => g.Item2.Contains(Keyword)).ToArray();
 
-                foreach (Game game in filteredGames)
+                foreach (Tuple<int, string> gameIDName in filteredGameIDNames)
                 {
-                    ListGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
-                    Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
-                    Button listItemButton = CreateListItemButton(game.Name);
+                    listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+                    Grid listItemGrid = new Grid { HorizontalAlignment = HorizontalAlignment.Stretch };
+                    Button listItemButton = CreateListItemButton(gameIDName.Item2, listGrid);
+                    listItemButton.Name = "id" + gameIDName.Item1.ToString();
                     Grid.SetRow(listItemGrid, index);
                     listItemGrid.Children.Add(listItemButton);
-                    ListGrid.Children.Add(listItemGrid);
+                    listGrid.Children.Add(listItemGrid);
                     index++;
                 }
             }
-            
         }
 
-        private Button CreateListItemButton(string name)
+        private Button CreateListItemButton(string name, Grid listGrid)
         {
+            TextBlock nameTextBlock = new TextBlock
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                FontFamily = new FontFamily("Segoe UI"),
+                FontWeight = FontWeights.Bold,
+                Text = name
+            };
+
             Button listItemButton = new Button
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -325,11 +411,9 @@ namespace baUHInia.MapLogic.Manager
                 BorderThickness = new Thickness(0, 1, 0, 0),
                 BorderBrush = (Brush) new BrushConverter().ConvertFrom("#FFA7A7A7"),
                 Foreground = Brushes.White,
-                FontFamily = new FontFamily("Segoe UI"),
-                FontWeight = FontWeights.Bold,
-                Content = name
+                Content = nameTextBlock // Has to be a TextBlock, otherwise cuts out some special characters.
             };
-            listItemButton.Click += ListItemButtonClick;
+            listItemButton.Click += (s,a) => { ListItemButtonClick(s,listGrid); };
             listItemButton.ClickMode = ClickMode.Press;
 
             return listItemButton;
@@ -337,9 +421,9 @@ namespace baUHInia.MapLogic.Manager
 
         // Event handlers
 
-        private void ListItemButtonClick(object s, EventArgs e)
+        private void ListItemButtonClick(object s, Grid listGrid)
         {
-            foreach (Grid listItemGrid in ListGrid.Children)
+            foreach (Grid listItemGrid in listGrid.Children)
             {
                 Button listItemButton = (Button)listItemGrid.Children[0];
                 listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
@@ -349,7 +433,22 @@ namespace baUHInia.MapLogic.Manager
             Button sender = (Button)s;
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
-            Choice = sender.Content.ToString();
+            Choice = ((TextBlock)sender.Content).Text.ToString();
+            ChoiceId = sender.Name;
+
+            Console.WriteLine("Choice: " + Choice);
+
+            ClearSelection = false;
+
+            if (!(SaveMapNameTextBox is null))
+            {
+                SaveMapNameTextBox.Text = Choice;
+            }
+
+            if (!(SaveGameNameTextBox is null))
+            {
+                SaveGameNameTextBox.Text = Choice;
+            }
         }
 
         private void SearchTextChanged(object s, EventArgs e)
@@ -358,10 +457,32 @@ namespace baUHInia.MapLogic.Manager
             Keyword = sender.Text;
         }
 
-        private void SearchButtonClick(object s, EventArgs e)
+        private void NameTextChanged(object s, Grid listGrid)
+        {
+            TextBox sender = (TextBox)s;
+            Choice = sender.Text;
+
+            if (ClearSelection)
+            {
+                foreach (Grid listItemGrid in listGrid.Children)
+                {
+                    Button listItemButton = (Button)listItemGrid.Children[0];
+                    listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
+                    listItemButton.Foreground = Brushes.White;
+                }
+            }
+            else
+            {
+                ClearSelection = true;
+            }
+        }
+
+        private void SearchButtonClick(Grid listGrid, int mode)
         {
             Choice = "";
-            PopulateListGrid();
+            ChoiceId = "";
+            PopulateListGrid(listGrid,mode);
         }
+        
     }
 }

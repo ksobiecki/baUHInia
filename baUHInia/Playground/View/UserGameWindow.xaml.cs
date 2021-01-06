@@ -162,7 +162,9 @@ namespace baUHInia.Playground.View
             Mode.Text += "\t\t" + "MIESZKAŃCA";
 
             //TODO: FIND ANSWER
+            AvailableObjects = new List<GameObject>();
             new AdminRestrictionsWindow(this);
+            AvailableObjects = null;
 
             UnlockAdminFeatures(credentials.isAdmin);
 
@@ -319,10 +321,18 @@ namespace baUHInia.Playground.View
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            Hide();
-            Authorisation.Authorisation authorization = new Authorisation.Authorisation();
-            authorization.Show();
-            Close();
+            try
+            {
+                Hide();
+                Authorisation.Authorisation authorization = new Authorisation.Authorisation();
+                authorization.Show();
+                Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
         }
 
         private void ChangeDisplayMode(bool visible) =>

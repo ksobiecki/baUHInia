@@ -32,6 +32,7 @@ namespace baUHInia.Playground.Model.Selectors
             ChangedPlacers = new LinkedList<Placer>();
             Operators = new IOperator[] {new PlaceOperator(this), new DeleteOperator(this), new BlockOperator(this)};
             CurrentOperator = Operators[0];
+            if (IsUserWindow()) ((UserGameWindow) Binder).CurrentCash.Foreground = Brushes.Azure;
         }
 
         public void Reset()

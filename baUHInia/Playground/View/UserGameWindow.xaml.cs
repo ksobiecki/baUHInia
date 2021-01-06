@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.MapLogic.Model;
@@ -161,7 +162,7 @@ namespace baUHInia.Playground.View
             Mode.Text += "\t\t" + "MIESZKAŃCA";
 
             //TODO: FIND ANSWER
-            //new AdminRestrictionsWindow(this);
+            new AdminRestrictionsWindow(this);
 
             UnlockAdminFeatures(credentials.isAdmin);
 
@@ -196,8 +197,7 @@ namespace baUHInia.Playground.View
 
             //TODO: test
             categories.RemoveAll(c => c.TileObjects.Count == 0);
-
-
+            
             CategorySelector.ItemsSource = categories.Select(c => c.Name).ToList();
             CategorySelector.SelectedIndex = 0;
             _selectorGridCreator.UpdateTileGroup(categories);
@@ -246,12 +246,16 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
+            if (LoadedMap != null) ClearMap(null, null);
             LoadedMap = _manager.LoadMap("mapka_test");
-            AvailableObjects = null;
+            PrepareLoadedGame(null, null);
+        }
 
+        private void PrepareLoadedGame(object sender, RoutedEventArgs args)
+        {
+            AvailableObjects = null;
             Selection = new Selection(null, this);
-            if (GameMapGrid == null) CreateNewMap(null, null);
-            GameMapGrid.Children.Clear();
+            CreateNewMap(null, null);
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, LoadedMap);
             GameMapGrid = GameScroll.Content as Grid;
 
@@ -262,8 +266,8 @@ namespace baUHInia.Playground.View
             PlacerGridCreator creator = _gameGridCreator as PlacerGridCreator;
             creator.InitializeElementsLayer(GameScroll.Content as Grid, Selection, BoardDensity);
             Selection.TileObject = AvailableObjects[0].TileObject;
+            UpdateSelectionWindow(AvailableObjects[0].TileObject);
             UpdateSelectorComboBox(ResourceType.Foliage);
-            Console.WriteLine("Passed loading");
         }
 
         private void SaveGame(object sender, RoutedEventArgs args)

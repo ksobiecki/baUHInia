@@ -74,6 +74,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 tileBinder.Selection.ChangedPlacers.Clear();
             }
 
+            (int x, int y) = placers.LastOrDefault()?.Position ?? (-1, -1);
+            if (x != -1) tileBinder.TileGrid[y, x].ShowIfAvailable(1.0, null, null);
             return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
 
@@ -138,7 +140,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                     elementsLayers[i, j] = new List<Element> {new Element(image, null)};
                 }
             }
-
+            
             selection.ElementsLayers = elementsLayers;
         }
     }

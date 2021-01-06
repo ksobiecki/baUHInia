@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -98,6 +97,14 @@ namespace baUHInia.Playground.Model.Selectors
             currentCash.Foreground = Brushes.Azure;
             currentCash.Text = money.ToString();
             return true;
+        }
+
+        public void AssignSelection(TileObject tileObject)
+        {
+            TileObject = tileObject;
+            if (!IsUserWindow()) return;
+            UserGameWindow window = Binder as UserGameWindow;
+            window.UpdateSelectionWindow(tileObject);
         }
 
         public static bool IsOutsideGrid(int x, int y, object[,] grid) =>

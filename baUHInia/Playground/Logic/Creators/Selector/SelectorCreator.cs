@@ -31,7 +31,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             return button;
         }
         
-        private static Button CreateSelector(string elementName, BitmapImage image) => new Button
+        public static Button CreateSelector(string elementName, BitmapImage image) => new Button
         {
             Content = new Image {Source = image},
             Background = Brushes.Transparent,
@@ -49,7 +49,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             (int category, int subCategory) = ((int, int)) senderButton.Tag;
             //TODO:
             TileObject tileObject = _tileCategories[category].TileObjects[subCategory];
-            _currentSelection.TileObject = tileObject;
+            _currentSelection.AssignSelection(tileObject);
             _currentSelection.ChangeState(State.Place);
         }
     }

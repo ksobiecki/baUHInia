@@ -161,6 +161,7 @@
     <Compile Include="Playground\Logic\Creators\Selector\SelectorCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\SelectorGridFiller.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\UserSelectorGridCreator.cs" />
+    <Compile Include="Playground\Logic\Creators\Selector\VerticalSelectionWindowCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Selector\VerticalSelectorGridCreator.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GameTileBehaviourSetter.cs" />
     <Compile Include="Playground\Logic\Creators\Tiles\GenericTileBehaviourSetter.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Playground\Logic\Loaders\ResourceLoader.cs" />
     <Compile Include="Playground\Logic\Loaders\TileConfigReader.cs" />
     <Compile Include="Playground\Logic\Utils\Config.cs" />
+    <Compile Include="Playground\Logic\Utils\ImageWriter.cs" />
     <Compile Include="Playground\Logic\Utils\ResourceCollection.cs" />
     <Compile Include="Playground\Logic\Utils\StringUtils.cs" />
     <Compile Include="Playground\Model\ITileBinder.cs" />

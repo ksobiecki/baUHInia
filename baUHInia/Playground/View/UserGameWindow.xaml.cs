@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.MapLogic.Model;
 using baUHInia.Playground.Logic.Creators;
 using baUHInia.Playground.Logic.Creators.Selector;
 using baUHInia.Playground.Logic.Creators.Tiles;
+using baUHInia.Playground.Logic.Utils;
 using baUHInia.Playground.Model;
 using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Wrappers;
 using baUHInia.Simulation;
-using baUHInia.Admin;
+using Microsoft.Win32;
 using Button = System.Windows.Controls.Button;
 
 namespace baUHInia.Playground.View
@@ -25,7 +28,10 @@ namespace baUHInia.Playground.View
     {
         private const byte BoardDensity = 50;
 
+        private ISelectionWindowCreator _selectionWindowCreator;
+
         private ISelectorGridCreator _selectorGridCreator;
+
         private IGameGridCreator _gameGridCreator;
 
         private IGameMapManager _manager;
@@ -40,6 +46,8 @@ namespace baUHInia.Playground.View
         private Grid LoadGameGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
         private Grid GameMapGrid { get; set; }
+
+        private Map LoadedMap { get; set; }
 
 
         public UserGameWindow(LoginData credentials)
@@ -115,6 +123,12 @@ namespace baUHInia.Playground.View
             _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
         }
 
+        public void UpdateSelectionWindow(TileObject tileObject)
+        {
+            GameObject gameObject = AvailableObjects.FirstOrDefault(a => a.TileObject == tileObject);
+            _selectionWindowCreator.UpdateSelectionWindow(SelectionGrid, gameObject);
+        }
+
         public void ChangeInteractionMode(string text, Brush color)
         {
             string[] strings = text.Split('/');
@@ -151,6 +165,7 @@ namespace baUHInia.Playground.View
 
             UnlockAdminFeatures(credentials.isAdmin);
 
+            _selectionWindowCreator = new VerticalSelectionWindowCreator();
             _simulator = new Simulation.Simulation();
         }
 
@@ -231,18 +246,18 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            Map map = _manager.LoadMap("mapka_test");
+            LoadedMap = _manager.LoadMap("mapka_test");
             AvailableObjects = null;
 
             Selection = new Selection(null, this);
             if (GameMapGrid == null) CreateNewMap(null, null);
             GameMapGrid.Children.Clear();
-            AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
+            AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, LoadedMap);
             GameMapGrid = GameScroll.Content as Grid;
 
             ChangeDisplayMode(true);
             AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
-            MapName.Text = map.Name;
+            MapName.Text = LoadedMap.Name;
 
             PlacerGridCreator creator = _gameGridCreator as PlacerGridCreator;
             creator.InitializeElementsLayer(GameScroll.Content as Grid, Selection, BoardDensity);
@@ -256,6 +271,21 @@ namespace baUHInia.Playground.View
             _manager.SaveGame(this);
             //TODO: implement
             Console.WriteLine("Passed saving");
+        }
+
+        private void SaveStateAsJpg(object sender, RoutedEventArgs args)
+        {
+            RenderTargetBitmap renderTargetBitmap = ImageWriter.CopyAsBitmap(GameScroll.Content as Grid);
+            byte[] bytes = ImageWriter.Encode(renderTargetBitmap, new JpegBitmapEncoder());
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = ".jpeg",
+                FileName = LoadedMap.Name,
+                Title = "Zapisz zrzut mapy jako",
+                AddExtension = true,
+                OverwritePrompt = true
+            };
+            if (saveFileDialog.ShowDialog() == true) File.WriteAllBytes(saveFileDialog.FileName, bytes);
         }
 
         private void ClearMap(object source, RoutedEventArgs args)
@@ -291,10 +321,9 @@ namespace baUHInia.Playground.View
             Close();
         }
 
-        private void ChangeDisplayMode(bool visible)
-        {
+        private void ChangeDisplayMode(bool visible) =>
             Bar.Visibility = SideGrid.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-        }
+
 
         private void UnlockAdminFeatures(bool isAdmin)
         {

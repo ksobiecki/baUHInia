@@ -291,9 +291,14 @@ namespace baUHInia.Playground.View
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            Close();
+            this.Hide();
             Authorisation.Authorisation authorisation = new Authorisation.Authorisation();
             authorisation.Show();
+            this.Close();
+        }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }

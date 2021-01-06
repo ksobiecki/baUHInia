@@ -313,5 +313,9 @@ namespace baUHInia.Playground.View
             AdminButton.Click += ChangeGameMode;
             AdminImage.Opacity = 1.0f;
         }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
     }
 }

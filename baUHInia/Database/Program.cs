@@ -298,31 +298,30 @@ namespace baUHInia.Database
             return 0;
         }
 
-        public string[] getMapNames()
+        public Tuple<int, string>[] getMapNames()
         {
-            List<string> vs = new List<string>();
+            List<Tuple<int, string>> vs = new List<Tuple<int, string>>();
 
             try
             {
                 Polacz();
-                string query = "select nazwa from Mapy";
+                string query = "select id_mapy,nazwa from Mapy";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    vs.Add(reader.GetString(0));
-
+                    vs.Add(new Tuple<int, string>(reader.GetInt32(0), reader.GetString(1)));
                 }
                 Rozlacz();
             }
             catch (SqlException)
             {
-
+                return null;
             }
             return vs.ToArray();
         }
 
-        public int GetMapID(string nazwa)
+        public int GetMapID(string nazwa) //Deprecated
         {
             int id = 0;
             try
@@ -421,18 +420,19 @@ namespace baUHInia.Database
             return 0;
         }
 
-        public bool GetGame(int ID, ref string jsongame)
+        public bool GetGame(int ID, ref string jsongame, ref int mapID)
         {
             try
             {
                 Polacz();
-                string query = "select serial from Gry where id_gry = @ID ";
+                string query = "select serial,id_mapy from Gry where id_gry = @ID ";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 sqlCommand.Parameters.AddWithValue("@ID", ID);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 if (reader.Read())
                 {
                     jsongame = reader.GetString(0);
+                    mapID = reader.GetInt32(1);
                 }
                 Rozlacz();
                 return true;
@@ -559,6 +559,54 @@ namespace baUHInia.Database
             }
         }
 
+        public int CheckIfTheLoggedInUserIsTheOwnerOfTheMapHeOrSheWantToOverwrite(int loggedInUserID, int mapToOverwriteID)
+        {
+            try
+            {
+                Polacz();
+                string query = "select id_autora from Mapy where id_mapy = @mapID";
+                SqlCommand sqlCommand = new SqlCommand(query,polaczenie);
+                sqlCommand.Parameters.AddWithValue("@mapID",mapToOverwriteID);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    if (reader.GetInt32(0).Equals(loggedInUserID))
+                    {
+                        return 1; // tak, jest wlascicielem tej mapy
+                    } else if(!reader.GetInt32(0).Equals(loggedInUserID))
+                    {
+                        return 0; // oj nie byczq to nie twoja mapa
+                    }
+                }
+                return 420; //takiej mapy nie znamy, nie ma jej w bazie
+            }
+            catch (SqlException)
+            {
+                Rozlacz();
+                return 2137; //zwrocenie 2137 oznacza klopoty
+            }
+        }
+
+        public bool SetScoreInFinniszedGame(int gameID, int score, int palyerID)
+        {
+            try
+            {
+                Polacz();
+                string query = "update Gry set wynik = @score where id_gry = @gameName and id_gracza = @palyerID";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@score", score);
+                sqlCommand.Parameters.AddWithValue("@gameName", gameID);
+                sqlCommand.Parameters.AddWithValue("@palyerID", palyerID);
+                sqlCommand.ExecuteNonQuery();
+                Rozlacz();
+                return true;
+            }
+            catch (SqlException)
+            {
+                Rozlacz();
+                return false;
+            }
+        }
 
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using baUHInia.Playground.Logic.Utils;
@@ -19,52 +19,20 @@ namespace baUHInia.Playground.Model.Selectors
 
         public void ApplyTiles(Button button, bool rmb)
         {
-            (int x, int y) position = (Grid.GetColumn(button), Grid.GetRow(button));
-            bool located = _selection.Binder.PlacedObjects.FirstOrDefault(e => e.Position == position) != null;
+            (sbyte x, sbyte y) position = ((sbyte) Grid.GetColumn(button), (sbyte) Grid.GetRow(button));
             bool isElement = _selection.TileObject.Config.IsElement;
-            
+
             _currentTile?.ShowIfAvailable(1.0f, Brushes.Navy, Brushes.Maroon);
-            //TODO: refactor
             bool same = _currentTile == _selection.Binder.TileGrid[position.y, position.x];
             _currentTile = _selection.Binder.TileGrid[position.y, position.x];
 
-            if (!_currentTile.Placeable && !_selection.Admin)
-            {
-                if (same)
-                {
-                    _currentTile = null;
-                    return;
-                }
-                _currentTile.ShowIfAvailable(0.25f, Brushes.Navy, Brushes.Maroon);
-                return;
-            }
-                
-            if (isElement && located)
-            {
-                //TODO: remove
-                Console.WriteLine("CANNOT PLACE THERE!");
-                return;
-            }
+            if (!CheckAllConditions(same, position, isElement)) return;
 
             foreach (Placer tile in _selection.ChangedPlacers)
             {
                 tile.AcceptChange();
                 if (!isElement) continue;
-
-                (int x, int y) = tile.GetCoords();
-                List<Element> elements = _selection.ElementsLayers[y, x];
-                Image image = new Image {IsHitTestVisible = false};
-                Grid grid = tile.GetParentGrid();
-                Grid.SetColumn(image, x);
-                Grid.SetRow(image, y);
-                grid.Children.Add(image);
-                tile.Root = new Offset(
-                    ((Grid) button.Parent).Children.Count - 1 - _selection.TileObject.Config.Offsets.Length,
-                    (sbyte) position.x,
-                    (sbyte) position.y
-                );
-                elements.Add(new Element(image, null));
-                tile.TileObject = _selection.TileObject;
+                AttachElementAtCoords(tile, button, position);
             }
 
             if (!isElement) return;
@@ -103,7 +71,7 @@ namespace baUHInia.Playground.Model.Selectors
 
         public void SelectOperator() { }
 
-        public void DeselectOperator() {  }
+        public void DeselectOperator() { }
 
         private void UpdateChangedTileList(Placer tileAtCoords, int index)
         {
@@ -120,5 +88,44 @@ namespace baUHInia.Playground.Model.Selectors
             element.Change(tileObject[index], tileObject.Config.Name);
             _selection.ChangedPlacers.AddLast(element);
         }
+
+        private bool CheckAllConditions(bool sameElement, (int, int) position, bool isElement)
+        {
+            List<Placement> placedObjects = _selection.Binder.PlacedObjects;
+
+            bool located = placedObjects.FirstOrDefault(e => e.Position == position) != null;
+            bool isNotPlaceable = !_currentTile.Placeable && _selection.IsUserWindow();
+            bool isOccupied = isElement && located;
+
+            // ReSharper disable once InvertIf
+            if (isNotPlaceable || isOccupied || !_selection.UpdateCost(true))
+            {
+                if (sameElement) _currentTile = null;
+                else _currentTile.ShowIfAvailable(0.25f, Brushes.Maroon, Brushes.Maroon);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void AttachElementAtCoords(Placer tile, FrameworkElement button, (sbyte x, sbyte y) position)
+        {
+            (int x, int y) = tile.GetCoords();
+            List<Element> elements = _selection.ElementsLayers[y, x];
+
+            Image image = new Image {IsHitTestVisible = false};
+            Grid grid = tile.GetParentGrid();
+            Grid.SetColumn(image, x);
+            Grid.SetRow(image, y);
+            grid.Children.Add(image);
+
+            (sbyte rootX, sbyte rootY) = position;
+            tile.Root = new Offset(CalculateRootIndex(button), rootX, rootY);
+            elements.Add(new Element(image, null));
+            tile.TileObject = _selection.TileObject;
+        }
+
+        private int CalculateRootIndex(FrameworkElement button) =>
+            ((Grid) button.Parent).Children.Count - 1 - _selection.TileObject.Config.Offsets.Length;
     }
 }

@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using baUHInia.Playground.Model.Resources;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 
@@ -30,24 +29,23 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             button.Tag = tag;
             return button;
         }
-        
+
         public static Button CreateSelector(string elementName, BitmapImage image) => new Button
         {
             Content = new Image {Source = image},
             Background = Brushes.Transparent,
             BorderBrush = Brushes.Transparent,
-            Margin = new Thickness(1),
-            Padding = new Thickness(-1.2),
+            Style = Application.Current.FindResource("SquareButton") as Style,
             Tag = elementName
         };
-        
+
         //============================ SELECTOR BEHAVIOUR ============================//
-        
+
         private void OnSelectorMouseClick(object sender, RoutedEventArgs routedEventArgs)
         {
             Button senderButton = sender as Button;
             (int category, int subCategory) = ((int, int)) senderButton.Tag;
-            //TODO:
+            
             TileObject tileObject = _tileCategories[category].TileObjects[subCategory];
             _currentSelection.AssignSelection(tileObject);
             _currentSelection.ChangeState(State.Place);

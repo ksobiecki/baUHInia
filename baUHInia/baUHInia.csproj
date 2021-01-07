@@ -267,16 +267,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\chestnut.json" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\1_summer_oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\2_summer_oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\3_summer_oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\4_summer_oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\5_summer_oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\6_summer_oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\summer_oak\summer_oak.json" />
-    <Resource Include="resources\foliage\DecidousTrees\tester\oak.png" />
-    <Resource Include="resources\foliage\DecidousTrees\tester\tester.json" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\chestnut.json" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\large_oak.json" />
+    <Resource Include="resources\foliage\small_trees\small_maple\1_small_maple.png" />
+    <Resource Include="resources\foliage\small_trees\small_maple\2_small_maple.png" />
+    <Resource Include="resources\foliage\small_trees\small_maple\3_small_maple.png" />
+    <Resource Include="resources\foliage\small_trees\small_maple\4_small_maple.png" />
+    <Resource Include="resources\foliage\small_trees\small_maple\5_small_maple.png" />
+    <Resource Include="resources\foliage\small_trees\small_maple\6_small_maple.png" />
+    <Resource Include="resources\foliage\small_trees\small_maple\small_maple.json" />
     <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
     <Resource Include="resources\terrain\roads\bottom\bottom.json" />
     <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
@@ -317,6 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+    <Folder Include="resources\foliage\small_trees" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -377,12 +377,12 @@
     <Resource Include="res\savegame.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\1_chesnut.png" />
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\2_chesnut.png" />
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\3_chesnut.png" />
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\4_chesnut.png" />
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\5_chesnut.png" />
-    <Resource Include="resources\foliage\DecidousTrees\chestnut\6_chesnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\1_chesnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\2_chesnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\3_chesnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\4_chesnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\5_chesnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\chestnut\6_chesnut.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="res\admin.ico" />
@@ -395,6 +395,43 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="res\map.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\large_oak\1_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\10_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\11_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\12_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\13_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\14_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\15_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\16_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\17_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\18_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\19_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\2_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\20_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\21_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\22_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\23_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\24_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\25_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\26_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\27_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\28_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\29_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\3_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\30_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\31_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\32_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\33_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\34_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\35_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\4_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\5_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\6_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\7_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\8_large_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_oak\9_large_oak.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

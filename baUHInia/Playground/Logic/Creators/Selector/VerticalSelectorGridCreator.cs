@@ -74,9 +74,10 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         private Grid AddSubGridToSelectorGrid(int height, int width, int gridRowIndex)
         {
-            Grid grid = new Grid {Height = width == height ? 100 : (height + 1) * 33.33, Width = 100};
+            Grid grid = new Grid {Margin = new Thickness(10, 0, 10, 0)};
             Grid.SetRow(grid, gridRowIndex + 1);
             DivideGridToAccommodateTileObject(grid, width, height);
+
             _selectorGrid.Children.Add(grid);
             return grid;
         }

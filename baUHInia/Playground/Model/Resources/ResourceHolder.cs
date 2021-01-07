@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Logic.Loaders;
@@ -38,6 +39,7 @@ namespace baUHInia.Playground.Model.Resources
 
         public TileCategory GetCategoryByName(string name)
         {
+            name = name.Replace(' ', '_').ToLowerInvariant();
             switch (CurrentType)
             {
                 case ResourceType.Terrain: return GetSpecificCategory(Terrain, name);
@@ -99,8 +101,20 @@ namespace baUHInia.Playground.Model.Resources
                    new TileCategory("", new List<TileObject>());
         }
 
-        private static IEnumerable<string> GetCategoryNames(IEnumerable<TileCategory> categories) =>
-            categories?.Select(c => char.ToUpper(c.Name[0]) + c.Name.Substring(1));
+        private static IEnumerable<string> GetCategoryNames(IEnumerable<TileCategory> categories)
+        {
+            List<string> names = categories.Select(c => c.Name).ToList();
+            TextInfo info = new CultureInfo("en-US",false).TextInfo;
+
+            for (int i = 0; i < names.Count; i++)
+            {
+                string name = names[i];
+                if (name.Contains('_')) name = name.Replace('_', ' ');
+                names[i] = info.ToTitleCase(name);
+            }
+
+            return names;
+        }
 
         private static TileObject FindInGroup(IEnumerable<TileCategory> pack, string name) => (
             from category in pack
@@ -109,5 +123,3 @@ namespace baUHInia.Playground.Model.Resources
             select tile).FirstOrDefault();
     }
 }
-
-// WYWOŁANIE    ResourceHolder.Get.GetPlaceableTileObject(name);

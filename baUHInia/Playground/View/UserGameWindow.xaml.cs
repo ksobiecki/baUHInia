@@ -210,7 +210,7 @@ namespace baUHInia.Playground.View
                 Border border = SaveGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
                 //TODO: uncomment after saveGameGrid is completed
-                //((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
@@ -35,6 +34,7 @@ namespace baUHInia.Playground.Model.Selectors
             Placement existingPlacement = _selection.Binder.PlacedObjects.First(p => p.Position == sourceCoords);
             _selection.Binder.PlacedObjects.Remove(existingPlacement);
             _selection.ChangedPlacers.Clear();
+            _selection.UpdateCost(false);
         }
 
         public void RedoChanges()
@@ -58,27 +58,25 @@ namespace baUHInia.Playground.Model.Selectors
             }
         }
 
-        public void SelectOperator()
-        {
-            
-        }
+        public void SelectOperator() { }
 
-        public void DeselectOperator()
-        {
-            
-        }
+        public void DeselectOperator() { }
 
+        // ReSharper disable once CoVariantArrayConversion
         private void MarkAsRemovable(Placer element)
         {
             TileObject pointedObject = element.TileObject;
             _selection.TileObject = pointedObject;
-            Element parentElement = _selection.ElementsLayers[element.Root.Y, element.Root.X].First(e => e.Root.X == e.GetCoords().x && e.Root.Y == e.GetCoords().y);
+            List<Element> elements = _selection.ElementsLayers[element.Root.Y, element.Root.X];
+            Element parentElement = elements.First(e => e.Root.X == e.GetCoords().x && e.Root.Y == e.GetCoords().y);
+            
             (int x, int y) parent = parentElement.GetCoords();
             foreach (Offset offset in pointedObject.Config.Offsets)
             {
                 (int x, int y) = _selection.GetCoords(parentElement, offset.I);
                 if (Selection.IsOutsideGrid(x, y, _selection.ElementsLayers)) continue;
-                Element childElement = _selection.ElementsLayers[y, x].Find(e => e.Root.X == parent.x && e.Root.Y == parent.y);
+                List<Element> layers = _selection.ElementsLayers[y, x];
+                Element childElement = layers.Find(e => e.Root.X == parent.x && e.Root.Y == parent.y);
                 _selection.ChangedPlacers.AddLast(childElement);
                 childElement.MarkAsRemovable(0.6);
             }

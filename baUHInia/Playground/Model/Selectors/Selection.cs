@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using baUHInia.Playground.Model.Tiles;
@@ -12,15 +13,12 @@ namespace baUHInia.Playground.Model.Selectors
         private const string PlacementString = "STAWIANIE/LMB: POJEDYŃCZO/RMB: MALOWANIE/NIEDOSTĘPNE DLA OBIEKTÓW";
         private const string RemoveString = "USUWANIE/LMB: USUWA OBIEKT/PO NAJECHANIU, POLA/ZMIENIAJĄ PRZEZROCZYSTOŚĆ";
         private const string BlockString = "BLOKOWANIE/LMB: ODBLOKOWUJE/RMB: MALUJE/LCTRL + LMB\\RMB: BLOKUJE";
-        
+
         public ITileBinder Binder { get; }
         public TileObject TileObject { get; set; }
         public List<Element>[,] ElementsLayers { get; set; }
         public LinkedList<Placer> ChangedPlacers { get; private set; }
         public State SelectionState { get; private set; }
-        
-        public bool Admin { get; }
-        
 
         private IOperator[] Operators { get; }
         private IOperator CurrentOperator { get; set; }
@@ -34,7 +32,7 @@ namespace baUHInia.Playground.Model.Selectors
             ChangedPlacers = new LinkedList<Placer>();
             Operators = new IOperator[] {new PlaceOperator(this), new DeleteOperator(this), new BlockOperator(this)};
             CurrentOperator = Operators[0];
-            Admin = binder.IsInAdminMode;
+            if (IsUserWindow()) ((UserGameWindow) Binder).CurrentCash.Foreground = Brushes.Azure;
         }
 
         public void Reset()
@@ -80,6 +78,34 @@ namespace baUHInia.Playground.Model.Selectors
             (int x, int y) baseCoords = tileBeforeOffset.GetCoords();
             Offset offset = TileObject.Config.Offsets[offsetIndex];
             return (baseCoords.x + offset.X, baseCoords.y - offset.Y);
+        }
+
+        public bool IsUserWindow() => Binder.GetType() == typeof(UserGameWindow);
+
+        public bool UpdateCost(bool buy)
+        {
+            if (!IsUserWindow()) return true;
+            TextBlock currentCash = ((UserGameWindow) Binder).CurrentCash;
+            int cost = Binder.AvailableObjects?.FirstOrDefault(a => a.TileObject == TileObject).Price ?? 0;
+            int money = int.Parse(currentCash.Text) - (buy ? cost : -cost);
+
+            if (money < 0)
+            {
+                currentCash.Foreground = Brushes.Crimson;
+                return false;
+            }
+
+            currentCash.Foreground = Brushes.Azure;
+            currentCash.Text = money.ToString();
+            return true;
+        }
+
+        public void AssignSelection(TileObject tileObject)
+        {
+            TileObject = tileObject;
+            if (!IsUserWindow()) return;
+            UserGameWindow window = Binder as UserGameWindow;
+            window.UpdateSelectionWindow(tileObject);
         }
 
         public static bool IsOutsideGrid(int x, int y, object[,] grid) =>

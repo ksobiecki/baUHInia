@@ -183,9 +183,9 @@ namespace baUHInia.MapLogic.Manager
 
             string gameName = Choice;
 
-            // = (string)jsonGame["MapI"]; // Using name instread of id , a temporary solution - or isnt it?
+            // = (string)jsonGame["MapID"]; // Using name instread of id , a temporary solution - or isnt it?
 
-            Map map = LoadMap("co tam pietras pewnie błąd tu masz hehe");
+            Map map = null;
 
             return new Game(123, 123, 123, gameName, placedObjects, map);
         }
@@ -229,7 +229,7 @@ namespace baUHInia.MapLogic.Manager
             return new Map(ChoiceId, authorID, Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
         }
 
-        public bool SaveGame(ITileBinder tileBinder)
+        public bool SaveGame(ITileBinder tileBinder, Map map)
         {
             throw new NotImplementedException();
 
@@ -241,7 +241,9 @@ namespace baUHInia.MapLogic.Manager
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            db.addGame(123, Choice, jsonGame.ToString(Formatting.None), 123);
+            jsonGame["MapID"] = map.MapID;
+
+            db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), map.MapID);
 
             Console.WriteLine(jsonGame.ToString(Formatting.None));
 

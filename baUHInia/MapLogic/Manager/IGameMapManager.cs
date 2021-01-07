@@ -13,6 +13,6 @@ namespace baUHInia.MapLogic.Manager
         Map LoadMap(string name);
         Game LoadGame(string name);
         bool SaveMap(ITileBinder tileBinder);
-        bool SaveGame(ITileBinder tileBinder);
+        bool SaveGame(ITileBinder tileBinder, Map map);
     }
 }

@@ -274,7 +274,7 @@ namespace baUHInia.Playground.View
 
         private void SaveGame(object sender, RoutedEventArgs args)
         {
-            _manager.SaveGame(this);
+            _manager.SaveGame(this,LoadedMap);
             //TODO: implement
             Console.WriteLine("Passed saving");
         }

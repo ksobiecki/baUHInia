@@ -13,7 +13,6 @@ namespace baUHInia.MapLogic.Helper
         // Serialization
         public static void JsonAddBasicData(JObject jsonMap, ITileBinder tileBinder, string name)
         {
-            //jsonMap["MapID"] = tileBinder.
             jsonMap["AuthorID"] = tileBinder.Credentials.UserID;
             jsonMap["Name"] = name;
             jsonMap["Size"] = tileBinder.TileGrid.GetLength(0);

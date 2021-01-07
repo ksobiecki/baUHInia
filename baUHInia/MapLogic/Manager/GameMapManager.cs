@@ -29,7 +29,7 @@ namespace baUHInia.MapLogic.Manager
 
         // Modes - 0: MapLoad, 1: MapSave 2: GameLoad, 3: GameSave.
 
-        private string[] MapNames;
+        private Tuple<int, string>[] MapNames;
         private Tuple<int,string>[] GameIDsNames;
 
 
@@ -41,6 +41,8 @@ namespace baUHInia.MapLogic.Manager
 
         private TextBox SaveMapNameTextBox;
         private TextBox SaveGameNameTextBox;
+
+        private Label SaveMapErrorLabel;
 
         public GameMapManager()
         {
@@ -84,7 +86,8 @@ namespace baUHInia.MapLogic.Manager
             BrushConverter bc = new BrushConverter();
             SaveMapContainerGrid.Background = (Brush)bc.ConvertFrom("#4466AA");
 
-            /*Label nameLabel = new Label
+            /*
+            Label nameLabel = new Label
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -93,9 +96,18 @@ namespace baUHInia.MapLogic.Manager
                 Margin = new Thickness(0, 0, 0, 40),
             };*/
 
+            SaveMapErrorLabel = new Label
+            {
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                Height = 40,
+                Foreground = Brushes.Red
+            };
+
             TextBox nameTextBox = new TextBox
             {
-                //Margin = new Thickness(20, 40, 20, 0),
+                Margin = new Thickness(20, 0, 20, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Padding = new Thickness(0,5,0,5)
@@ -103,7 +115,7 @@ namespace baUHInia.MapLogic.Manager
 
             nameTextBox.TextChanged += (s, a) => { SaveMapNameTextChanged(s); };
 
-            //SaveMapContainerGrid.Children.Add(nameLabel);
+            SaveMapContainerGrid.Children.Add(SaveMapErrorLabel);
             SaveMapContainerGrid.Children.Add(nameTextBox);
             return SaveMapContainerGrid;
 
@@ -175,19 +187,21 @@ namespace baUHInia.MapLogic.Manager
             }
 
             string jsonStringGame = null;
-            db.GetMap(ref jsonStringGame, Choice);
+            int mapID = -1;
 
+            db.GetGame(ChoiceId, ref jsonStringGame, ref mapID);
+            
             JObject jsonGame = JObject.Parse(jsonStringGame);
 
             SerializationHelper.JsonGetPlacedObjects(jsonGame, out var placedObjects);
 
             string gameName = Choice;
 
-            // = (string)jsonGame["MapID"]; // Using name instread of id , a temporary solution - or isnt it?
+            string jsonStringMap = null;
 
-            Map map = null;
+            //Map map = db.GetMap(ref jsonStringMap,) Need method to search map by id.
 
-            return new Game(123, 123, 123, gameName, placedObjects, map);
+            return new Game(mapID, ChoiceId, 123, Choice, placedObjects, null);
         }
 
         public Map LoadMap(string name)
@@ -265,19 +279,35 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
             BazaDanych db = new BazaDanych();
-            int result = db.DodajMape(123, Choice, jsonMap.ToString(Formatting.None));
+            int result = db.DodajMape(tileBinder.Credentials.UserID, Choice, jsonMap.ToString(Formatting.None));
 
-            if (result == 33)
-            {
-                return db.updateMap(123, jsonMap.ToString(Formatting.None), Choice);
-            }
+            Console.WriteLine("Saving result: " + result);
 
             if (result != 0)
             {
-                Console.WriteLine("Attempt to save map '" + Choice + "' in database failed - code: " + result + ".");
+                if (result == 33)
+                {
+                    bool result2 = db.updateMap(tileBinder.Credentials.UserID, jsonMap.ToString(Formatting.None), Choice); // Returns true even when 0 rows were affected, TODO make sure this works when db fixes their error detection.
+
+                    if (result2)
+                    {
+                        SaveMapErrorLabel.Content = "";
+                        MapNames = db.getMapNames();
+                        return true;
+                    }
+
+                    SaveMapErrorLabel.Content = "Nazwa mapy jest zajęta."; // Just gonna assume that this is the cause.
+                }
+                else
+                {
+                    SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                }
+                
                 return false;
             }
 
+            SaveMapErrorLabel.Content = "";
+            MapNames = db.getMapNames();
             return true;
         }
 
@@ -388,16 +418,16 @@ namespace baUHInia.MapLogic.Manager
 
             if (mode == 0 || mode == 1)
             {
-                string[] filteredMapNames = MapNames.Where(m => m.Contains(Keyword)).ToArray();
+                Tuple<int, string>[] filteredMapNames = MapNames.Where(m => m.Item2.Contains(Keyword)).ToArray();
 
-                foreach (string name in filteredMapNames)
+                foreach (Tuple<int, string> mapIDNname in filteredMapNames)
                 {
                     listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
                     Grid.SetRow(listItemGrid, index);
-                    Button listItemButton = CreateListItemButton(name, listGrid);
-                    Tuple<int, string> temp = new Tuple<int, string>(0, name);
-                    listItemButton.Tag = temp;
+                    Button listItemButton = CreateListItemButton(mapIDNname.Item2, listGrid);
+                    Tuple<int, string> temp = new Tuple<int, string>(0, mapIDNname.Item2);
+                    listItemButton.Tag = mapIDNname;
                     listItemGrid.Children.Add(listItemButton);
                     listGrid.Children.Add(listItemGrid);
                     index++;

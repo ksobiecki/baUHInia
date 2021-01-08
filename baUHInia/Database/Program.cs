@@ -611,5 +611,28 @@ namespace baUHInia.Database
             }
         }
 
+        public bool GetMapByID(ref string jsnon, int ID)
+        {
+
+            try
+            {
+                Polacz();
+                string query = "select serial from Mapy where id_mapy = @nazwa ";
+                SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
+                sqlCommand.Parameters.AddWithValue("@nazwa", ID);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    jsnon = reader.GetString(0);
+                }
+                Rozlacz();
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

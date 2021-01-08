@@ -12,10 +12,10 @@ namespace baUHInia.MapLogic.View
         public ChoiceWindow()
         {
             // This whole thing is for debug purposes only.
-            InitializeComponent();
-            IGameMapManager GameMapManager = new GameMapManager();
-            Grid target = this.FindName("TargetGrid") as Grid;
-            target.Children.Add(GameMapManager.GetGameSaveGrid());
+            // InitializeComponent();
+            // IGameMapManager GameMapManager = new GameMapManager();
+            // Grid target = this.FindName("TargetGrid") as Grid;
+            // target.Children.Add(GameMapManager.GetGameSaveGrid());
         }
     }
 }

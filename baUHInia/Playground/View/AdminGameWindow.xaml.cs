@@ -187,7 +187,7 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid ?? MenuGrid;
@@ -206,11 +206,8 @@ namespace baUHInia.Playground.View
                 SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
                 Border border = SaveMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
-                ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
-                {
-                    GameScroll.Content = AdminGrid;
-                };
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid(Credentials.UserID));
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = AdminGrid;
             }
 
             SideGrid.Visibility = Visibility.Collapsed;
@@ -232,7 +229,8 @@ namespace baUHInia.Playground.View
         private void SaveMap(object sender, RoutedEventArgs args)
         {
             _manager.SaveMap(this);
-            Console.WriteLine("Passed saving");
+            SideGrid.Visibility = Visibility.Visible;
+            GameScroll.Content = GameMapGrid;
         }
 
         private void NewMap(object source, RoutedEventArgs args)
@@ -259,8 +257,7 @@ namespace baUHInia.Playground.View
                 {
                     AvailableObjects = _admin.GetModifiedAvailableObjects();
                     AvailableFounds = _admin.GetBudget();
-                    //TODO: change to > 3
-                    if (AvailableObjects.Count == 0) return;
+                    if (AvailableObjects.Count < 3) return;
                     CreateSaveWindow(null, null);
                 };
                 AdminGrid = _admin.GetAdminSelectorTableGrid();

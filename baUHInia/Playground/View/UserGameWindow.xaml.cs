@@ -310,7 +310,7 @@ namespace baUHInia.Playground.View
         private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
             Owner.Show();
-            Close();
+            Hide();
         }
 
         private void ReturnToMenu(object sender, RoutedEventArgs args)
@@ -323,10 +323,9 @@ namespace baUHInia.Playground.View
         {
             try
             {
-                Hide();
+                Close();
                 Authorisation.Authorisation authorization = new Authorisation.Authorisation();
                 authorization.Show();
-                Close();
             }
             catch (Exception e)
             {
@@ -350,7 +349,7 @@ namespace baUHInia.Playground.View
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            //Application.Current.Shutdown();
         }
     }
 }

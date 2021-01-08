@@ -29,6 +29,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 List<TileObject> tileObjects = LoadTileObjects(resources, i);
                 tileCategories.Add(new TileCategory(resources.Categories[i], tileObjects));
             }
+
             HasNameDuplicates(tileCategories);
             return tileCategories;
         }
@@ -48,7 +49,8 @@ namespace baUHInia.Playground.Logic.Loaders
                     resources.Categories[index], subCategory, ResourceDir
                 );
                 Sprite sprite = new Sprite(elementsOfSubCategory, configInstance?.Offsets, bitmaps);
-                TileObject tileObject = new TileObject((index, i), sprite, configInstance);
+                TileObject tileObject =
+                    new TileObject((resources.Categories[index], subCategory), sprite, configInstance);
                 tileObjects.Add(tileObject);
             }
 
@@ -85,7 +87,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 from tileCategory in tileCategories
                 from tileObject in tileCategory.TileObjects
                 select tileObject.Config.Name).ToList();
-            
+
             if (configs.GroupBy(s => s).Where(g => g.Count() > 1).ToArray().Length != 0)
             {
                 throw new DuplicateNameException("There can't be 2 elements with same name");

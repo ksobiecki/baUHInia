@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -22,7 +23,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         public void UpdateTileGroup(List<TileCategory> categories) => _tileCategories = categories;
 
-        public Button CreateSelectorTile(string elementName, BitmapImage image, (int category, int subCategory) tag)
+        public Button CreateSelectorTile(string elementName, BitmapImage image, (string cat, string subCat) tag)
         {
             Button button = CreateSelector(elementName, image);
             button.Click += OnSelectorMouseClick;
@@ -44,9 +45,12 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         private void OnSelectorMouseClick(object sender, RoutedEventArgs routedEventArgs)
         {
             Button senderButton = sender as Button;
-            (int category, int subCategory) = ((int, int)) senderButton.Tag;
+            (string category, string subCategory) = ((string, string)) senderButton.Tag;
             
-            TileObject tileObject = _tileCategories[category].TileObjects[subCategory];
+            TileObject tileObject = _tileCategories
+                .First(c => c.Name == category).TileObjects
+                .First(o => o.Tag.subCategory == subCategory);
+            
             _currentSelection.AssignSelection(tileObject);
             _currentSelection.ChangeState(State.Place);
         }

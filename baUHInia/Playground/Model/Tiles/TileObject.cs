@@ -6,7 +6,7 @@ namespace baUHInia.Playground.Model.Tiles
 {
     public class TileObject
     {
-        public readonly (int category, int subCategory) Tag;
+        public readonly (string category, string subCategory) Tag;
         public readonly Sprite Sprite;
         public readonly Config Config;
 
@@ -14,7 +14,7 @@ namespace baUHInia.Playground.Model.Tiles
         public BitmapImage this[int i] => Sprite[i];
         public string Name => Config.Name;
 
-        public TileObject((int category, int subCategory) tag, Sprite sprite, Config config)
+        public TileObject((string category, string subCategory) tag, Sprite sprite, Config config)
         {
             Tag = tag;
             Sprite = sprite;

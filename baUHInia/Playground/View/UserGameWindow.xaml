@@ -240,7 +240,27 @@
 				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			</ScrollViewer>
 			
-			<Grid Name="SelectionGrid" Grid.Row="11" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+			<Grid Name="SelectionGrid" Grid.Row="11" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="200" MaxHeight="200">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="90" MaxHeight="90"/>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				
+				<Label Height="50" FontSize="13" FontWeight="Bold" Foreground="Azure" HorizontalAlignment="Center" />
+				<Grid MaxHeight="90" Height="90" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock Height="20" FontSize="13" FontWeight="Bold" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Margin="5,0,0,0"/>
+				<TextBlock Height="20" FontSize="13" FontWeight="Bold" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Margin="5,0,0,0"/>
+				<TextBlock Height="20" FontSize="13" FontWeight="Bold" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Margin="5,0,0,0"/>
+				<TextBlock Height="20" FontSize="13" FontWeight="Bold" Foreground="Azure" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Margin="5,0,0,0"/>
+			</Grid>
 			
 		</Grid>
 

@@ -47,9 +47,8 @@ namespace baUHInia.Playground.View
         private Grid LoadGameGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
         private Grid GameMapGrid { get; set; }
-
         private Map LoadedMap { get; set; }
-
+        private int LoadedMapID { get; set; }
 
         public UserGameWindow(LoginData credentials)
         {
@@ -249,7 +248,7 @@ namespace baUHInia.Playground.View
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             if (LoadedMap != null) ClearMap(null, null);
-            LoadedMap = _manager.LoadMap("mapka_test");
+            LoadedMap = _manager.LoadMap(out int LoadedMapID);
             PrepareLoadedGame(null, null);
         }
 
@@ -274,7 +273,7 @@ namespace baUHInia.Playground.View
 
         private void SaveGame(object sender, RoutedEventArgs args)
         {
-            _manager.SaveGame(this,LoadedMap);
+            _manager.SaveGame(this,LoadedMapID);
             //TODO: implement
             Console.WriteLine("Passed saving");
         }

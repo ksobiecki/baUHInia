@@ -86,16 +86,6 @@ namespace baUHInia.MapLogic.Manager
             BrushConverter bc = new BrushConverter();
             SaveMapContainerGrid.Background = (Brush)bc.ConvertFrom("#4466AA");
 
-            /*
-            Label nameLabel = new Label
-            {
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Content = "Nazwa mapy",
-                Height = 40,
-                Margin = new Thickness(0, 0, 0, 40),
-            };*/
-
             SaveMapErrorLabel = new Label
             {
                 VerticalAlignment = VerticalAlignment.Top,
@@ -177,19 +167,16 @@ namespace baUHInia.MapLogic.Manager
             return SaveGameContainerGrid;
         }
 
-        public Game LoadGame(string name) // Not tested might not work yet.
+        public Game LoadGame() // Not tested might not work yet.
         {
-            throw new NotImplementedException();
-
             if (Choice == "" || ChoiceId == -1)
             {
                 throw new Exception("Name or Id cannot be empty.");
             }
 
             string jsonStringGame = null;
-            int mapID = -1;
 
-            db.GetGame(ChoiceId, ref jsonStringGame, ref mapID);
+            db.GetGame(ChoiceId, ref jsonStringGame, ref ChoiceId); // From now on ChoiceId holds id of the map.
             
             JObject jsonGame = JObject.Parse(jsonStringGame);
 
@@ -197,14 +184,15 @@ namespace baUHInia.MapLogic.Manager
 
             string gameName = Choice;
 
-            string jsonStringMap = null;
+            Map map = LoadMap(out int mapID);
 
-            //Map map = db.GetMap(ref jsonStringMap,) Need method to search map by id.
+            Choice = "";
+            ChoiceId = -1;
 
-            return new Game(mapID, ChoiceId, 123, Choice, placedObjects, null);
+            return new Game(ChoiceId, Choice, placedObjects, map);
         }
 
-        public Map LoadMap(string name)
+        public Map LoadMap(out int mapID)
         {
             // TODO get credentials from database.
 
@@ -214,13 +202,15 @@ namespace baUHInia.MapLogic.Manager
             }
 
             string jsonStringMap = null;
-            db.GetMap(ref jsonStringMap, Choice);
+
+            db.GetMapByID(ref jsonStringMap, ChoiceId);
 
             JObject jsonMap = JObject.Parse(jsonStringMap);
 
             int authorID = 0;
             int size = 0;
             int availableMoney = 0;
+            string name = null;
 
             SerializationHelper.JsonGetBasicData(jsonMap, ref name, ref authorID, ref size, ref availableMoney);
 
@@ -240,10 +230,15 @@ namespace baUHInia.MapLogic.Manager
                 Console.WriteLine(((Placement)placedObjects[i]).GameObject.TileObject.Name);
             }
 
-            return new Map(ChoiceId, authorID, Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+            mapID = ChoiceId;
+
+            Choice = "";
+            ChoiceId = -1;
+
+            return new Map(Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
         }
 
-        public bool SaveGame(ITileBinder tileBinder, Map map)
+        public bool SaveGame(ITileBinder tileBinder, int mapID)
         {
             throw new NotImplementedException();
 
@@ -255,13 +250,12 @@ namespace baUHInia.MapLogic.Manager
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            jsonGame["MapID"] = map.MapID;
+            bool result = db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID);
 
-            db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), map.MapID);
+            Choice = "";
+            ChoiceId = -1;
 
-            Console.WriteLine(jsonGame.ToString(Formatting.None));
-
-            return true;
+            return result;
         }
 
         public bool SaveMap(ITileBinder tileBinder)
@@ -312,6 +306,10 @@ namespace baUHInia.MapLogic.Manager
 
             SaveMapErrorLabel.Content = "";
             MapNames = db.getMapNames();
+
+            Choice = "";
+            ChoiceId = -1;
+
             return true;
         }
 

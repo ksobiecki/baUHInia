@@ -212,7 +212,7 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
@@ -226,7 +226,7 @@ namespace baUHInia.Playground.View
                 LoadGameGrid = Resources["LoadGameTemplate"] as Grid;
                 Border border = LoadGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
@@ -240,7 +240,7 @@ namespace baUHInia.Playground.View
                 SaveGameGrid = Resources["SaveGameTemplate"] as Grid;
                 Border border = SaveGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;
@@ -259,14 +259,15 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            if (LoadedMap != null) ClearMap(null, null);
-            LoadedMap = _manager.LoadMap(out int LoadedMapID);
+            if (LoadedMap != null) ClearMap();
+            LoadedMap = _manager.LoadMap(out int mapId);
+            LoadedMapID = mapId;
             PrepareLoadedGame(null, null);
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
         {
-            if (LoadedMap != null) ClearMap(null, null);
+            if (LoadedMap != null) ClearMap();
             Game game = _manager.LoadGame();
             LoadedMap = game.Map;
             PrepareLoadedGame(null, null);
@@ -293,7 +294,8 @@ namespace baUHInia.Playground.View
 
         private void SaveGame(object sender, RoutedEventArgs args)
         {
-            _manager.SaveGame(this,LoadedMapID);
+            //_manager.SaveGame(this,LoadedMapID);
+            Console.WriteLine(Selection.ChangedPlacers);
             ChangeDisplayMode(true);
             GameScroll.Content = GameMapGrid;
             Console.WriteLine("Passed saving");
@@ -314,7 +316,7 @@ namespace baUHInia.Playground.View
             if (saveFileDialog.ShowDialog() == true) File.WriteAllBytes(saveFileDialog.FileName, bytes);
         }
 
-        private void ClearMap(object source, RoutedEventArgs args)
+        private void ClearMap()
         {
             CreateGameBoard();
             Selection.Reset();

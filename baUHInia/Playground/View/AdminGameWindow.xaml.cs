@@ -55,8 +55,11 @@ namespace baUHInia.Playground.View
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
         public LoginData Credentials { get; private set; }
+        
         public bool IsInAdminMode { get; } = true;
         public int AvailableFounds { get; set; }
+        
+        private int MapId { get; set; }
 
         //============================ PREDEFINED ACTIONS ============================//
 
@@ -216,7 +219,9 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            Map map = _manager.LoadMap(out int mapID);
+            Map map = _manager.LoadMap(out int mapId);
+            MapId = mapId;
+            
             if (GameMapGrid == null) CreateNewMap(null, null);
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);

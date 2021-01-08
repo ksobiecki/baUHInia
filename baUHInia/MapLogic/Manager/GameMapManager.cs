@@ -283,28 +283,32 @@ namespace baUHInia.MapLogic.Manager
 
             Console.WriteLine("Saving result: " + result);
 
-            if (result != 0)
+            if (result != 0) // Result equal to 0 is a successful write.
             {
-                if (result == 33)
-                {
-                    bool result2 = db.updateMap(tileBinder.Credentials.UserID, jsonMap.ToString(Formatting.None), Choice); // Returns true even when 0 rows were affected, TODO make sure this works when db fixes their error detection.
-
-                    if (result2)
-                    {
-                        SaveMapErrorLabel.Content = "";
-                        MapNames = db.getMapNames();
-                        return true;
-                    }
-
-                    SaveMapErrorLabel.Content = "Nazwa mapy jest zajęta."; // Just gonna assume that this is the cause.
-                }
-                else
+                if (result != 33) // 33 - Map already exists, other code means diffrent issue.
                 {
                     SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                    return false;
                 }
-                
-                return false;
+                else // Checking for ownership.
+                {
+                    if (db.CheckIfTheLoggedInUserIsTheOwnerOfTheMapHeOrSheWantToOverwrite(tileBinder.Credentials.UserID, ChoiceId) != 1) // Result equal to 1 means user is the owner.
+                    {
+                        SaveMapErrorLabel.Content = "Nazwa mapy jest zajęta.";
+                        return false;
+                    }
+
+                    bool result2 = db.updateMap(tileBinder.Credentials.UserID, jsonMap.ToString(Formatting.None), Choice); // Returns true even when 0 rows were affected, TODO make sure this works when db fixes their error detection.
+
+                    if (!result2)
+                    {
+                        SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                        return false;
+                    }
+                }
             }
+
+            // TODO FIND OUT WHY NAMES WITH POLISH LETTERS DO NOT GET SAVED PROPERLY (the special letters turn into normal ones - this also allows to save maps with names that are already occupied) 
 
             SaveMapErrorLabel.Content = "";
             MapNames = db.getMapNames();

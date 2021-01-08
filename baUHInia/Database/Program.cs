@@ -572,12 +572,15 @@ namespace baUHInia.Database
                 {
                     if (reader.GetInt32(0).Equals(loggedInUserID))
                     {
+                        Rozlacz();
                         return 1; // tak, jest wlascicielem tej mapy
                     } else if(!reader.GetInt32(0).Equals(loggedInUserID))
                     {
+                        Rozlacz();
                         return 0; // oj nie byczq to nie twoja mapa
                     }
                 }
+                Rozlacz();
                 return 420; //takiej mapy nie znamy, nie ma jej w bazie
             }
             catch (SqlException)

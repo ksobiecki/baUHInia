@@ -194,7 +194,6 @@ namespace baUHInia.MapLogic.Manager
 
         public Map LoadMap(out int mapID)
         {
-            // TODO get credentials from database.
 
             if (Choice == "")
             {
@@ -240,7 +239,6 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveGame(ITileBinder tileBinder, int mapID)
         {
-            throw new NotImplementedException();
 
             if (Choice == "" || ChoiceId == -1)
             {

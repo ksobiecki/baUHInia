@@ -3,6 +3,7 @@ using baUHInia.Playground.View;
 using System;
 using System.Windows.Forms.Integration;
 using System.Windows.Forms;
+using baUHInia.Authorisation;
 using baUHInia.Database;
 
 namespace baUHInia.DEBUG
@@ -17,7 +18,7 @@ namespace baUHInia.DEBUG
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
-            AdminGameWindow app = new AdminGameWindow(null);
+            AdminGameWindow app = new AdminGameWindow(new LoginData{name = "admin_user", isAdmin = true});
             //Formsy psują wprowadzanie tekstu. Poniższa linijka jest niezbędna
             ElementHost.EnableModelessKeyboardInterop(app);
             app.Show();

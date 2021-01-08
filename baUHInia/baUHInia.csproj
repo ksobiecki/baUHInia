@@ -267,15 +267,47 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\foliage\decidous_trees\chestnut\chestnut.json" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\large_november_bush.json" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\large_october_bush.json" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\large_summer_bush.json" />
+    <Resource Include="resources\foliage\bushes\medium_november_bush\medium_november_bush.json" />
+    <Resource Include="resources\foliage\bushes\medium_october_bush\medium_october_bush.json" />
+    <Resource Include="resources\foliage\bushes\medium_summer_bush\medium_summer_bush.json" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\november_bush_group.json" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\october_bush_group.json" />
+    <Resource Include="resources\foliage\bushes\small_november_bush\small_november_bush.json" />
+    <Resource Include="resources\foliage\bushes\small_october_bush\small_october_bush.json" />
+    <Resource Include="resources\foliage\bushes\small_summer_bush\small_summer_bush.json" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\summer_bush_group.json" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\large_spruce.json" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\medium_spruce.json" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\small_spruce.json" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\large_chestnut.json" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\large_maple.json" />
     <Resource Include="resources\foliage\decidous_trees\large_oak\large_oak.json" />
-    <Resource Include="resources\foliage\small_trees\small_maple\1_small_maple.png" />
-    <Resource Include="resources\foliage\small_trees\small_maple\2_small_maple.png" />
-    <Resource Include="resources\foliage\small_trees\small_maple\3_small_maple.png" />
-    <Resource Include="resources\foliage\small_trees\small_maple\4_small_maple.png" />
-    <Resource Include="resources\foliage\small_trees\small_maple\5_small_maple.png" />
-    <Resource Include="resources\foliage\small_trees\small_maple\6_small_maple.png" />
-    <Resource Include="resources\foliage\small_trees\small_maple\small_maple.json" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\medium_chestnut.json" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\medium_maple.json" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\medium_oak.json" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\small_maple.json" />
+    <Resource Include="resources\foliage\miscellaneous\camomile\camomile.json" />
+    <Resource Include="resources\foliage\miscellaneous\clematis_durandii\clematis_durandii.json" />
+    <Resource Include="resources\foliage\miscellaneous\flowerless_plant\flowerless_plant.json" />
+    <Resource Include="resources\foliage\miscellaneous\impatiens\impatiens.json" />
+    <Resource Include="resources\foliage\miscellaneous\morning_glory\morning_glory.json" />
+    <Resource Include="resources\foliage\miscellaneous\mozart_rose\mozart_rose.json" />
+    <Resource Include="resources\foliage\miscellaneous\multiple_herbs\multiple_herbs.json" />
+    <Resource Include="resources\foliage\miscellaneous\shrub\shrub.json" />
+    <Resource Include="resources\foliage\miscellaneous\tall_clematis\tall_clematis.json" />
+    <Resource Include="resources\foliage\miscellaneous\tall_grass\tall_grass.json" />
+    <Resource Include="resources\foliage\miscellaneous\three_herbs\three_herbs.json" />
+    <Resource Include="resources\foliage\miscellaneous\tulip\tulip.json" />
+    <Resource Include="resources\foliage\miscellaneous\two_herbs\two_herbs.json" />
+    <Resource Include="resources\foliage\miscellaneous\vines\vines.json" />
+    <Resource Include="resources\foliage\miscellaneous\yellow_dahlia\yellow_dahlia.json" />
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\dark_hornbeam.json" />
+    <Resource Include="resources\foliage\small_trees\dark_thuja\dark_thuja.json" />
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\light_hornbeam.json" />
+    <Resource Include="resources\foliage\small_trees\light_thuja\light_thuja.json" />
     <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
     <Resource Include="resources\terrain\roads\bottom\bottom.json" />
     <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
@@ -316,7 +348,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="resources\foliage\small_trees" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -377,14 +408,6 @@
     <Resource Include="res\savegame.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\foliage\decidous_trees\chestnut\1_chesnut.png" />
-    <Resource Include="resources\foliage\decidous_trees\chestnut\2_chesnut.png" />
-    <Resource Include="resources\foliage\decidous_trees\chestnut\3_chesnut.png" />
-    <Resource Include="resources\foliage\decidous_trees\chestnut\4_chesnut.png" />
-    <Resource Include="resources\foliage\decidous_trees\chestnut\5_chesnut.png" />
-    <Resource Include="resources\foliage\decidous_trees\chestnut\6_chesnut.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="res\admin.ico" />
     <Resource Include="res\user.ico" />
   </ItemGroup>
@@ -432,6 +455,347 @@
     <Resource Include="resources\foliage\decidous_trees\large_oak\7_large_oak.png" />
     <Resource Include="resources\foliage\decidous_trees\large_oak\8_large_oak.png" />
     <Resource Include="resources\foliage\decidous_trees\large_oak\9_large_oak.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\10_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\11_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\12_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\13_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\14_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\15_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\16_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\17_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\18_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\19_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\1_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\20_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\21_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\22_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\23_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\24_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\2_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\3_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\4_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\5_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\6_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\7_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\8_large_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\large_spruce\9_large_spruce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\10_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\11_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\12_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\13_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\14_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\15_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\16_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\17_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\18_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\19_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\1_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\20_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\21_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\22_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\2_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\3_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\4_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\5_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\6_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\7_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\8_medium_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\medium_spruce\9_medium_spruce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\1_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\2_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\3_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\4_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\5_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\6_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\7_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\8_small_spruce.png" />
+    <Resource Include="resources\foliage\coniferous_trees\small_spruce\9_small_spruce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\miscellaneous\camomile\camomile.png" />
+    <Resource Include="resources\foliage\miscellaneous\clematis_durandii\clematis_durandii.png" />
+    <Resource Include="resources\foliage\miscellaneous\impatiens\impatiens.png" />
+    <Resource Include="resources\foliage\miscellaneous\morning_glory\morning_glory.png" />
+    <Resource Include="resources\foliage\miscellaneous\mozart_rose\mozart_rose.png" />
+    <Resource Include="resources\foliage\miscellaneous\tulip\tulip.png" />
+    <Resource Include="resources\foliage\miscellaneous\yellow_dahlia\yellow_dahlia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\miscellaneous\tall_clematis\1_tall_clematis.png" />
+    <Resource Include="resources\foliage\miscellaneous\tall_clematis\2_tall_clematis.png" />
+    <Resource Include="resources\foliage\miscellaneous\vines\1_vines.png" />
+    <Resource Include="resources\foliage\miscellaneous\vines\2_vines.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\miscellaneous\flowerless_plant\flowerless_plant.png" />
+    <Resource Include="resources\foliage\miscellaneous\multiple_herbs\multiple_herbs.png" />
+    <Resource Include="resources\foliage\miscellaneous\shrub\shrub.png" />
+    <Resource Include="resources\foliage\miscellaneous\tall_grass\tall_grass.png" />
+    <Resource Include="resources\foliage\miscellaneous\three_herbs\three_herbs.png" />
+    <Resource Include="resources\foliage\miscellaneous\two_herbs\two_herbs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\bushes\large_november_bush\1_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\2_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\3_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\4_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\5_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\6_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\7_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\8_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_november_bush\9_large_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\1_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\2_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\3_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\4_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\5_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\6_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\7_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\8_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_october_bush\9_large_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\1_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\2_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\3_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\4_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\5_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\6_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\7_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\8_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\large_summer_bush\9_large_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_november_bush\1_medium_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_november_bush\2_medium_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_november_bush\3_medium_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_november_bush\4_medium_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_october_bush\1_medium_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_october_bush\2_medium_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_october_bush\3_medium_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_october_bush\4_medium_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_summer_bush\1_medium_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_summer_bush\2_medium_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_summer_bush\3_medium_summer_bush.png" />
+    <Resource Include="resources\foliage\bushes\medium_summer_bush\4_medium_summer_bush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\bushes\small_november_bush\small_november_bush.png" />
+    <Resource Include="resources\foliage\bushes\small_october_bush\small_october_bush.png" />
+    <Resource Include="resources\foliage\bushes\small_summer_bush\small_summer_bush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\bushes\november_bush_group\10_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\11_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\12_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\13_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\14_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\15_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\1_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\2_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\3_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\4_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\5_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\6_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\7_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\8_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\november_bush_group\9_november_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\10_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\11_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\12_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\13_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\14_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\15_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\1_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\2_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\3_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\4_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\5_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\6_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\7_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\8_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\october_bush_group\9_october_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\10_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\11_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\12_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\13_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\14_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\15_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\1_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\2_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\3_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\4_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\5_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\6_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\7_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\8_summer_bush_group.png" />
+    <Resource Include="resources\foliage\bushes\summer_bush_group\9_summer_bush_group.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\10_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\11_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\12_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\13_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\14_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\15_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\16_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\17_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\18_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\19_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\1_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\20_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\21_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\22_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\23_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\24_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\25_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\26_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\27_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\2_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\3_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\4_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\5_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\6_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\7_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\8_medium_oak.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_oak\9_medium_oak.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\10_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\11_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\12_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\13_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\14_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\15_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\16_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\17_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\18_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\19_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\1_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\20_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\2_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\3_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\4_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\5_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\6_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\7_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\8_large_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_chestnut\9_large_chestnut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\10_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\11_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\12_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\1_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\2_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\3_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\4_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\5_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\6_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\7_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\8_medium_chestnut.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_chestnut\9_medium_chestnut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\large_maple\1_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\2_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\3_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\4_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\5_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\6_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\7_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\8_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\9_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\10_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\11_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\12_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\13_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\14_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\15_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\16_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\17_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\18_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\19_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\20_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\21_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\22_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\23_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\24_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\25_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\26_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\27_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\28_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\29_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\30_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\31_large_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\large_maple\32_large_maple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\10_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\11_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\12_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\13_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\14_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\15_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\16_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\17_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\18_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\19_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\1_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\20_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\21_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\22_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\23_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\2_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\3_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\4_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\5_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\6_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\7_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\8_medium_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\medium_maple\9_medium_maple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\decidous_trees\small_maple\10_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\11_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\12_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\1_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\2_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\3_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\4_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\5_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\6_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\7_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\8_small_maple.png" />
+    <Resource Include="resources\foliage\decidous_trees\small_maple\9_small_maple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\1_dark_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\2_dark_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\3_dark_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\4_dark_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\5_dark_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\dark_hornbeam\6_dark_hornbeam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\1_light_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\2_light_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\3_light_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\4_light_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\5_light_hornbeam.png" />
+    <Resource Include="resources\foliage\small_trees\light_hornbeam\6_light_hornbeam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\foliage\small_trees\dark_thuja\1_dark_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\dark_thuja\2_dark_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\dark_thuja\3_dark_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\dark_thuja\4_dark_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\light_thuja\1_light_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\light_thuja\2_light_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\light_thuja\3_light_thuja.png" />
+    <Resource Include="resources\foliage\small_trees\light_thuja\4_light_thuja.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

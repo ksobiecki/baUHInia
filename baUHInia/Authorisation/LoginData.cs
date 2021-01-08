@@ -8,7 +8,7 @@ namespace baUHInia.Authorisation
 {
     public class LoginData
     {
-        private LoginData() { }
+        public LoginData() { }
         private static LoginData _instance;
 
         public int UserID { get; set; }

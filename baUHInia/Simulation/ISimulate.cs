@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace baUHInia.Simulation
 {
     public interface ISimulate
-    {
-         void Sim(ITileBinder iTileBinder, int boardDensity);
-        String returnScoreTemperature();
+    {  
+        int SimulationScore();
+        
     }
 }

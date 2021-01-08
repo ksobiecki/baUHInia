@@ -168,7 +168,7 @@ namespace baUHInia.Playground.View
             UnlockAdminFeatures(credentials.isAdmin);
 
             _selectionWindowCreator = new VerticalSelectionWindowCreator();
-            _simulator = new Simulation.Simulation();
+            _simulator = new Simulation.Score(this, BoardDensity);
         }
 
         //=============================== FUNCTIONALITY ==============================//
@@ -241,7 +241,7 @@ namespace baUHInia.Playground.View
 
         private void Simulate(object sender, RoutedEventArgs args)
         {
-            _simulator.Sim(this, BoardDensity);
+            _simulator.SimulationScore();
             //Points.Text = _simulator.returnScoreTemperature();
         }
 

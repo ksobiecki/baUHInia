@@ -53,7 +53,7 @@ namespace baUHInia.MapLogic.Manager
             db = new BazaDanych();
         }
 
-        public Grid GetMapLoadGrid()
+        public Grid GetMapLoadGrid(int userID)
         {
             Choice = "";
             Keyword = "";
@@ -74,7 +74,7 @@ namespace baUHInia.MapLogic.Manager
             return LoadMapContainerGrid;
         }
 
-        public Grid GetMapSaveGrid()
+        public Grid GetMapSaveGrid(int userID)
         {
             Choice = "";
             Keyword = "";
@@ -126,7 +126,7 @@ namespace baUHInia.MapLogic.Manager
             return SaveMapContainerGrid;*/
         }
 
-        public Grid GetGameLoadGrid()
+        public Grid GetGameLoadGrid(int userID)
         {
             GameIDsNames = db.getGameNamesAndID();
 
@@ -145,7 +145,7 @@ namespace baUHInia.MapLogic.Manager
         }
 
 
-        public Grid GetGameSaveGrid()
+        public Grid GetGameSaveGrid(int userID)
         {
             GameIDsNames = db.getGameNamesAndID();
 
@@ -194,7 +194,6 @@ namespace baUHInia.MapLogic.Manager
 
         public Map LoadMap(out int mapID)
         {
-            // TODO get credentials from database.
 
             if (Choice == "")
             {
@@ -240,7 +239,6 @@ namespace baUHInia.MapLogic.Manager
 
         public bool SaveGame(ITileBinder tileBinder, int mapID)
         {
-            throw new NotImplementedException();
 
             if (Choice == "" || ChoiceId == -1)
             {

@@ -190,15 +190,7 @@
     <Compile Include="Playground\Model\Tiles\TileCategory.cs" />
     <Compile Include="Playground\Model\Tiles\TileObject.cs" />
     <Compile Include="Simulation\ISimulate.cs" />
-    <Compile Include="Simulation\ResultInfo.xaml.cs">
-      <DependentUpon>ResultInfo.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Simulation\ScoreTemperature.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Simulation\ScoreTemperature.Designer.cs">
-      <DependentUpon>ScoreTemperature.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Simulation\Score.cs" />
     <Compile Include="Simulation\Simulation.cs" />
     <Compile Include="Statistics\Statistics.cs">
       <SubType>Form</SubType>
@@ -250,9 +242,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Simulation\ScoreTemperature.resx">
-      <DependentUpon>ScoreTemperature.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Statistics\Statistics.resx">
       <DependentUpon>Statistics.cs</DependentUpon>
@@ -316,7 +305,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="resources\foliage\small_trees" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -332,10 +320,6 @@
     <Page Include="Admin\AdminRestrictionsWindow.xaml" />
     <Page Include="Playground\View\UserGameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Simulation\ResultInfo.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

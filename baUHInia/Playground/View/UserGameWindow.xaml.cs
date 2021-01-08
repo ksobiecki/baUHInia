@@ -254,8 +254,7 @@ namespace baUHInia.Playground.View
 
         private void Simulate(object sender, RoutedEventArgs args)
         {
-            _simulator.SimulationScore();
-            //Points.Text = _simulator.returnScoreTemperature();
+            Points.Text = _simulator.SimulationScore().ToString(); 
         }
 
         private void LoadMap(object sender, RoutedEventArgs args)

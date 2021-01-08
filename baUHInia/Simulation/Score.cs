@@ -11,7 +11,7 @@ namespace baUHInia.Simulation
 {
     class Score : ISimulate
     {
-        //BazaDanych database = BazaDanych.GetBazaDanych();
+        BazaDanych database = BazaDanych.GetBazaDanych();
 
         public Score(ITileBinder tileBinder, int boardDensity) {
             this.simulation = new Simulation(tileBinder, boardDensity);
@@ -20,7 +20,7 @@ namespace baUHInia.Simulation
         
 
 
-        public int SimulationScore(ITileBinder tileBinder) {
+        public int SimulationScore() {
 
             
             simulation.Sim();
@@ -106,9 +106,11 @@ namespace baUHInia.Simulation
           
             if (scoreFinal > 10000)
                 scoreFinal = 10000;
+            int userID = simulation.ITileBinder.Credentials.UserID;
+            //int gameID = database.GetMapID;
 
             Console.WriteLine("ScoreFinal: " + scoreFinal);
- 
+            //database.SetScoreInFinniszedGame(gameID, scoreFinal, userID)
 
             return scoreFinal;
             

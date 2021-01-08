@@ -9,7 +9,7 @@ namespace baUHInia.Simulation
 {
     public interface ISimulate
     {  
-        int SimulationScore(ITileBinder tileBinder);
+        int SimulationScore();
         
     }
 }

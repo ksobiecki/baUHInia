@@ -13,7 +13,7 @@ namespace baUHInia.MapLogic.Helper
         // Serialization
         public static void JsonAddBasicData(JObject jsonMap, ITileBinder tileBinder, string name)
         {
-            // TODO how do I get all the IDs?;
+            jsonMap["AuthorID"] = tileBinder.Credentials.UserID;
             jsonMap["Name"] = name;
             jsonMap["Size"] = tileBinder.TileGrid.GetLength(0);
             jsonMap["AvailableMoney"] = tileBinder.AvailableFounds;
@@ -127,9 +127,10 @@ namespace baUHInia.MapLogic.Helper
         }
 
         // Deserialization
-        public static void JsonGetBasicData(JObject jsonMap, ref string name, ref int size, ref int availableMoney)
+        public static void JsonGetBasicData(JObject jsonMap, ref string name,ref int authorID, ref int size, ref int availableMoney)
         {
             name = (string)jsonMap["Name"];
+            authorID = (int)jsonMap["AuthorID"]; // If you get an exception here thats because you are trying to load an old version of map object, try creating a new one.
             size = (int)jsonMap["Size"];
             availableMoney = (int)jsonMap["AvailableMoney"];
         }

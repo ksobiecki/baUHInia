@@ -216,7 +216,7 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            Map map = _manager.LoadMap("mapka_test");
+            Map map = _manager.LoadMap(out int mapID);
             if (GameMapGrid == null) CreateNewMap(null, null);
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);

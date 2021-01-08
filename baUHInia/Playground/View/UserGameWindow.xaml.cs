@@ -46,9 +46,9 @@ namespace baUHInia.Playground.View
         private Grid LoadGameGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
         private Grid GameMapGrid { get; set; }
-
+        
         private Map LoadedMap { get; set; }
-
+        private int LoadedMapID { get; set; }
 
         public UserGameWindow(LoginData credentials)
         {
@@ -168,7 +168,7 @@ namespace baUHInia.Playground.View
             UnlockAdminFeatures(credentials.isAdmin);
 
             _selectionWindowCreator = new VerticalSelectionWindowCreator();
-            _simulator = new Simulation.Score(this, BoardDensity);
+            _simulator = new Score(this, BoardDensity);
         }
 
         //=============================== FUNCTIONALITY ==============================//
@@ -212,7 +212,7 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
@@ -226,7 +226,7 @@ namespace baUHInia.Playground.View
                 LoadGameGrid = Resources["LoadGameTemplate"] as Grid;
                 Border border = LoadGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
@@ -240,7 +240,7 @@ namespace baUHInia.Playground.View
                 SaveGameGrid = Resources["SaveGameTemplate"] as Grid;
                 Border border = SaveGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;
@@ -260,14 +260,14 @@ namespace baUHInia.Playground.View
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             if (LoadedMap != null) ClearMap(null, null);
-            LoadedMap = _manager.LoadMap("mapka_test");
+            LoadedMap = _manager.LoadMap(out int LoadedMapID);
             PrepareLoadedGame(null, null);
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
         {
             if (LoadedMap != null) ClearMap(null, null);
-            Game game = _manager.LoadGame("mapka_test");
+            Game game = _manager.LoadGame();
             LoadedMap = game.Map;
             PrepareLoadedGame(null, null);
         }
@@ -293,7 +293,7 @@ namespace baUHInia.Playground.View
 
         private void SaveGame(object sender, RoutedEventArgs args)
         {
-            _manager.SaveGame(this);
+            _manager.SaveGame(this,LoadedMapID);
             ChangeDisplayMode(true);
             GameScroll.Content = GameMapGrid;
             Console.WriteLine("Passed saving");

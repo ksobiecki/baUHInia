@@ -297,6 +297,47 @@
     <Resource Include="resources\foliage\small_trees\dark_thuja\dark_thuja.json" />
     <Resource Include="resources\foliage\small_trees\light_hornbeam\light_hornbeam.json" />
     <Resource Include="resources\foliage\small_trees\light_thuja\light_thuja.json" />
+    <Resource Include="resources\terrain\pavements\down_full_pavement\down_full_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_half_pavement\down_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_half_road_pavement\down_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_left_corner\down_left_corner.json" />
+    <Resource Include="resources\terrain\pavements\down_left_grass_edge\down_left_grass_edge.json" />
+    <Resource Include="resources\terrain\pavements\down_left_half_pavement\down_left_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_right_corner\down_right_corner.json" />
+    <Resource Include="resources\terrain\pavements\down_right_grass_edge\down_right_grass_edge.json" />
+    <Resource Include="resources\terrain\pavements\down_right_half_pavement\down_right_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\full_pavement\full_pavement.json" />
+    <Resource Include="resources\terrain\pavements\left_full_pavement\left_full_pavement.json" />
+    <Resource Include="resources\terrain\pavements\left_half_pavement\left_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\left_half_road_pavement\left_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\right_full_pavement\right_full_pavement.json" />
+    <Resource Include="resources\terrain\pavements\right_half_pavement\right_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\right_half_road_pavement\right_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_full_pavement\top_full_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_half_pavement\top_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_half_road_pavement\top_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_left_half_road_pavement\down_left_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_left_road_edge\down_left_road_edge.json" />
+    <Resource Include="resources\terrain\pavements\down_right_half_road_pavement\down_right_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\down_right_road_edge\down_right_road_edge.json" />
+    <Resource Include="resources\terrain\pavements\top_left_corner\top_left_corner.json" />
+    <Resource Include="resources\terrain\pavements\top_left_grass_edge\top_left_grass_edge.json" />
+    <Resource Include="resources\terrain\pavements\top_left_half_pavement\top_left_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_left_half_road_pavement\top_left_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_left_road_edge\top_left_road_edge.json" />
+    <Resource Include="resources\terrain\pavements\top_right_corner\top_right_corner.json" />
+    <Resource Include="resources\terrain\pavements\top_right_grass_edge\top_right_grass_edge.json" />
+    <Resource Include="resources\terrain\pavements\top_right_half_pavement\top_right_half_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_right_half_road_pavement\top_right_half_road_pavement.json" />
+    <Resource Include="resources\terrain\pavements\top_right_road_edge\top_right_road_edge.json" />
+    <Resource Include="resources\terrain\rails\horizontal_rail\horizontal_rail.json" />
+    <Resource Include="resources\terrain\rails\horizontal_road_rail\horizontal_road_rail.json" />
+    <Resource Include="resources\terrain\rails\left_up_rail\left_up_rail.json" />
+    <Resource Include="resources\terrain\rails\right_up_rail\right_up_rail.json" />
+    <Resource Include="resources\terrain\rails\up_left_rail\up_left_rail.json" />
+    <Resource Include="resources\terrain\rails\up_right_rail\up_right_rail.json" />
+    <Resource Include="resources\terrain\rails\vertical_rail\vertical_rail.json" />
+    <Resource Include="resources\terrain\rails\vertical_road_rail\vertical_road_rail.json" />
     <Resource Include="resources\terrain\roads\bottom\asphalt_bottom.png" />
     <Resource Include="resources\terrain\roads\bottom\bottom.json" />
     <Resource Include="resources\terrain\roads\bottom_left\asphalt_bottom_left_line.png" />
@@ -781,6 +822,69 @@
     <Resource Include="resources\foliage\small_trees\light_thuja\2_light_thuja.png" />
     <Resource Include="resources\foliage\small_trees\light_thuja\3_light_thuja.png" />
     <Resource Include="resources\foliage\small_trees\light_thuja\4_light_thuja.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\rails\horizontal_rail\horizontal_rail.png" />
+    <Resource Include="resources\terrain\rails\vertical_rail\vertical_rail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\rails\left_up_rail\left_up_rail.png" />
+    <Resource Include="resources\terrain\rails\right_up_rail\right_up_rail.png" />
+    <Resource Include="resources\terrain\rails\up_left_rail\up_left_rail.png" />
+    <Resource Include="resources\terrain\rails\up_right_rail\up_right_rail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\rails\horizontal_road_rail\horizontal_road_rail.png" />
+    <Resource Include="resources\terrain\rails\vertical_road_rail\vertical_road_rail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\down_full_pavement\down_full_pavement.png" />
+    <Resource Include="resources\terrain\pavements\down_half_pavement\down_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\down_half_road_pavement\down_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\left_full_pavement\left_full_pavement.png" />
+    <Resource Include="resources\terrain\pavements\left_half_pavement\left_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\left_half_road_pavement\left_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\right_full_pavement\right_full_pavement.png" />
+    <Resource Include="resources\terrain\pavements\right_half_pavement\right_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\right_half_road_pavement\right_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_full_pavement\top_full_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_half_pavement\top_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_half_road_pavement\top_half_road_pavement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\down_left_half_road_pavement\down_left_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\down_left_road_edge\down_left_road_edge.png" />
+    <Resource Include="resources\terrain\pavements\down_right_half_road_pavement\down_right_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\down_right_road_edge\down_right_road_edge.png" />
+    <Resource Include="resources\terrain\pavements\top_left_half_road_pavement\top_left_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_left_road_edge\top_left_road_edge.png" />
+    <Resource Include="resources\terrain\pavements\top_right_half_road_pavement\top_right_half_road_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_right_road_edge\top_right_road_edge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\down_left_grass_edge\down_left_grass_edge.png" />
+    <Resource Include="resources\terrain\pavements\down_left_half_pavement\down_left_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\down_right_grass_edge\down_right_grass_edge.png" />
+    <Resource Include="resources\terrain\pavements\down_right_half_pavement\down_right_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_left_grass_edge\top_left_grass_edge.png" />
+    <Resource Include="resources\terrain\pavements\top_left_half_pavement\top_left_half_pavement.png" />
+    <Resource Include="resources\terrain\pavements\top_right_grass_edge\top_right_grass_edge.png" />
+    <Resource Include="resources\terrain\pavements\top_right_half_pavement\top_right_half_pavement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\down_left_corner\down_left_corner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\down_right_corner\down_right_corner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\top_left_corner\top_left_corner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\top_right_corner\top_right_corner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\pavements\full_pavement\full_pavement.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

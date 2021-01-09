@@ -114,6 +114,7 @@ namespace baUHInia.Playground.Model.Selectors
             List<Element> elements = _selection.ElementsLayers[y, x];
 
             Image image = new Image {IsHitTestVisible = false};
+            RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
             Grid grid = tile.GetParentGrid();
             Grid.SetColumn(image, x);
             Grid.SetRow(image, y);

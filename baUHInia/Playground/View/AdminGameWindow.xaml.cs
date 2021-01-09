@@ -177,7 +177,8 @@ namespace baUHInia.Playground.View
             List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
             TileCategory category = ResourceHolder.Get.GetFirstTileCategory();
 
-            CategorySelector.ItemsSource = ResourceHolder.Get.GetCategoryName();
+            IEnumerable<string> strings = ResourceHolder.Get.GetCategoryName();
+            CategorySelector.ItemsSource = strings;
             CategorySelector.SelectedIndex = 0;
             _selectorGridCreator.UpdateTileGroup(categories);
             _selectorGridCreator.CreateSelectionPanel(category, this);

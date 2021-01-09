@@ -41,9 +41,9 @@ namespace baUHInia.Playground.View
         {
             InitializeComponent();
             StoreMenuGrid();
+            InitializeProperties(credentials);
             AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
-            InitializeProperties(credentials);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -142,7 +142,7 @@ namespace baUHInia.Playground.View
 
         private void AddLoadCardAndInitializeManager()
         {
-            _manager = new GameMapManager();
+            _manager = new GameMapManager(Credentials);
             //TODO:
             //InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
         }
@@ -190,7 +190,7 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid ?? MenuGrid;
@@ -209,7 +209,7 @@ namespace baUHInia.Playground.View
                 SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
                 Border border = SaveMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = AdminGrid;
             }
 

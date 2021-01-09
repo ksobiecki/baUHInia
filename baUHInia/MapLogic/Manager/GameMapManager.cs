@@ -13,6 +13,7 @@ using baUHInia.MapLogic.Helper;
 using System.Text;
 using baUHInia.Database;
 using baUHInia.Playground.Model.Wrappers;
+using baUHInia.Authorisation;
 
 namespace baUHInia.MapLogic.Manager
 {
@@ -26,11 +27,12 @@ namespace baUHInia.MapLogic.Manager
         private int ChoiceId;
         private string Keyword;
         private bool ClearSelection = true;
+        private LoginData Credentials;
 
         // Modes - 0: MapLoad, 1: MapSave 2: GameLoad, 3: GameSave.
 
-        private Tuple<int, string>[] MapNames;
-        private Tuple<int,string>[] GameIDsNames;
+        private Tuple<int, int, string>[] MapList;
+        private Tuple<int, int, string>[] GameList;
 
 
         // Layout
@@ -44,24 +46,25 @@ namespace baUHInia.MapLogic.Manager
 
         private Label SaveMapErrorLabel;
 
-        public GameMapManager()
+        public GameMapManager(LoginData credentials)
         {
             Choice = "";
             ChoiceId = -1;
             Keyword = "";
+            Credentials = credentials;
 
             db = new BazaDanych();
         }
 
-        public Grid GetMapLoadGrid(int userID)
+        public Grid GetMapLoadGrid()
         {
             Choice = "";
             Keyword = "";
 
-            MapNames = db.getMapNames();
+            MapList = db.getMapList();
 
             LoadMapContainerGrid = CreateContainerGrid();
-            ScrollViewer loadListScrollViewer = CreateListScrollViewer();
+            ScrollViewer loadListScrollViewer = CreateListScrollViewer(0);
             Grid loadListGrid = CreateListGrid();
             Grid loadSearchGrid = CreateSearchGrid(loadListGrid,0);
 
@@ -74,16 +77,16 @@ namespace baUHInia.MapLogic.Manager
             return LoadMapContainerGrid;
         }
 
-        public Grid GetMapSaveGrid(int userID)
+        public Grid GetMapSaveGrid()
         {
             Choice = "";
             Keyword = "";
 
-            MapNames = db.getMapNames();
+            MapList = db.getMapList();
 
             SaveMapContainerGrid = CreateContainerGrid();
 
-            BrushConverter bc = new BrushConverter();
+            /*BrushConverter bc = new BrushConverter();
             SaveMapContainerGrid.Background = (Brush)bc.ConvertFrom("#4466AA");
 
             SaveMapErrorLabel = new Label
@@ -107,9 +110,9 @@ namespace baUHInia.MapLogic.Manager
 
             SaveMapContainerGrid.Children.Add(SaveMapErrorLabel);
             SaveMapContainerGrid.Children.Add(nameTextBox);
-            return SaveMapContainerGrid;
+            return SaveMapContainerGrid;*/
 
-            /*ScrollViewer saveListScrollViewer = CreateListScrollViewer();
+            ScrollViewer saveListScrollViewer = CreateListScrollViewer(1);
             Grid saveListGrid = CreateListGrid();
             Grid saveSearchGrid = CreateSearchGrid(saveListGrid,1);
             Grid nameGrid = CreateNameGrid();
@@ -123,15 +126,22 @@ namespace baUHInia.MapLogic.Manager
 
             PopulateListGrid(saveListGrid,1);
 
-            return SaveMapContainerGrid;*/
+            return SaveMapContainerGrid;
         }
 
-        public Grid GetGameLoadGrid(int userID)
+        public Grid GetGameLoadGrid()
         {
-            GameIDsNames = db.getGameNamesAndID();
+            if (Credentials.isAdmin)
+            {
+                GameList = db.getGameList();
+            }
+            else
+            {
+                GameList = db.getGameList(); // Replace with method that returns only games given user owns.
+            }
 
             LoadGameContainerGrid = CreateContainerGrid();
-            ScrollViewer loadListScrollViewer = CreateListScrollViewer();
+            ScrollViewer loadListScrollViewer = CreateListScrollViewer(2);
             Grid loadListGrid = CreateListGrid();
             Grid loadSearchGrid = CreateSearchGrid(loadListGrid, 2);
 
@@ -145,12 +155,12 @@ namespace baUHInia.MapLogic.Manager
         }
 
 
-        public Grid GetGameSaveGrid(int userID)
+        public Grid GetGameSaveGrid()
         {
-            GameIDsNames = db.getGameNamesAndID();
+            GameList = db.getGameList();
 
             SaveGameContainerGrid = CreateContainerGrid();
-            ScrollViewer saveListScrollViewer = CreateListScrollViewer();
+            ScrollViewer saveListScrollViewer = CreateListScrollViewer(3);
             Grid saveListGrid = CreateListGrid();
             Grid saveSearchGrid = CreateSearchGrid(saveListGrid, 3);
             Grid nameGrid = CreateNameGrid();
@@ -184,10 +194,12 @@ namespace baUHInia.MapLogic.Manager
 
             Map map = LoadMap(out int mapId);
 
+            Game game = new Game(ChoiceId, Choice, placedObjects, map);
+
             Choice = "";
             ChoiceId = -1;
 
-            return new Game(ChoiceId, Choice, placedObjects, map);
+            return game;
         }
 
         public Map LoadMap(out int mapID)
@@ -228,9 +240,10 @@ namespace baUHInia.MapLogic.Manager
             }
 
             mapID = ChoiceId;
-            ChoiceId = -1;
 
             Map map = new Map(Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+
+            ChoiceId = -1;
             Choice = "";
             
             return map;
@@ -239,20 +252,39 @@ namespace baUHInia.MapLogic.Manager
         public bool SaveGame(ITileBinder tileBinder, int mapID)
         {
 
-            if (Choice == "" && ChoiceId == -1)
+            if (Choice == "")
             {
-                throw new Exception("Name or Id cannot be empty.");
+                throw new Exception("Name cannot be empty.");
             }
 
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            bool result = db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID);
+            int result = db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID);
+
+            if (result != 0) // Result equal to 0 is a successful write.
+            {
+                if (result != 33) // 33 - Game already exists, other code means diffrent issue.
+                {
+                    return false;
+                }
+                else
+                {
+                    bool result2 = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID);
+
+                    if (!result2)
+                    {
+                        return false;
+                    }
+                }
+            }
 
             Choice = "";
             ChoiceId = -1;
 
-            return result;
+            GameList = db.getGameList();
+
+            return true;
         }
 
         public bool SaveMap(ITileBinder tileBinder)
@@ -278,31 +310,24 @@ namespace baUHInia.MapLogic.Manager
             {
                 if (result != 33) // 33 - Map already exists, other code means diffrent issue.
                 {
-                    SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                    //SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
                     return false;
                 }
                 else // Checking for ownership.
                 {
-                    if (db.CheckIfTheLoggedInUserIsTheOwnerOfTheMapHeOrSheWantToOverwrite(tileBinder.Credentials.UserID, ChoiceId) != 1) // Result equal to 1 means user is the owner.
-                    {
-                        SaveMapErrorLabel.Content = "Nazwa mapy jest zajęta.";
-                        return false;
-                    }
 
                     bool result2 = db.updateMap(tileBinder.Credentials.UserID, jsonMap.ToString(Formatting.None), Choice); // Returns true even when 0 rows were affected, TODO make sure this works when db fixes their error detection.
 
                     if (!result2)
                     {
-                        SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                        //SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
                         return false;
                     }
                 }
             }
 
-            // TODO FIND OUT WHY NAMES WITH POLISH LETTERS DO NOT GET SAVED PROPERLY (the special letters turn into normal ones - this also allows to save maps with names that are already occupied) 
-
-            SaveMapErrorLabel.Content = "";
-            MapNames = db.getMapNames();
+            //SaveMapErrorLabel.Content = "";
+            MapList = db.getMapList();
 
             Choice = "";
             ChoiceId = -1;
@@ -387,13 +412,13 @@ namespace baUHInia.MapLogic.Manager
             return searchGrid;
         }
 
-        private ScrollViewer CreateListScrollViewer()
+        private ScrollViewer CreateListScrollViewer(int mode)
         {
             return new ScrollViewer
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(0, 30, 0, 0),
+                Margin = (mode == 2 || mode == 0) ? new Thickness(0, 30, 0, 0) : new Thickness(0, 30, 0, 30),
                 Background = (Brush) new BrushConverter().ConvertFrom("#FFA7A7A7")
             };
         }
@@ -408,7 +433,7 @@ namespace baUHInia.MapLogic.Manager
             };
         }
 
-        private void PopulateListGrid(Grid listGrid,int mode)
+        private void PopulateListGrid(Grid listGrid, int mode)
         {
             listGrid.RowDefinitions.Clear();
             listGrid.Children.Clear();
@@ -417,16 +442,20 @@ namespace baUHInia.MapLogic.Manager
 
             if (mode == 0 || mode == 1)
             {
-                Tuple<int, string>[] filteredMapNames = MapNames.Where(m => m.Item2.Contains(Keyword)).ToArray();
+                Tuple<int, int, string>[] filteredMapList = MapList.Where(m => m.Item3.Contains(Keyword)).ToArray();
 
-                foreach (Tuple<int, string> mapIDNname in filteredMapNames)
+                if (mode == 1)
+                {
+                    filteredMapList = filteredMapList.Where(m => m.Item2 == Credentials.UserID).ToArray();
+                }
+
+                foreach (Tuple<int, int, string> map in filteredMapList)
                 {
                     listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
                     Grid.SetRow(listItemGrid, index);
-                    Button listItemButton = CreateListItemButton(mapIDNname.Item2, listGrid);
-                    Tuple<int, string> temp = new Tuple<int, string>(0, mapIDNname.Item2);
-                    listItemButton.Tag = mapIDNname;
+                    Button listItemButton = CreateListItemButton(map,listGrid, mode);
+                    listItemButton.Tag = map;
                     listItemGrid.Children.Add(listItemButton);
                     listGrid.Children.Add(listItemGrid);
                     index++;
@@ -434,14 +463,20 @@ namespace baUHInia.MapLogic.Manager
             }
             else if (mode == 2 || mode == 3)
             {
-                Tuple<int, string>[] filteredGameIDNames = GameIDsNames.Where(g => g.Item2.Contains(Keyword)).ToArray();
+                Tuple<int, int, string>[] filteredGameList = GameList.Where(g => g.Item3.Contains(Keyword)).ToArray();
 
-                foreach (Tuple<int, string> gameIDName in filteredGameIDNames)
+                if (!Credentials.isAdmin)
                 {
+                    filteredGameList = filteredGameList.Where(g => g.Item2 == Credentials.UserID).ToArray();
+                }
+
+                foreach (Tuple<int, int, string> game in filteredGameList)
+                {
+                    Console.WriteLine("Id: " + game.Item1 + ", user: " + game.Item2 + ", name: " + game.Item3);
                     listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid { HorizontalAlignment = HorizontalAlignment.Stretch };
-                    Button listItemButton = CreateListItemButton(gameIDName.Item2, listGrid);
-                    listItemButton.Tag = gameIDName;
+                    Button listItemButton = CreateListItemButton(game,listGrid, mode);
+                    listItemButton.Tag = game;
                     Grid.SetRow(listItemGrid, index);
                     listItemGrid.Children.Add(listItemButton);
                     listGrid.Children.Add(listItemGrid);
@@ -450,16 +485,42 @@ namespace baUHInia.MapLogic.Manager
             }
         }
 
-        private Button CreateListItemButton(string name, Grid listGrid)
+        private Button CreateListItemButton(Tuple<int, int, string> item, Grid listGrid, int mode)
         {
             TextBlock nameTextBlock = new TextBlock
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 FontFamily = new FontFamily("Segoe UI"),
-                FontWeight = FontWeights.Bold,
-                Text = name
+                FontWeight = FontWeights.Bold
             };
+
+            if (mode == 1)
+            {
+                nameTextBlock.Text = item.Item3; // In save map mode user/authority only sees his own maps.
+            }
+            else
+            {
+                if (Credentials.isAdmin)
+                {
+                    string owner;
+
+                    if (item.Item2 == Credentials.UserID)
+                    {
+                        owner = "(Ty) ";
+                    }
+                    else
+                    {
+                        owner = "(" + item.Item2 + ") ";
+                    }
+
+                    nameTextBlock.Text = owner + item.Item3;
+                }
+                else
+                {
+                    nameTextBlock.Text = item.Item3;
+                }
+            }
 
             Button listItemButton = new Button
             {
@@ -494,10 +555,10 @@ namespace baUHInia.MapLogic.Manager
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
 
-            Tuple<int, string> IdName = (Tuple<int,string>)sender.Tag;
+            Tuple<int, int, string> IdName = (Tuple<int, int,string>)sender.Tag;
 
             ChoiceId = IdName.Item1;
-            Choice = IdName.Item2;
+            Choice = IdName.Item3;
             
             Console.WriteLine(Choice + " " + ChoiceId);
 

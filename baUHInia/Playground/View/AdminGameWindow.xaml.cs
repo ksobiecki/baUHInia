@@ -127,7 +127,7 @@ namespace baUHInia.Playground.View
             TileGrid = new Tile[BoardDensity, BoardDensity];
             TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
-            _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
+            _gameGridCreator.CreateElementsInWindow(this, BoardDensity);
             GameMapGrid = GameScroll.Content as Grid;
             //CurrentGrid = GameMapGrid;
         }
@@ -209,7 +209,7 @@ namespace baUHInia.Playground.View
                 SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
                 Border border = SaveMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = AdminGrid;
             }
 

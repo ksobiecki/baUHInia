@@ -425,7 +425,7 @@ namespace baUHInia.Database
             try
             {
                 Polacz();
-                string query = "select serial,id_mapy from Gry where id_gry = @ID ";
+                string query = "select serial, map_id from Gry where id_gry = @ID ";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 sqlCommand.Parameters.AddWithValue("@ID", ID);
                 SqlDataReader reader = sqlCommand.ExecuteReader();

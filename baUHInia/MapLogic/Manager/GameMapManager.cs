@@ -169,7 +169,7 @@ namespace baUHInia.MapLogic.Manager
 
         public Game LoadGame() // Not tested might not work yet.
         {
-            if (Choice == "" || ChoiceId == -1)
+            if (Choice == "" && ChoiceId == -1)
             {
                 throw new Exception("Name or Id cannot be empty.");
             }
@@ -182,9 +182,7 @@ namespace baUHInia.MapLogic.Manager
 
             SerializationHelper.JsonGetPlacedObjects(jsonGame, out var placedObjects);
 
-            string gameName = Choice;
-
-            Map map = LoadMap(out int mapID);
+            Map map = LoadMap(out int mapId);
 
             Choice = "";
             ChoiceId = -1;
@@ -226,21 +224,22 @@ namespace baUHInia.MapLogic.Manager
 
             for (int i = 0; i < placedObjects.GetLength(0); i++)
             {
-                Console.WriteLine(((Placement)placedObjects[i]).GameObject.TileObject.Name);
+                Console.WriteLine(placedObjects[i].GameObject.TileObject.Name);
             }
 
             mapID = ChoiceId;
-
-            Choice = "";
             ChoiceId = -1;
 
-            return new Map(Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+            Map map = new Map(Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+            Choice = "";
+            
+            return map;
         }
 
         public bool SaveGame(ITileBinder tileBinder, int mapID)
         {
 
-            if (Choice == "" || ChoiceId == -1)
+            if (Choice == "" && ChoiceId == -1)
             {
                 throw new Exception("Name or Id cannot be empty.");
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
@@ -83,10 +82,20 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         private static void DivideGridToAccommodateTileObject(Grid selectorGrid, int width, int height)
         {
             double size = 90.0 / (Math.Max(width, height) + 1);
-            for (int i = 0; i <= height; i++) 
-                selectorGrid.RowDefinitions.Add(new RowDefinition {Height = new GridLength(size), MaxHeight = size});
-            for (int i = 0; i <= width; i++) 
-                selectorGrid.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(size), MaxWidth = size});
+            
+            for (int i = 0; i <= height; i++)
+                selectorGrid.RowDefinitions.Add(new RowDefinition
+                {
+                    Height = new GridLength(size),
+                    MaxHeight = size
+                });
+            
+            for (int i = 0; i <= width; i++)
+                selectorGrid.ColumnDefinitions.Add(new ColumnDefinition
+                {
+                    Width = new GridLength(size),
+                    MaxWidth = size
+                });
         }
     }
 }

@@ -49,6 +49,7 @@ namespace baUHInia.Playground.View
         
         private Map LoadedMap { get; set; }
         private int LoadedMapID { get; set; }
+        private int InitialPlacerCount { get; set; }
 
         public UserGameWindow(LoginData credentials)
         {
@@ -113,7 +114,7 @@ namespace baUHInia.Playground.View
             TileGrid = new Tile[BoardDensity, BoardDensity];
             TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
-            _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
+            _gameGridCreator.CreateElementsInWindow(this, BoardDensity);
             GameMapGrid = GameScroll.Content as Grid;
         }
 
@@ -262,7 +263,7 @@ namespace baUHInia.Playground.View
             if (LoadedMap != null) ClearMap();
             LoadedMap = _manager.LoadMap(out int mapId);
             LoadedMapID = mapId;
-            PrepareLoadedGame(null, null);
+            PrepareLoadedMap(null, null);
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
@@ -270,16 +271,18 @@ namespace baUHInia.Playground.View
             if (LoadedMap != null) ClearMap();
             Game game = _manager.LoadGame();
             LoadedMap = game.Map;
-            PrepareLoadedGame(null, null);
+            PrepareLoadedMap(null, null);
+            _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
         }
 
-        private void PrepareLoadedGame(object sender, RoutedEventArgs args)
+        private void PrepareLoadedMap(object sender, RoutedEventArgs args)
         {
             AvailableObjects = null;
             Selection = new Selection(null, this);
             CreateNewMap(null, null);
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, LoadedMap);
             GameMapGrid = GameScroll.Content as Grid;
+            InitialPlacerCount = PlacedObjects.Count;
 
             ChangeDisplayMode(true);
             AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
@@ -294,10 +297,15 @@ namespace baUHInia.Playground.View
 
         private void SaveGame(object sender, RoutedEventArgs args)
         {
-            //_manager.SaveGame(this,LoadedMapID);
-            Console.WriteLine(Selection.ChangedPlacers);
+            List<Placement> allPlacements = PlacedObjects;
+            int newCount = PlacedObjects.Count - InitialPlacerCount;
+            PlacedObjects = PlacedObjects.GetRange(InitialPlacerCount, newCount);
+            
+            _manager.SaveGame(this,LoadedMapID);
             ChangeDisplayMode(true);
             GameScroll.Content = GameMapGrid;
+            
+            PlacedObjects = allPlacements;
             Console.WriteLine("Passed saving");
         }
 

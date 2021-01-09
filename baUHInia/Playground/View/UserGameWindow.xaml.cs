@@ -38,7 +38,6 @@ namespace baUHInia.Playground.View
         private IGameMapManager _manager;
 
         private ISimulate _simulator;
-        //TODO: element zoom-in
 
         private Grid MenuGrid { get; set; }
 
@@ -47,9 +46,10 @@ namespace baUHInia.Playground.View
         private Grid LoadGameGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
         private Grid GameMapGrid { get; set; }
-
+        
         private Map LoadedMap { get; set; }
-
+        private int LoadedMapID { get; set; }
+        private int InitialPlacerCount { get; set; }
 
         public UserGameWindow(LoginData credentials)
         {
@@ -114,7 +114,7 @@ namespace baUHInia.Playground.View
             TileGrid = new Tile[BoardDensity, BoardDensity];
             TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
-            _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
+            _gameGridCreator.CreateElementsInWindow(this, BoardDensity);
             GameMapGrid = GameScroll.Content as Grid;
         }
 
@@ -169,7 +169,7 @@ namespace baUHInia.Playground.View
             UnlockAdminFeatures(credentials.isAdmin);
 
             _selectionWindowCreator = new VerticalSelectionWindowCreator();
-            _simulator = new Simulation.Score(this, BoardDensity);
+            _simulator = new Score(this, BoardDensity);
         }
 
         //=============================== FUNCTIONALITY ==============================//
@@ -213,11 +213,25 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
             GameScroll.Content = LoadMapGrid;
+        }
+        
+        private void CreateLoadGameWindow(object source, RoutedEventArgs args)
+        {
+            if (LoadGameGrid == null)
+            {
+                LoadGameGrid = Resources["LoadGameTemplate"] as Grid;
+                Border border = LoadGameGrid.Children[0] as Border;
+                Grid innerGrid = border.Child as Grid;
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid(Credentials.UserID));
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
+            }
+
+            GameScroll.Content = LoadGameGrid;
         }
 
         private void CreateSaveWindow(object source, RoutedEventArgs args)
@@ -227,8 +241,7 @@ namespace baUHInia.Playground.View
                 SaveGameGrid = Resources["SaveGameTemplate"] as Grid;
                 Border border = SaveGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                //TODO: uncomment after saveGameGrid is completed
-                //((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;
@@ -242,24 +255,34 @@ namespace baUHInia.Playground.View
 
         private void Simulate(object sender, RoutedEventArgs args)
         {
-            _simulator.SimulationScore();
-            //Points.Text = _simulator.returnScoreTemperature();
+            Points.Text = _simulator.SimulationScore().ToString(); 
         }
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            if (LoadedMap != null) ClearMap(null, null);
-            LoadedMap = _manager.LoadMap("mapka_test");
-            PrepareLoadedGame(null, null);
+            if (LoadedMap != null) ClearMap();
+            LoadedMap = _manager.LoadMap(out int mapId);
+            LoadedMapID = mapId;
+            PrepareLoadedMap(null, null);
+        }
+        
+        private void LoadGame(object sender, RoutedEventArgs args)
+        {
+            if (LoadedMap != null) ClearMap();
+            Game game = _manager.LoadGame();
+            LoadedMap = game.Map;
+            PrepareLoadedMap(null, null);
+            _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
         }
 
-        private void PrepareLoadedGame(object sender, RoutedEventArgs args)
+        private void PrepareLoadedMap(object sender, RoutedEventArgs args)
         {
             AvailableObjects = null;
             Selection = new Selection(null, this);
             CreateNewMap(null, null);
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, LoadedMap);
             GameMapGrid = GameScroll.Content as Grid;
+            InitialPlacerCount = PlacedObjects.Count;
 
             ChangeDisplayMode(true);
             AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
@@ -274,8 +297,15 @@ namespace baUHInia.Playground.View
 
         private void SaveGame(object sender, RoutedEventArgs args)
         {
-            _manager.SaveGame(this);
-            //TODO: implement
+            List<Placement> allPlacements = PlacedObjects;
+            int newCount = PlacedObjects.Count - InitialPlacerCount;
+            PlacedObjects = PlacedObjects.GetRange(InitialPlacerCount, newCount);
+            
+            _manager.SaveGame(this,LoadedMapID);
+            ChangeDisplayMode(true);
+            GameScroll.Content = GameMapGrid;
+            
+            PlacedObjects = allPlacements;
             Console.WriteLine("Passed saving");
         }
 
@@ -294,7 +324,7 @@ namespace baUHInia.Playground.View
             if (saveFileDialog.ShowDialog() == true) File.WriteAllBytes(saveFileDialog.FileName, bytes);
         }
 
-        private void ClearMap(object source, RoutedEventArgs args)
+        private void ClearMap()
         {
             CreateGameBoard();
             Selection.Reset();
@@ -310,7 +340,7 @@ namespace baUHInia.Playground.View
         private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
             Owner.Show();
-            Close();
+            Hide();
         }
 
         private void ReturnToMenu(object sender, RoutedEventArgs args)
@@ -323,10 +353,9 @@ namespace baUHInia.Playground.View
         {
             try
             {
-                Hide();
+                Close();
                 Authorisation.Authorisation authorization = new Authorisation.Authorisation();
                 authorization.Show();
-                Close();
             }
             catch (Exception e)
             {
@@ -350,7 +379,7 @@ namespace baUHInia.Playground.View
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            //Application.Current.Shutdown();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace baUHInia.Playground.Logic.Creators
 {
     public interface IGameGridCreator
     {
-        void CreateGameGridInWindow(ITileBinder tileBinder, int boardDensity);
+        void CreateElementsInWindow(ITileBinder tileBinder, int boardDensity);
         List<GameObject> LoadMapIntoTheGameGrid(ITileBinder tileBinder, Map map);
         void LoadGameIntoTheGameGrid(ITileBinder tileBinder, Game game);
     }

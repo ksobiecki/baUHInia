@@ -10,9 +10,9 @@ namespace baUHInia.MapLogic.Manager
         Grid GetGameLoadGrid(int userID);
         Grid GetMapSaveGrid(int userID);
         Grid GetGameSaveGrid(int userID);
-        Map LoadMap(string name);
-        Game LoadGame(string name);
+        Map LoadMap(out int mapID);
+        Game LoadGame();
         bool SaveMap(ITileBinder tileBinder);
-        bool SaveGame(ITileBinder tileBinder);
+        bool SaveGame(ITileBinder tileBinder, int mapID);
     }
 }

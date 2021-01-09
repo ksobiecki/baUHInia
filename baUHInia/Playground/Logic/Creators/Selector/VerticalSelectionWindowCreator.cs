@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using baUHInia.Playground.Model.Tiles;
 using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
@@ -22,22 +22,14 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         private void ResetGrid()
         {
-            _grid.Children.Clear();
-            _grid.RowDefinitions.Clear();
-            _grid.ColumnDefinitions.Clear();
+            ((Grid) _grid.Children[1]).RowDefinitions.Clear();
+            ((Grid) _grid.Children[1]).ColumnDefinitions.Clear();
+            ((Grid) _grid.Children[1]).Children.Clear();
         }
 
         private void PutLabelInGrid(string name)
         {
-            _grid.RowDefinitions.Add(new RowDefinition());
-            _grid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
-
-            Label label = new Label
-            {
-                Content = name, Height = 50, FontSize = 13, FontWeight = FontWeights.Bold,
-                Foreground = Brushes.Azure, HorizontalAlignment = HorizontalAlignment.Center
-            };
-            _grid.Children.Add(label);
+            ((Label) _grid.Children[0]).Content = name;
         }
 
         private void DisplayImage(TileObject tileObject)
@@ -45,14 +37,11 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             (int width, int height) = tileObject.Sprite.SpriteWidthHeight();
             (sbyte x, sbyte y) = tileObject.Sprite.SpriteMinCoordinates();
             Grid subgrid = AddSubGridToSelectorGrid(height, width);
-            subgrid.Margin = new Thickness(0, 10, 0, 10);
 
             foreach (Offset offset in tileObject.Sprite.Offsets)
             {
                 string element = tileObject.Sprite.Names[offset.I];
                 Button button = SelectorCreator.CreateSelector(element, tileObject[element]);
-                button.Margin = new Thickness(-1, 0, -1, 0);
-                button.Padding = new Thickness(-1.1);
                 Grid.SetColumn(button, offset.X - x);
                 Grid.SetRow(button, height - offset.Y + y);
                 subgrid.Children.Add(button);
@@ -65,6 +54,13 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             tuple.x++;
             tuple.y++;
 
+            TextBlock[] blocks =
+            {
+                (TextBlock) _grid.Children[2],
+                (TextBlock) _grid.Children[3],
+                (TextBlock) _grid.Children[4],
+                (TextBlock) _grid.Children[5],
+            };
             string[] strings =
             {
                 $"Kwota: {gameObject.Price}",
@@ -73,33 +69,33 @@ namespace baUHInia.Playground.Logic.Creators.Selector
                 $"Wysokość: {tuple.y}"
             };
 
-            for (int i = 0; i < strings.Length; i++)
-            {
-                TextBlock label = new TextBlock
-                {
-                    Text = strings[i], Height = 20, FontSize = 13, FontWeight = FontWeights.Bold,
-                    Foreground = Brushes.Azure, HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                _grid.RowDefinitions.Add(new RowDefinition());
-                Grid.SetRow(label, i + 2);
-                _grid.Children.Add(label);
-            }
+            for (int i = 0; i < strings.Length; i++) blocks[i].Text = strings[i];
         }
 
         private Grid AddSubGridToSelectorGrid(int height, int width)
         {
-            Grid grid = new Grid {Height = width == height ? 100 : (height + 1) * 33.33, Width = 100};
-            Grid.SetRow(grid, 1);
+            Grid grid = _grid.Children[1] as Grid;
             DivideGridToAccommodateTileObject(grid, width, height);
-            _grid.Children.Add(grid);
             return grid;
         }
 
         private static void DivideGridToAccommodateTileObject(Grid selectorGrid, int width, int height)
         {
-            for (int i = 0; i <= height; i++) selectorGrid.RowDefinitions.Add(new RowDefinition());
-            for (int i = 0; i <= width; i++) selectorGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            double size = 90.0 / (Math.Max(width, height) + 1);
+            
+            for (int i = 0; i <= height; i++)
+                selectorGrid.RowDefinitions.Add(new RowDefinition
+                {
+                    Height = new GridLength(size),
+                    MaxHeight = size
+                });
+            
+            for (int i = 0; i <= width; i++)
+                selectorGrid.ColumnDefinitions.Add(new ColumnDefinition
+                {
+                    Width = new GridLength(size),
+                    MaxWidth = size
+                });
         }
     }
 }

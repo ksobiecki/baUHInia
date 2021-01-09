@@ -23,13 +23,13 @@ namespace baUHInia.MapLogic.Manager
 
         // Logic
         private string Choice;
-        private string ChoiceId;
+        private int ChoiceId;
         private string Keyword;
         private bool ClearSelection = true;
 
         // Modes - 0: MapLoad, 1: MapSave 2: GameLoad, 3: GameSave.
 
-        private string[] MapNames;
+        private Tuple<int, string>[] MapNames;
         private Tuple<int,string>[] GameIDsNames;
 
 
@@ -42,10 +42,12 @@ namespace baUHInia.MapLogic.Manager
         private TextBox SaveMapNameTextBox;
         private TextBox SaveGameNameTextBox;
 
+        private Label SaveMapErrorLabel;
+
         public GameMapManager()
         {
             Choice = "";
-            ChoiceId = "";
+            ChoiceId = -1;
             Keyword = "";
 
             db = new BazaDanych();
@@ -80,7 +82,34 @@ namespace baUHInia.MapLogic.Manager
             MapNames = db.getMapNames();
 
             SaveMapContainerGrid = CreateContainerGrid();
-            ScrollViewer saveListScrollViewer = CreateListScrollViewer();
+
+            BrushConverter bc = new BrushConverter();
+            SaveMapContainerGrid.Background = (Brush)bc.ConvertFrom("#4466AA");
+
+            SaveMapErrorLabel = new Label
+            {
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                Height = 40,
+                Foreground = Brushes.Red
+            };
+
+            TextBox nameTextBox = new TextBox
+            {
+                Margin = new Thickness(20, 0, 20, 0),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Padding = new Thickness(0,5,0,5)
+            };
+
+            nameTextBox.TextChanged += (s, a) => { SaveMapNameTextChanged(s); };
+
+            SaveMapContainerGrid.Children.Add(SaveMapErrorLabel);
+            SaveMapContainerGrid.Children.Add(nameTextBox);
+            return SaveMapContainerGrid;
+
+            /*ScrollViewer saveListScrollViewer = CreateListScrollViewer();
             Grid saveListGrid = CreateListGrid();
             Grid saveSearchGrid = CreateSearchGrid(saveListGrid,1);
             Grid nameGrid = CreateNameGrid();
@@ -94,7 +123,7 @@ namespace baUHInia.MapLogic.Manager
 
             PopulateListGrid(saveListGrid,1);
 
-            return SaveMapContainerGrid;
+            return SaveMapContainerGrid;*/
         }
 
         public Grid GetGameLoadGrid(int userID)
@@ -138,34 +167,31 @@ namespace baUHInia.MapLogic.Manager
             return SaveGameContainerGrid;
         }
 
-        public Game LoadGame(string name) // Not tested might not work yet.
+        public Game LoadGame() // Not tested might not work yet.
         {
-            throw new NotImplementedException();
-
-            if (Choice == "" || ChoiceId == "")
+            if (Choice == "" && ChoiceId == -1)
             {
                 throw new Exception("Name or Id cannot be empty.");
             }
 
             string jsonStringGame = null;
-            db.GetMap(ref jsonStringGame, Choice);
 
+            db.GetGame(ChoiceId, ref jsonStringGame, ref ChoiceId); // From now on ChoiceId holds id of the map.
+            
             JObject jsonGame = JObject.Parse(jsonStringGame);
 
             SerializationHelper.JsonGetPlacedObjects(jsonGame, out var placedObjects);
 
-            string gameName = Choice;
+            Map map = LoadMap(out int mapId);
 
-            Choice = (string)jsonGame["MapName"]; // Using name instread of id , a temporary solution - or isnt it?
+            Choice = "";
+            ChoiceId = -1;
 
-            Map map = LoadMap("co tam pietras pewnie błąd tu masz hehe");
-
-            return new Game(123, 123, 123, gameName, placedObjects, map);
+            return new Game(ChoiceId, Choice, placedObjects, map);
         }
 
-        public Map LoadMap(string name)
+        public Map LoadMap(out int mapID)
         {
-            // TODO get credentials from database.
 
             if (Choice == "")
             {
@@ -173,14 +199,17 @@ namespace baUHInia.MapLogic.Manager
             }
 
             string jsonStringMap = null;
-            db.GetMap(ref jsonStringMap, Choice);
+
+            db.GetMapByID(ref jsonStringMap, ChoiceId);
 
             JObject jsonMap = JObject.Parse(jsonStringMap);
 
+            int authorID = 0;
             int size = 0;
             int availableMoney = 0;
+            string name = null;
 
-            SerializationHelper.JsonGetBasicData(jsonMap, ref name, ref size, ref availableMoney);
+            SerializationHelper.JsonGetBasicData(jsonMap, ref name, ref authorID, ref size, ref availableMoney);
 
             int[,] tileGrid = new int[size, size];
             bool[,] placeableGrid = new bool[size, size];
@@ -195,31 +224,35 @@ namespace baUHInia.MapLogic.Manager
 
             for (int i = 0; i < placedObjects.GetLength(0); i++)
             {
-                Console.WriteLine(((Placement)placedObjects[i]).GameObject.TileObject.Name);
+                Console.WriteLine(placedObjects[i].GameObject.TileObject.Name);
             }
 
-            return new Map(123, 123, Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+            mapID = ChoiceId;
+            ChoiceId = -1;
+
+            Map map = new Map(Choice, tileGrid, placeableGrid, indexer, availableTiles, availableMoney, placedObjects);
+            Choice = "";
+            
+            return map;
         }
 
-        public bool SaveGame(ITileBinder tileBinder)
+        public bool SaveGame(ITileBinder tileBinder, int mapID)
         {
-            throw new NotImplementedException();
 
-            if (Choice == "" || ChoiceId == "")
+            if (Choice == "" && ChoiceId == -1)
             {
                 throw new Exception("Name or Id cannot be empty.");
             }
 
-            int id = int.Parse(ChoiceId.Substring(2,ChoiceId.Length-2));
-
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            db.addGame(123, Choice, jsonGame.ToString(Formatting.None), 123);
+            bool result = db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID);
 
-            Console.WriteLine(jsonGame.ToString(Formatting.None));
+            Choice = "";
+            ChoiceId = -1;
 
-            return true;
+            return result;
         }
 
         public bool SaveMap(ITileBinder tileBinder)
@@ -237,18 +270,42 @@ namespace baUHInia.MapLogic.Manager
             SerializationHelper.JsonAddAvailableTiles(jsonMap, tileBinder.AvailableObjects);
 
             BazaDanych db = new BazaDanych();
-            int result = db.DodajMape(123, Choice, jsonMap.ToString(Formatting.None));
+            int result = db.DodajMape(tileBinder.Credentials.UserID, Choice, jsonMap.ToString(Formatting.None));
 
-            if (result == 33)
+            Console.WriteLine("Saving result: " + result);
+
+            if (result != 0) // Result equal to 0 is a successful write.
             {
-                return db.updateMap(123, jsonMap.ToString(Formatting.None), Choice);
+                if (result != 33) // 33 - Map already exists, other code means diffrent issue.
+                {
+                    SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                    return false;
+                }
+                else // Checking for ownership.
+                {
+                    if (db.CheckIfTheLoggedInUserIsTheOwnerOfTheMapHeOrSheWantToOverwrite(tileBinder.Credentials.UserID, ChoiceId) != 1) // Result equal to 1 means user is the owner.
+                    {
+                        SaveMapErrorLabel.Content = "Nazwa mapy jest zajęta.";
+                        return false;
+                    }
+
+                    bool result2 = db.updateMap(tileBinder.Credentials.UserID, jsonMap.ToString(Formatting.None), Choice); // Returns true even when 0 rows were affected, TODO make sure this works when db fixes their error detection.
+
+                    if (!result2)
+                    {
+                        SaveMapErrorLabel.Content = "Nie udało się zapisać mapy.";
+                        return false;
+                    }
+                }
             }
 
-            if (result != 0)
-            {
-                Console.WriteLine("Attempt to save map '" + Choice + "' in database failed - code: " + result + ".");
-                return false;
-            }
+            // TODO FIND OUT WHY NAMES WITH POLISH LETTERS DO NOT GET SAVED PROPERLY (the special letters turn into normal ones - this also allows to save maps with names that are already occupied) 
+
+            SaveMapErrorLabel.Content = "";
+            MapNames = db.getMapNames();
+
+            Choice = "";
+            ChoiceId = -1;
 
             return true;
         }
@@ -360,14 +417,17 @@ namespace baUHInia.MapLogic.Manager
 
             if (mode == 0 || mode == 1)
             {
-                string[] filteredMapNames = MapNames.Where(m => m.Contains(Keyword)).ToArray();
+                Tuple<int, string>[] filteredMapNames = MapNames.Where(m => m.Item2.Contains(Keyword)).ToArray();
 
-                foreach (string name in filteredMapNames)
+                foreach (Tuple<int, string> mapIDNname in filteredMapNames)
                 {
                     listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid {HorizontalAlignment = HorizontalAlignment.Stretch};
                     Grid.SetRow(listItemGrid, index);
-                    listItemGrid.Children.Add(CreateListItemButton(name,listGrid));
+                    Button listItemButton = CreateListItemButton(mapIDNname.Item2, listGrid);
+                    Tuple<int, string> temp = new Tuple<int, string>(0, mapIDNname.Item2);
+                    listItemButton.Tag = mapIDNname;
+                    listItemGrid.Children.Add(listItemButton);
                     listGrid.Children.Add(listItemGrid);
                     index++;
                 }
@@ -381,7 +441,7 @@ namespace baUHInia.MapLogic.Manager
                     listGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
                     Grid listItemGrid = new Grid { HorizontalAlignment = HorizontalAlignment.Stretch };
                     Button listItemButton = CreateListItemButton(gameIDName.Item2, listGrid);
-                    listItemButton.Name = "id" + gameIDName.Item1.ToString();
+                    listItemButton.Tag = gameIDName;
                     Grid.SetRow(listItemGrid, index);
                     listItemGrid.Children.Add(listItemButton);
                     listGrid.Children.Add(listItemGrid);
@@ -433,10 +493,13 @@ namespace baUHInia.MapLogic.Manager
             Button sender = (Button)s;
             sender.Background = (Brush)new BrushConverter().ConvertFrom("#FF8FAEEC");
             sender.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF474747");
-            Choice = ((TextBlock)sender.Content).Text.ToString();
-            ChoiceId = sender.Name;
 
-            Console.WriteLine("Choice: " + Choice);
+            Tuple<int, string> IdName = (Tuple<int,string>)sender.Tag;
+
+            ChoiceId = IdName.Item1;
+            Choice = IdName.Item2;
+            
+            Console.WriteLine(Choice + " " + ChoiceId);
 
             ClearSelection = false;
 
@@ -477,10 +540,16 @@ namespace baUHInia.MapLogic.Manager
             }
         }
 
+        private void SaveMapNameTextChanged(object s)
+        {
+            TextBox sender = (TextBox)s;
+            Choice = sender.Text;
+        }
+
         private void SearchButtonClick(Grid listGrid, int mode)
         {
             Choice = "";
-            ChoiceId = "";
+            ChoiceId = -1;
             PopulateListGrid(listGrid,mode);
         }
         

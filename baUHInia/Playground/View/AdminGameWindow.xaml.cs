@@ -33,8 +33,9 @@ namespace baUHInia.Playground.View
         private Grid AdminGrid { get; set; }
         private Grid SaveMapGrid { get; set; }
         private Grid LoadMapGrid { get; set; }
-
         private Grid GameMapGrid { get; set; }
+
+        private UserGameWindow UserWindow { get; set; }
 
         public AdminGameWindow(LoginData credentials)
         {
@@ -54,8 +55,11 @@ namespace baUHInia.Playground.View
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
         public LoginData Credentials { get; private set; }
+        
         public bool IsInAdminMode { get; } = true;
         public int AvailableFounds { get; set; }
+        
+        private int MapId { get; set; }
 
         //============================ PREDEFINED ACTIONS ============================//
 
@@ -123,7 +127,7 @@ namespace baUHInia.Playground.View
             TileGrid = new Tile[BoardDensity, BoardDensity];
             TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
-            _gameGridCreator.CreateGameGridInWindow(this, BoardDensity);
+            _gameGridCreator.CreateElementsInWindow(this, BoardDensity);
             GameMapGrid = GameScroll.Content as Grid;
             //CurrentGrid = GameMapGrid;
         }
@@ -186,7 +190,7 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid ?? MenuGrid;
@@ -205,11 +209,8 @@ namespace baUHInia.Playground.View
                 SaveMapGrid = Resources["SaveMapTemplate"] as Grid;
                 Border border = SaveMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
-                ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
-                {
-                    GameScroll.Content = AdminGrid;
-                };
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid(Credentials.UserID));
+                ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = AdminGrid;
             }
 
             SideGrid.Visibility = Visibility.Collapsed;
@@ -218,7 +219,9 @@ namespace baUHInia.Playground.View
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            Map map = _manager.LoadMap("mapka_test");
+            Map map = _manager.LoadMap(out int mapId);
+            MapId = mapId;
+            
             if (GameMapGrid == null) CreateNewMap(null, null);
             GameMapGrid.Children.Clear();
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
@@ -231,7 +234,8 @@ namespace baUHInia.Playground.View
         private void SaveMap(object sender, RoutedEventArgs args)
         {
             _manager.SaveMap(this);
-            Console.WriteLine("Passed saving");
+            SideGrid.Visibility = Visibility.Visible;
+            GameScroll.Content = GameMapGrid;
         }
 
         private void NewMap(object source, RoutedEventArgs args)
@@ -258,8 +262,7 @@ namespace baUHInia.Playground.View
                 {
                     AvailableObjects = _admin.GetModifiedAvailableObjects();
                     AvailableFounds = _admin.GetBudget();
-                    //TODO: change to > 3
-                    if (AvailableObjects.Count == 0) return;
+                    if (AvailableObjects.Count < 3) return;
                     CreateSaveWindow(null, null);
                 };
                 AdminGrid = _admin.GetAdminSelectorTableGrid();
@@ -278,8 +281,8 @@ namespace baUHInia.Playground.View
 
         private void ChangeGameMode(object sender, RoutedEventArgs args)
         {
-            UserGameWindow userWindow = new UserGameWindow(LoginData.GetInstance()) {Owner = this};
-            userWindow.Show();
+            UserWindow = UserWindow ?? new UserGameWindow(LoginData.GetInstance()) {Owner = this};
+            UserWindow.Show();
             Hide();
         }
 
@@ -291,14 +294,14 @@ namespace baUHInia.Playground.View
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            this.Hide();
+            //Hide();
+            Close();
             Authorisation.Authorisation authorisation = new Authorisation.Authorisation();
             authorisation.Show();
-            this.Close();
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            //Application.Current.Shutdown();
         }
     }
 }

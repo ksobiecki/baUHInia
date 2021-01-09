@@ -29,7 +29,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         //============================= IMPLEMENTATIONS ================================//
 
-        public void CreateGameGridInWindow(ITileBinder tileBinder, int boardDensity)
+        public void CreateElementsInWindow(ITileBinder tileBinder, int boardDensity)
         {
             Grid gameGrid = new Grid {Width = BoardResolution.x, Height = BoardResolution.y};
             tileBinder.GameViewer.Content = gameGrid;
@@ -64,6 +64,20 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
             tileBinder.Selection.ChangeState(State.Place);
             Placement[] placers = map.PlacedObjects ?? new Placement[0];
+            CreateElementsInWindow(tileBinder, placers);
+            return map.AvailableTiles?.ToList() ?? new List<GameObject>();
+        }
+
+        public void LoadGameIntoTheGameGrid(ITileBinder tileBinder, Game game)
+        {
+            Placement[] placers = game.PlacedObjects ?? new Placement[0];
+            CreateElementsInWindow(tileBinder, placers);
+        }
+
+        //============================= GAME GRID ================================//
+
+        private static void CreateElementsInWindow(ITileBinder tileBinder, Placement[] placers)
+        {
             foreach (Placement placement in placers)
             {
                 tileBinder.Selection.TileObject = placement.GameObject.TileObject;
@@ -73,20 +87,10 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 tileBinder.Selection.ApplyTiles(btn, false);
                 tileBinder.Selection.ChangedPlacers.Clear();
             }
-
+            
             (int x, int y) = placers.LastOrDefault()?.Position ?? (-1, -1);
             if (x != -1) tileBinder.TileGrid[y, x].ShowIfAvailable(1.0, null, null);
-            return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
-
-        public void LoadGameIntoTheGameGrid(ITileBinder tileBinder, Game game)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        //============================= GAME GRID ================================//
-
-        public void CreateGameGridInWindow(Tile[,] tileFields, ScrollViewer window) { }
 
         private void FillGameGridWithTiles(Tile[,] tileFields)
         {

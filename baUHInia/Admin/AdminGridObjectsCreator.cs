@@ -99,11 +99,11 @@ namespace baUHInia.Admin
             }
         }
 
-        public void ChangeAvailability(AdminInGridClickableObject gameObject)
+        public void ChangeAvailability(GameObject gameObject)
         {
             GameObjectsList.Find(
-                x => x.GameObject.TileObject.Name == gameObject.GameObject.TileObject.Name
-            ).IsAvailable = !gameObject.IsAvailable;
+                x => x.GameObject.TileObject.Name == gameObject.TileObject.Name
+            ).IsAvailable ^= true;
         }
 
         public void AddObject(AdminInGridClickableObject gameObject)

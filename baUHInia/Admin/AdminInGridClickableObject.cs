@@ -40,7 +40,8 @@ namespace baUHInia.Admin
                 Background = Brushes.Transparent,
                 BorderBrush = Brushes.Transparent,
                 Margin = new Thickness(1),
-                Padding = new Thickness(-1.2)
+                Padding = new Thickness(-1.2),
+                Style = Application.Current.FindResource("SquareButton") as Style
             };
             button.Click += OnClick;
             Grid.SetColumn(button, 0);
@@ -66,6 +67,7 @@ namespace baUHInia.Admin
                     Content = new Image {Source = gameObject.TileObject[gameObject.TileObject.Sprite.Names[offset.I]]},
                     Background = Brushes.Transparent,
                     BorderBrush = Brushes.Transparent,
+                    Style = Application.Current.FindResource("SquareButton") as Style,
                     // Margin = new Thickness(-1, 0, -1, 0),
                     Padding = new Thickness(-1.2)
                 };

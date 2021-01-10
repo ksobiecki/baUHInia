@@ -25,8 +25,9 @@ namespace baUHInia.Admin
         {
             InitializeComponent();
             _budget = iTileBinder.AvailableFounds;
+            AdminBudget.Text = _budget.ToString();
             _allGameObjects = new AdminGridObjectsCreator(
-                InitializeGameObjects(),
+                InitializeGameObjects(iTileBinder),
                 false,
                 AllGameObjectsGrid,
                 this
@@ -38,6 +39,7 @@ namespace baUHInia.Admin
                 AvailableForUserGameObjectsGrid,
                 this
             );
+            HideSelectedObjects(iTileBinder);
             _availableForUserGameObjects.InitializeGridDefinitions();
             _availableForUserGameObjects.CreateGrid();
             _allGameObjects.InitializeGridDefinitions();
@@ -45,31 +47,21 @@ namespace baUHInia.Admin
             _objectDetails = new AdminSelectedObjectDetails(SelectedGameObjectDetails, this);
         }
 
-        //todo zmien Terrain na Foliage, gdy cos tam juz bedzie
-        private GameObject[] InitializeGameObjects()
+        private GameObject[] InitializeGameObjects(ITileBinder iTileBinder)
         {
-            List<GameObject> allGameObjects = new List<GameObject>();
-            //ResourceHolder.Get.ChangeResourceType(ResourceType.Terrain);
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
 
-
-            foreach (var category in categoryList)
-            {
-                foreach (var tileObject in category.TileObjects)
-                {
-                    allGameObjects.Add(
-                        new GameObject(tileObject, 0.0F, 0)
-                    );
-                }
-            }
-
-            return allGameObjects.ToArray();
+            return (from category in categoryList
+                from tileObject in category.TileObjects
+                let gameObject = iTileBinder.AvailableObjects.Find(x => x.TileObject == tileObject)
+                select gameObject ?? new GameObject(tileObject, 0.0F, 0)).ToArray();
         }
 
         private List<int> GetCategoryBreakLineIndex()
         {
-            List<TileCategory> categoryList = ResourceHolder.Get.Terrain;
+            ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
+            List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
             List<int> categoryBreakLineIndex = new List<int>();
             foreach (var category in categoryList)
             {
@@ -83,22 +75,32 @@ namespace baUHInia.Admin
         {
             if (_selectedObject.IsAvailable)
             {
-                _allGameObjects.ChangeAvailability(_selectedObject);
+                _allGameObjects.ChangeAvailability(_selectedObject.GameObject);
                 _availableForUserGameObjects.RemoveObject(_selectedObject);
                 _availableForUserGameObjects.CreateGrid();
                 _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
-                
+                OnObjectClick(_allGameObjects.GameObjectsList.Find(x =>
+                    x.GameObject.TileObject.Name == _selectedObject.GameObject.TileObject.Name));
             }
             else
             {
-                _allGameObjects.ChangeAvailability(_selectedObject);
+                _allGameObjects.ChangeAvailability(_selectedObject.GameObject);
                 AdminInGridClickableObject
                     copy = new AdminInGridClickableObject(_selectedObject.GameObject, true, this);
                 OnObjectClick(copy);
                 _availableForUserGameObjects.AddObject(copy);
                 _availableForUserGameObjects.CreateGrid();
                 _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
-                
+            }
+        }
+
+        private void HideSelectedObjects(ITileBinder iTileBinder)
+        {
+            foreach (var gameObject in iTileBinder.AvailableObjects)
+            {
+                Console.WriteLine(
+                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
+                _allGameObjects.ChangeAvailability(gameObject);
             }
         }
 
@@ -129,16 +131,14 @@ namespace baUHInia.Admin
             else
             {
                 System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
-
                     (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
-
             }
 
-            if(_availableForUserGameObjects.GameObjectsList.Count < 3)
+            if (_availableForUserGameObjects.GameObjectsList.Count < 3)
             {
-                System.Windows.MessageBox.Show("Prosze udostępnić użytkownikowi przynajmniej 3 obiekty", "Za mało obiektów",
-
-                    (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
+                System.Windows.MessageBox.Show("Prosze udostępnić użytkownikowi przynajmniej 3 obiekty",
+                    "Za mało obiektów",
+                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
             }
         }
 
@@ -151,7 +151,6 @@ namespace baUHInia.Admin
         private void Number_PreviewTextInput(object sender, KeyPressEventArgs e)
 
         {
-
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
                 (e.KeyChar != '.'))
             {

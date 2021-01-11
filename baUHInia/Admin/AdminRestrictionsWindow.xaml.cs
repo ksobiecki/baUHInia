@@ -15,47 +15,67 @@ namespace baUHInia.Admin
     public partial class AdminRestrictionsWindow : IAdminOnClickObject, IAdminChangeObjectDetails,
         IAdminSelectorTabCreator
     {
-        private readonly AdminGridObjectsCreator _allGameObjects;
-        private readonly AdminGridObjectsCreator _availableForUserGameObjects;
+        private AdminGridObjectsCreator _allGameObjects;
+        private AdminGridObjectsCreator _availableForUserGameObjects;
         private readonly AdminSelectedObjectDetails _objectDetails;
+        private List<GameObject> _savedGameObjects;
         private AdminInGridClickableObject _selectedObject;
         private int _budget;
+        private int _savedBudget;
 
         public AdminRestrictionsWindow(ITileBinder iTileBinder)
         {
+            Console.WriteLine("Init");
+            _savedGameObjects = iTileBinder.AvailableObjects;
             InitializeComponent();
             _budget = iTileBinder.AvailableFounds;
+            _savedBudget = iTileBinder.AvailableFounds;
             AdminBudget.Text = _budget.ToString();
             _allGameObjects = new AdminGridObjectsCreator(
-                InitializeGameObjects(iTileBinder),
+                InitializeGameObjects(),
                 false,
                 AllGameObjectsGrid,
                 this
             );
 
             _availableForUserGameObjects = new AdminGridObjectsCreator(
-                iTileBinder.AvailableObjects.ToArray(),
+                _savedGameObjects.ToArray(),
                 true,
                 AvailableForUserGameObjectsGrid,
                 this
             );
-            HideSelectedObjects(iTileBinder);
+            HideSelectedObjects(_savedGameObjects);
             _availableForUserGameObjects.InitializeGridDefinitions();
             _availableForUserGameObjects.CreateGrid();
             _allGameObjects.InitializeGridDefinitions();
             _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
             _objectDetails = new AdminSelectedObjectDetails(SelectedGameObjectDetails, this);
+            OnObjectClick(_allGameObjects.GameObjectsList[0]);
         }
 
-        private GameObject[] InitializeGameObjects(ITileBinder iTileBinder)
+        private GameObject[] InitializeGameObjects()
         {
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
-
-            return (from category in categoryList
-                from tileObject in category.TileObjects
-                let gameObject = iTileBinder.AvailableObjects.Find(x => x.TileObject == tileObject)
-                select gameObject ?? new GameObject(tileObject, 0.0F, 0)).ToArray();
+            
+            List<GameObject> allGameObjects = new List<GameObject>();
+            foreach (var category in categoryList)
+            {
+                foreach (var tileObject in category.TileObjects)
+                {
+                    var gameObject = _savedGameObjects.Find(x => x.TileObject == tileObject);
+                    allGameObjects.Add(
+                        gameObject == null
+                            ? new GameObject(tileObject, 0.0F, 0)
+                            : new GameObject(tileObject, gameObject.ChangeValue, gameObject.Price)
+                    );
+                }
+            }
+            return allGameObjects.ToArray();
+           // return (from category in categoryList
+           //     from tileObject in category.TileObjects
+           //     let gameObject = gameObjects.Find(x => x.TileObject == tileObject)
+           //     select gameObject ?? new GameObject(tileObject, 0.0F, 0)).ToArray();
         }
 
         private List<int> GetCategoryBreakLineIndex()
@@ -94,9 +114,9 @@ namespace baUHInia.Admin
             }
         }
 
-        private void HideSelectedObjects(ITileBinder iTileBinder)
+        private void HideSelectedObjects( List<GameObject> savedGameObjects)
         {
-            foreach (var gameObject in iTileBinder.AvailableObjects)
+            foreach (var gameObject in savedGameObjects)
             {
                 Console.WriteLine(
                     $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
@@ -111,15 +131,27 @@ namespace baUHInia.Admin
         }
 
         public void SubmitChanges(int price, float ratio)
-        {
+        { 
+            Console.WriteLine("Przed zmiana");
+            foreach (var gameObject in _savedGameObjects)
+            {
+                Console.WriteLine(
+                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
+            }
             _selectedObject.GameObject.Price = price;
             _selectedObject.GameObject.ChangeValue = ratio;
+            Console.WriteLine("Po zmianie");
+            foreach (var gameObject in _savedGameObjects)
+            {
+                Console.WriteLine(
+                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
+            }
         }
 
         public Grid GetAdminSelectorTableGrid() => AdminRestrictionsGrid;
 
 
-        public List<GameObject> GetModifiedAvailableObjects() => _availableForUserGameObjects.GetGameObjects().ToList();
+        public List<GameObject> GetModifiedAvailableObjects() => _savedGameObjects;
 
 
         public void Save(object obj, RoutedEventArgs routedEventArgs)
@@ -127,6 +159,7 @@ namespace baUHInia.Admin
             if (int.TryParse(AdminBudget.Text, out _budget))
             {
                 _budget = int.Parse(AdminBudget.Text);
+                _savedBudget = _budget;
             }
             else
             {
@@ -140,6 +173,32 @@ namespace baUHInia.Admin
                     "Za mało obiektów",
                     (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
             }
+            else
+            {
+              _savedGameObjects = _availableForUserGameObjects.GetGameObjects().ToList();
+            }
+        }
+
+        public void Return(object obj, RoutedEventArgs routedEventArgs)
+        {
+            _budget = _savedBudget;
+            AdminBudget.Text = _budget.ToString();
+            _allGameObjects = new AdminGridObjectsCreator(
+                InitializeGameObjects(),
+                false,
+                AllGameObjectsGrid,
+                this
+            );
+
+            _availableForUserGameObjects = new AdminGridObjectsCreator(
+                _savedGameObjects.ToArray(),
+                true,
+                AvailableForUserGameObjectsGrid,
+                this
+            );
+            _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
+            _availableForUserGameObjects.CreateGrid();
+            OnObjectClick(_selectedObject);
         }
 
         public System.Windows.Controls.Button GetReturnButton() => ReturnBtn;

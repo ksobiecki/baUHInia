@@ -174,9 +174,11 @@ namespace baUHInia.MapLogic.Manager
 
             SerializationHelper.JsonGetPlacedObjects(jsonGame, out var placedObjects);
 
+            string gameName = Choice;
+
             Map map = LoadMap(out int mapId);
 
-            Game game = new Game(ChoiceId, Choice, placedObjects, map);
+            Game game = new Game(ChoiceId, gameName, placedObjects, map);
 
             Choice = "";
             ChoiceId = -1;

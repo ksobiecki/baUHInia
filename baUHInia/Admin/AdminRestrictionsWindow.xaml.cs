@@ -137,10 +137,6 @@ namespace baUHInia.Admin
 
         public void SubmitChanges(int price, float ratio)
         {
-<<<<<<< HEAD
-            _selectedObject.GameObject.Price = price;
-            _selectedObject.GameObject.ChangeValue = ratio;
-=======
             String note = "";
             List<String> notes = new List<string>();
             Console.WriteLine("Przed zmiana");
@@ -152,7 +148,7 @@ namespace baUHInia.Admin
             if(price == 0)
             {
                 _selectedObject.GameObject.Price = 0;
-                notes.Add(" cena");
+                notes.Add("cena");
             }
             else
             {
@@ -161,7 +157,7 @@ namespace baUHInia.Admin
             if (ratio == 0.00)
             {
                 _selectedObject.GameObject.ChangeValue = (float)0.00;
-                notes.Add(" wpływ na temperaturę");
+                notes.Add("wpływ na temperaturę");
             }
             else
             {
@@ -191,8 +187,7 @@ namespace baUHInia.Admin
                 _objectDetails.Display(_selectedObject);
             }
             
-            
->>>>>>> c4ab671 (Added other constraints for gameObject, budget)
+          
         }
 
         public Grid GetAdminSelectorTableGrid() => AdminRestrictionsGrid;

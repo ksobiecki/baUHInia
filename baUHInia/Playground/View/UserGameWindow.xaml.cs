@@ -55,10 +55,10 @@ namespace baUHInia.Playground.View
         {
             InitializeComponent();
             StoreMenuGrid();
+            InitializeProperties(credentials);
             AddLoadCardAndInitializeManager();
             AdjustWindowSizeAndPosition();
             AddLoadCardAndInitializeManager();
-            InitializeProperties(credentials);
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -146,7 +146,7 @@ namespace baUHInia.Playground.View
 
         private void AddLoadCardAndInitializeManager()
         {
-            _manager = new GameMapManager();
+            _manager = new GameMapManager(Credentials);
             //TODO:
             //InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
         }
@@ -208,9 +208,11 @@ namespace baUHInia.Playground.View
                 LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
                 Border border = LoadMapGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
+
+            _manager.PopulatePlayLoadMapListGrid();
 
             GameScroll.Content = LoadMapGrid;
         }
@@ -222,9 +224,11 @@ namespace baUHInia.Playground.View
                 LoadGameGrid = Resources["LoadGameTemplate"] as Grid;
                 Border border = LoadGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
+
+           _manager.PopulateUserLoadGameListGrid();
 
             GameScroll.Content = LoadGameGrid;
         }
@@ -236,13 +240,15 @@ namespace baUHInia.Playground.View
                 SaveGameGrid = Resources["SaveGameTemplate"] as Grid;
                 Border border = SaveGameGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
                 {
                     GameScroll.Content = GameMapGrid;
                     ChangeDisplayMode(true);
                 };
             }
+
+            _manager.PopulateSaveGameListGrid();
 
             ChangeDisplayMode(false);
             GameScroll.Content = SaveGameGrid;

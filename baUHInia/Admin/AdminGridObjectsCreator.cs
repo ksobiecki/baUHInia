@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
 
@@ -17,10 +18,20 @@ namespace baUHInia.Admin
         public AdminGridObjectsCreator(GameObject[] gameObjects, bool isAvailable, Grid objectsGrid,
             IAdminOnClickObject adminOnClickObject)
         {
+            if (isAvailable)
+            {
+                Console.WriteLine("");
+                foreach (var VARIABLE in gameObjects)
+                {
+                    Console.WriteLine(
+                        $"{VARIABLE.TileObject.Name}, price {VARIABLE.Price}, val {VARIABLE.ChangeValue}");
+                }
+            }
             this.isAvailable = isAvailable;
             ObjectsGrid = objectsGrid;
             GameObjectsList = new List<AdminInGridClickableObject>(gameObjects.Length);
-            foreach (var gameObject in gameObjects)
+            var copy = gameObjects.Select(gameObject => new GameObject(gameObject.TileObject, gameObject.ChangeValue, gameObject.Price)).ToList();
+            foreach (var gameObject in copy)
             {
                 GameObjectsList.Add(new AdminInGridClickableObject(gameObject, isAvailable, adminOnClickObject));
             }
@@ -29,7 +40,7 @@ namespace baUHInia.Admin
         public void CreateGrid()
         {
             ObjectsGrid.Children.Clear();
-
+            InitializeGridDefinitions();
             int cols = 12;
 
             int row = 0;
@@ -86,6 +97,8 @@ namespace baUHInia.Admin
 
         public void InitializeGridDefinitions()
         {
+            ObjectsGrid.ColumnDefinitions.Clear();
+            ObjectsGrid.RowDefinitions.Clear();
             int cols = 12;
             int rows = GameObjectsList.Count / cols + 1;
             for (var i = 0; i < cols; i++)

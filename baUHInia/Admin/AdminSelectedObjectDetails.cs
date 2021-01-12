@@ -1,5 +1,5 @@
 
-﻿using System;
+ using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,8 +23,8 @@ namespace baUHInia.Admin
             this.iAdminChangeObjectDetails = iAdminChangeObjectDetails;
             selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(100)});
             selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(20)});
-            selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(20)});
-            selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(20)});
+            selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(18)});
+            selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(18)});
             selectedObjectDetails.RowDefinitions.Add(new RowDefinition {Height = new GridLength(20)});
             selectedObjectDetails.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(105)});
             selectedObjectDetails.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(195)});
@@ -35,13 +35,7 @@ namespace baUHInia.Admin
             selectedObjectDetails.Children.Clear();
 
             var image = gameObject.CreateOfButtons(gameObject.GameObject);
-
-           // (int width, int height) = gameObject.GameObject.TileObject.Sprite.SpriteWidthHeight();
-           // width++;
-           // height++;
-           //var imageRatio = 99.0 / Math.Max(width, height);
-           //image.Height = height * imageRatio;
-           //image.Width = width  * imageRatio;
+            
            image.Width = 99;
            image.Height = 99;
 
@@ -138,14 +132,11 @@ namespace baUHInia.Admin
             string parsedRatio = ratio.Text.Replace(".", ",");
             if (int.TryParse(price.Text, out priceInt) && float.TryParse(parsedRatio, out ratioFloat))
             {
-                iAdminChangeObjectDetails.SubmitChanges(priceInt, ratioFloat);
+                iAdminChangeObjectDetails.SubmitChanges(priceInt, ratioFloat);                
             }
             else
             {
-                System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
-                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
-                price.Text = "0";
-                ratio.Text = "0.00";
+                iAdminChangeObjectDetails.SubmitChanges(0, 0);
             }
         }
 
@@ -166,37 +157,6 @@ namespace baUHInia.Admin
             return output;
 
         }
-
-        /*private void SaveChanges(System.Windows.Controls.TextBox price, System.Windows.Controls.TextBox ratio, object obj, RoutedEventArgs routedEventArgs)
-        {
-            int priceInt;
-            float ratioFloat;
-            string parsedRatio = ratio.Text.Replace(".", ",");
-            if (int.TryParse(price.Text, out priceInt) && float.TryParse(parsedRatio, out ratioFloat))
-            {
-                iAdminChangeObjectDetails.SubmitChanges(priceInt, ratioFloat);
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
-                (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
-                price.Text = "0";
-                ratio.Text = "0.00";
-            }
-        }
-        private string shorten(string input, int trimmedLength)
-        {
-            string output = input;
-            if (input.Length > trimmedLength)
-            {
-                output = "";
-                for (int i = 0; i < trimmedLength; i++) {
-                    output += input[i];
-                };
-            }
-            return output;
-        }*/
-
 
     }
 }

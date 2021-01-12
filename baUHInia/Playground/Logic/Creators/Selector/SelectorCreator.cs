@@ -6,6 +6,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
+using Brushes = System.Windows.Media.Brushes;
+using Image = System.Windows.Controls.Image;
 
 namespace baUHInia.Playground.Logic.Creators.Selector
 {
@@ -26,19 +28,26 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         public Button CreateSelectorTile(string elementName, BitmapImage image, (string cat, string subCat) tag)
         {
             Button button = CreateSelector(elementName, image);
+            //RenderOptions.SetBitmapScalingMode(button, BitmapScalingMode.NearestNeighbor);
             button.Click += OnSelectorMouseClick;
             button.Tag = tag;
             return button;
         }
 
-        public static Button CreateSelector(string elementName, BitmapImage image) => new Button
+        public static Button CreateSelector(string elementName, BitmapImage image)
         {
-            Content = new Image {Source = image},
-            Background = Brushes.Transparent,
-            BorderBrush = Brushes.Transparent,
-            Style = Application.Current.FindResource("SquareButton") as Style,
-            Tag = elementName
-        };
+            Image imageWrapper = new Image {Source = image};
+            RenderOptions.SetBitmapScalingMode(imageWrapper, BitmapScalingMode.NearestNeighbor);
+            
+            return new Button
+            {
+                Content = imageWrapper,
+                Background = Brushes.Transparent,
+                BorderBrush = Brushes.Transparent,
+                Style = Application.Current.FindResource("SquareButton") as Style,
+                Tag = elementName
+            };
+        }
 
         //============================ SELECTOR BEHAVIOUR ============================//
 

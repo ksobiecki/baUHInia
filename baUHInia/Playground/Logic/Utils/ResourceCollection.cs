@@ -36,7 +36,7 @@ namespace baUHInia.Playground.Logic.Utils
         }
 
         public string[] ElementsOfSubcategory(string subCategory) => _elementsOfCategory
-            .Where(str => str.StartsWith(subCategory))
+            .Where(str => str.StartsWith(subCategory + '/'))
             .Select(str => str.Remove(0, subCategory.Length + 1))
             .OrderBy(str => str, Comparer<string>.Create(
                 (x, y) =>

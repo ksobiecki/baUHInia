@@ -43,7 +43,7 @@ namespace baUHInia.Playground.Logic.Loaders
                 string subCategory = subCategories[i];
                 string[] elementsOfSubCategory = resources.ElementsOfSubcategory(subCategory);
                 string config = resources.GetPossibleConfig(subCategory);
-                if (config == null) throw new FileNotFoundException("All tiles must have json file");
+                if (config == null) throw new FileNotFoundException($"All tiles must have json file: {subCategory}");
                 Config configInstance = LoadConfig(config);
                 Dictionary<string, BitmapImage> bitmaps = resources.LoadBitmaps(
                     resources.Categories[index], subCategory, ResourceDir
@@ -88,9 +88,10 @@ namespace baUHInia.Playground.Logic.Loaders
                 from tileObject in tileCategory.TileObjects
                 select tileObject.Config.Name).ToList();
 
-            if (configs.GroupBy(s => s).Where(g => g.Count() > 1).ToArray().Length != 0)
+            var groups = configs.GroupBy(s => s).Where(g => g.Count() > 1).ToArray();
+            if (groups.Length != 0)
             {
-                throw new DuplicateNameException("There can't be 2 elements with same name");
+                throw new DuplicateNameException($"There can't be 2 elements with same name: {groups[0].Key}");
             }
         }
     }

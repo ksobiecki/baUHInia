@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using baUHInia.MapLogic.Model;
 using baUHInia.Playground.Model;
@@ -138,6 +139,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 for (int j = 0; j < boardDensity; j++)
                 {
                     Image image = new Image {IsHitTestVisible = false};
+                    RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
                     Grid.SetRow(image, i);
                     Grid.SetColumn(image, j);
                     gameGrid.Children.Add(image);

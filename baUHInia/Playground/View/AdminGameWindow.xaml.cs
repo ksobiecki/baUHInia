@@ -214,10 +214,11 @@ namespace baUHInia.Playground.View
                 LoadObserverGrid = Resources["LoadObserverTemplate"] as Grid;
                 Border border = LoadObserverGrid.Children[0] as Border;
                 Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid(Credentials.UserID));
+                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
+            _manager.PopulateObserverLoadGameListGrid();
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = LoadObserverGrid;
         }
@@ -267,7 +268,6 @@ namespace baUHInia.Playground.View
             }
 
             _manager.PopulateSaveMapListGrid();
-
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = SaveMapGrid;
         }
@@ -302,7 +302,6 @@ namespace baUHInia.Playground.View
 
         private void OpenSelectorTab(object source, RoutedEventArgs args)
         {
-            //TODO change to make compatible with load/save windows
             SideGrid.Visibility = Visibility.Collapsed;
             if (AdminGrid == null)
             {
@@ -351,15 +350,11 @@ namespace baUHInia.Playground.View
 
         private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
         {
-            //Hide();
             Close();
             Authorisation.Authorisation authorisation = new Authorisation.Authorisation();
             authorisation.Show();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            //Application.Current.Shutdown();
-        }
+        private void Window_Closed(object sender, EventArgs e) { }
     }
 }

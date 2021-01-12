@@ -40,7 +40,7 @@ namespace baUHInia.Admin
         public void CreateGrid()
         {
             ObjectsGrid.Children.Clear();
-
+            InitializeGridDefinitions();
             int cols = 12;
 
             int row = 0;
@@ -97,6 +97,8 @@ namespace baUHInia.Admin
 
         public void InitializeGridDefinitions()
         {
+            ObjectsGrid.ColumnDefinitions.Clear();
+            ObjectsGrid.RowDefinitions.Clear();
             int cols = 12;
             int rows = GameObjectsList.Count / cols + 1;
             for (var i = 0; i < cols; i++)

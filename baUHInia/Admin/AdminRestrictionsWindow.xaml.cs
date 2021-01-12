@@ -131,21 +131,9 @@ namespace baUHInia.Admin
         }
 
         public void SubmitChanges(int price, float ratio)
-        { 
-            Console.WriteLine("Przed zmiana");
-            foreach (var gameObject in _savedGameObjects)
-            {
-                Console.WriteLine(
-                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
-            }
+        {
             _selectedObject.GameObject.Price = price;
             _selectedObject.GameObject.ChangeValue = ratio;
-            Console.WriteLine("Po zmianie");
-            foreach (var gameObject in _savedGameObjects)
-            {
-                Console.WriteLine(
-                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
-            }
         }
 
         public Grid GetAdminSelectorTableGrid() => AdminRestrictionsGrid;

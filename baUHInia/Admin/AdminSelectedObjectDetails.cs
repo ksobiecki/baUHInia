@@ -132,14 +132,11 @@ namespace baUHInia.Admin
             string parsedRatio = ratio.Text.Replace(".", ",");
             if (int.TryParse(price.Text, out priceInt) && float.TryParse(parsedRatio, out ratioFloat))
             {
-                iAdminChangeObjectDetails.SubmitChanges(priceInt, ratioFloat);
+                iAdminChangeObjectDetails.SubmitChanges(priceInt, ratioFloat);                
             }
             else
             {
-                System.Windows.MessageBox.Show("Prosze wpisać poprawne wartości", "Błąd wpisanych wartości",
-                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
-                price.Text = "0";
-                ratio.Text = "0.00";
+                iAdminChangeObjectDetails.SubmitChanges(0, 0);
             }
         }
 

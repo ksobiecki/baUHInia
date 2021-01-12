@@ -161,11 +161,6 @@ namespace baUHInia.Playground.View
             AccountType.Text += "\t" + (credentials.isAdmin ? "WŁADZE MIASTA" : "MIESZKANIEC");
             Mode.Text += "\t\t" + "MIESZKAŃCA";
 
-            //TODO: FIND ANSWER
-            AvailableObjects = new List<GameObject>();
-            new AdminRestrictionsWindow(this);
-            AvailableObjects = null;
-
             UnlockAdminFeatures(credentials.isAdmin);
 
             _selectionWindowCreator = new VerticalSelectionWindowCreator();

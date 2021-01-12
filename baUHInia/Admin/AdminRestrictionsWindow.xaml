@@ -97,19 +97,6 @@
                         VerticalAlignment="Center"
                         Height="30" Background="#003049" BorderThickness="0" />
             </Border>
-
-            <Border Grid.Row="2" BorderBrush="#003049" BorderThickness="10" CornerRadius="5"
-                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">
-                <Button Name="ApplyBtn" Content="Zatwierdź" Click="Save" Foreground="White" Width="100" FontSize="16"
-                        VerticalAlignment="Center"
-                        Height="30" Background="#003049" BorderThickness="0" />
-            </Border>
-            <Border Grid.Row="3" BorderBrush="#003049" BorderThickness="10" CornerRadius="5"
-                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">
-                <Button Name="ReturnBtn" Content="Powrót" Foreground="White" Width="100" FontSize="16"
-                        VerticalAlignment="Center"
-                        Height="30" Background="#003049" BorderThickness="0" />
-            </Border>
         </Grid>
     </Border>
 

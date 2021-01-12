@@ -179,7 +179,11 @@ namespace baUHInia.Playground.View
         private void UpdateSelectorComboBox(ResourceType type)
         {
             ResourceHolder.Get.ChangeResourceType(type);
-            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
+            List<TileCategory> rootCategories = ResourceHolder.Get.GetSelectedCategories();
+            
+            List<TileCategory> categories = rootCategories
+                .Select(c => new TileCategory(c.Name, new List<TileObject>(c.TileObjects)))
+                .ToList();
 
             List<TileObject> tileObjects = AvailableObjects.Select(o => o.TileObject).ToList();
 
@@ -192,7 +196,6 @@ namespace baUHInia.Playground.View
                 }
             }
 
-            //TODO: test
             categories.RemoveAll(c => c.TileObjects.Count == 0);
             
             CategorySelector.ItemsSource = categories.Select(c => c.Name).ToList();
@@ -228,8 +231,7 @@ namespace baUHInia.Playground.View
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
-           _manager.PopulateUserLoadGameListGrid();
-
+            _manager.PopulateUserLoadGameListGrid();
             GameScroll.Content = LoadGameGrid;
         }
 
@@ -262,15 +264,23 @@ namespace baUHInia.Playground.View
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             if (LoadedMap != null) ClearMap();
-            LoadedMap = _manager.LoadMap(out int mapId);
-            LoadedMapID = mapId;
+            try
+            {
+                LoadedMap = _manager.LoadMap(out int mapId);
+                LoadedMapID = mapId;
+            }
+            catch (Exception) { return; }
             PrepareLoadedMap(null, null);
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
         {
             if (LoadedMap != null) ClearMap();
-            Game game = _manager.LoadGame();
+            Game game;
+            
+            try { game = _manager.LoadGame(); }
+            catch (Exception) { return; }
+            
             LoadedMap = game.Map;
             PrepareLoadedMap(null, null);
             _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
@@ -301,8 +311,13 @@ namespace baUHInia.Playground.View
             List<Placement> allPlacements = PlacedObjects;
             int newCount = PlacedObjects.Count - InitialPlacerCount;
             PlacedObjects = PlacedObjects.GetRange(InitialPlacerCount, newCount);
-            
-            _manager.SaveGame(this,LoadedMapID);
+
+            try { _manager.SaveGame(this,LoadedMapID); }
+            catch (Exception)
+            {
+                PlacedObjects = allPlacements;
+                return;
+            }
             ChangeDisplayMode(true);
             GameScroll.Content = GameMapGrid;
             

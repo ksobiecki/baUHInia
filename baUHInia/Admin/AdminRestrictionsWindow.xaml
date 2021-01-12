@@ -59,6 +59,7 @@
         </ScrollViewer>
     </Border>
 
+
     <Border Grid.Column="1" Grid.Row="0" BorderBrush="#003049" BorderThickness="10,10,10,0" CornerRadius="5,5,0,0"
             HorizontalAlignment="Left" VerticalAlignment="Center" Margin="11,0,0,-3">
         <TextBlock Text="Wybrany element" FontSize="14" Background="#003049" Foreground="White" Padding="1,1,5,5"/>
@@ -97,7 +98,18 @@
                         Height="30" Background="#003049" BorderThickness="0" />
             </Border>
 
-
+            <Border Grid.Row="2" BorderBrush="#003049" BorderThickness="10" CornerRadius="5"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">
+                <Button Name="ApplyBtn" Content="Zatwierdź" Click="Save" Foreground="White" Width="100" FontSize="16"
+                        VerticalAlignment="Center"
+                        Height="30" Background="#003049" BorderThickness="0" />
+            </Border>
+            <Border Grid.Row="3" BorderBrush="#003049" BorderThickness="10" CornerRadius="5"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-30,5,0,0">
+                <Button Name="ReturnBtn" Content="Powrót" Foreground="White" Width="100" FontSize="16"
+                        VerticalAlignment="Center"
+                        Height="30" Background="#003049" BorderThickness="0" />
+            </Border>
         </Grid>
     </Border>
 

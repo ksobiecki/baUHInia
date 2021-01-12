@@ -303,7 +303,11 @@ namespace baUHInia.MapLogic.Manager
             {
                 result = db.CheckMapNameOccupation(Choice, Credentials.UserID);
 
-                if (result == 33) // Map name is occupied.
+                if (result == 0)
+                {
+                    result = db.DodajMape(Credentials.UserID, Choice, jsonMap.ToString(Formatting.None), false);
+                }
+                else if (result == 33) // Map name is occupied.
                 {
                     result = db.updateMap(Credentials.UserID, jsonMap.ToString(Formatting.None), Choice) ? 0 : -1;
                 }

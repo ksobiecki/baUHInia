@@ -217,6 +217,8 @@ namespace baUHInia.Playground.View
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
 
+            _manager.PopulatePlayLoadMapListGrid();
+
             GameScroll.Content = LoadMapGrid;
         }
         
@@ -230,6 +232,8 @@ namespace baUHInia.Playground.View
                 ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
             }
+
+           _manager.PopulateUserLoadGameListGrid();
 
             GameScroll.Content = LoadGameGrid;
         }
@@ -248,6 +252,8 @@ namespace baUHInia.Playground.View
                     ChangeDisplayMode(true);
                 };
             }
+
+            _manager.PopulateSaveGameListGrid();
 
             ChangeDisplayMode(false);
             GameScroll.Content = SaveGameGrid;

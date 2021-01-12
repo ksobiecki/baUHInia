@@ -14,5 +14,11 @@ namespace baUHInia.MapLogic.Manager
         Game LoadGame();
         bool SaveMap(ITileBinder tileBinder);
         bool SaveGame(ITileBinder tileBinder, int mapID);
+        void PopulateSaveMapListGrid();
+        void PopulateEditLoadMapListGrid();
+        void PopulatePlayLoadMapListGrid();
+        void PopulateUserLoadGameListGrid();
+        void PopulateObserverLoadGameListGrid();
+        void PopulateSaveGameListGrid();
     }
 }

@@ -198,6 +198,8 @@ namespace baUHInia.Playground.View
                 };
             }
 
+            _manager.PopulateEditLoadMapListGrid();
+
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = LoadMapGrid;
         }
@@ -212,6 +214,8 @@ namespace baUHInia.Playground.View
                 ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
                 ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = AdminGrid;
             }
+
+            _manager.PopulateSaveMapListGrid();
 
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = SaveMapGrid;
@@ -264,6 +268,8 @@ namespace baUHInia.Playground.View
                     AvailableFounds = _admin.GetBudget();
                     if (AvailableObjects.Count < 3) return;
                     CreateSaveWindow(null, null);
+
+                    _manager.PopulateSaveMapListGrid();
                 };
                 AdminGrid = _admin.GetAdminSelectorTableGrid();
                 AdminGrid.VerticalAlignment = VerticalAlignment.Center;

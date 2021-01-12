@@ -22,9 +22,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         public Tile CreateBehavioralTileInGameGrid(int xPos, int yPos, TileObject tileObject)
         {
-            //TODO: Change
-            // TileObject to = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
-            Button button = CreateButton(tileObject.Name, tileObject[0]/*to["grass.png"]*/);
+            Button button = CreateButton(tileObject.Name, tileObject[0]);
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
             button.VerticalAlignment = VerticalAlignment.Stretch;
             button.Style = Application.Current.FindResource("MenuButton") as Style;

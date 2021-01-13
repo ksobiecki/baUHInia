@@ -232,6 +232,7 @@ namespace baUHInia.Playground.View
         private void ShowObserver(object source, RoutedEventArgs args)
         {
             Game game;
+            PlacedObjects.Clear();
             try { game = _manager.LoadGame(); }
             catch (Exception) { return; }
 
@@ -264,18 +265,19 @@ namespace baUHInia.Playground.View
                 Button button = tile.GetUiElement() as Button;
                 button.IsHitTestVisible = false;
             }
+        }
 
-            ReturnBtn.Click += (s, e) =>
-            {
-                ReturnToGameButton.IsHitTestVisible = false;
-                ReturnToGameButton.Style = FindResource("MenuButtonNotClickable") as Style;
-                Bar.Visibility = Visibility.Collapsed;
-                GameMapGrid.Visibility = Visibility.Collapsed;
-                GameScroll.Content = LoadObserverGrid;
-                _manager.PopulateObserverLoadGameListGrid();
-                GameMapGrid = null;
-                Observing = false;
-            };
+        private void ReturnToObservableList(object sender, RoutedEventArgs args)
+        {
+            ReturnToGameButton.IsHitTestVisible = false;
+            ReturnToGameButton.Style = FindResource("MenuButtonNotClickable") as Style;
+            Bar.Visibility = Visibility.Collapsed;
+            GameMapGrid.Visibility = Visibility.Collapsed;
+            GameScroll.Content = LoadObserverGrid;
+            _manager.PopulateObserverLoadGameListGrid();
+            PlacedObjects.Clear();
+            GameMapGrid = null;
+            Observing = false;
         }
 
         private void CreateSaveWindow(object source, RoutedEventArgs args)

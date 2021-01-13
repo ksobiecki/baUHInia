@@ -179,6 +179,15 @@ namespace baUHInia.MapLogic.Manager
             Map map = LoadMap(out int mapId);
 
             Game game = new Game(ChoiceId, gameName, placedObjects, map);
+            
+            foreach (Placement placement in game.PlacedObjects)
+            {
+                GameObject gameObject = map.AvailableTiles
+                    .First(t => t.TileObject.Name == placement.GameObject.TileObject.Name);
+                
+                placement.GameObject.Price = gameObject.Price;
+                placement.GameObject.ChangeValue = gameObject.ChangeValue;
+            }
 
             Choice = "";
             ChoiceId = -1;

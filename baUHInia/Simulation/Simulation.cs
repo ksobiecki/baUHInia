@@ -29,6 +29,7 @@ namespace baUHInia.Simulation
 
         public List<(int, int)> shadowedTiles = new List<(int, int)>();
         public List<(int, int, float, int)> warmerFields = new List<(int, int, float, int)>();
+        public List<(int, int, float, int)> warmerFields2 = new List<(int, int, float, int)>();
         public List<(int, int, float)> coolerFields = new List<(int, int, float)>();
         public List<float> avgFieldsTemp = new List<float>();
 
@@ -123,7 +124,7 @@ namespace baUHInia.Simulation
                 {
 
                     float tmpHeightCurrentObject = 0;
-                    tmpHeightCurrentObject = it.Item2/_dimensionField;
+                    tmpHeightCurrentObject = it.Item2 * _dimensionField;
 
                     int iterator = 1;
                     int tmpShadowFieldsTemp = (int)((int)(tmpHeightCurrentObject * _shadowLength) % _dimensionField) > 5 ?
@@ -266,7 +267,7 @@ namespace baUHInia.Simulation
         }
 
         
-        public List<(int, int, float, int)> warmerFields2 = new List<(int, int, float, int)>();
+        
         //sortowanie i usuwanie powtorzen
         public void WarmCoolerFieldsSort()
         {
@@ -277,9 +278,7 @@ namespace baUHInia.Simulation
             });
             
             
-            
             warmerFields = warmerFields.Distinct().ToList();
-            
             
             
             for (int i = 0; i < warmerFields.Count; i++)

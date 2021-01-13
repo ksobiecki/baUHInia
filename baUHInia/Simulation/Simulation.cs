@@ -51,7 +51,9 @@ namespace baUHInia.Simulation
 
         //wsolczynniki temperatury dla 'plytek'
         private const float _asphaltTempValue = 0.95f;
-        private const float _dirtTempValue = 0.55f;
+        private const float _dirtTempValue = 0.35f;
+        private const float _railsTempValue = 0.60f;
+        private const float _pavementTempValue = 0.72f;
         //############
 
         //obiekt postawiony, wysokosc, wspolczynnik do obliczen, czy obiekt jest obiektem naturalnym
@@ -340,12 +342,12 @@ namespace baUHInia.Simulation
                         {
                             if (it.Item4)
                             {
-                                tempTemperature = _airTemperature - 5 * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
+                                tempTemperature = _airTemperature + 1.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
                             }
 
                             else 
                             {
-                                tempTemperature = _airTemperature + 5 * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
+                                tempTemperature = _airTemperature + 3.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
                             }
                               
                         }
@@ -363,20 +365,20 @@ namespace baUHInia.Simulation
                     else if (ITileBinder.TileGrid[i, j].GetName().Contains("Dirt"))
                     {
 
-                        tempTemperature += 0.3f * _dirtTempValue;
+                        tempTemperature += 1.0f * _dirtTempValue;
 
                     }
                     else if (ITileBinder.TileGrid[i, j].GetName().Contains("Rail"))
                     {
-
-                        tempTemperature += 0.5f * _dirtTempValue;
+    
+                        tempTemperature += 1.0f * _railsTempValue;
 
                     }
                     else if (ITileBinder.TileGrid[i, j].GetName().Contains("Pavement") &&
                              ITileBinder.TileGrid[i, j].GetName().Contains("pavement"))
                     {
 
-                        tempTemperature += 0.6f * _dirtTempValue;
+                        tempTemperature += 1.0f * _pavementTempValue;
 
                     }
                     
@@ -385,7 +387,7 @@ namespace baUHInia.Simulation
                     {
                         if (warmerFields[a].Item1 == j && warmerFields[a].Item2 == i)
                         {
-                            tempTemperature += (4.2f * warmerFields[a].Item3);
+                            tempTemperature += (2.2f * warmerFields[a].Item3);
                         }
                     }
 
@@ -394,7 +396,7 @@ namespace baUHInia.Simulation
                     {
                         if (coolerFields[a].Item1 == j && coolerFields[a].Item2 == i)
                         {
-                            tempTemperature -= (3.2f *  coolerFields[a].Item3);
+                            tempTemperature -= (2.2f *  coolerFields[a].Item3);
                             Console.WriteLine(coolerFields[a].Item3);
                            
                         }

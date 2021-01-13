@@ -107,16 +107,6 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             }
         }
 
-        private void FillGameGridWithTiles(ITileBinder tileBinder, Game game)
-        {
-            //TODO: implement
-        }
-
-        private void PlaceTile(Tile tileField, string tileName, bool placeable)
-        {
-            //TODO: implement
-        }
-
         public void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
         {
             //TODO: change

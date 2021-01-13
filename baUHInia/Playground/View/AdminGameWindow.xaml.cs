@@ -217,8 +217,8 @@ namespace baUHInia.Playground.View
 
             _gameGridCreator.LoadMapIntoTheGameGrid(this, game.Map);
             _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
-
-            ShowObserverWindow();
+            
+            OpenObservedGameTab();
             DisplayGameProperties(game);
             CalculatePoints(game.Map.PlacedObjects.Length);
             RemoveButtonsBehaviour();
@@ -229,19 +229,11 @@ namespace baUHInia.Playground.View
             ReturnToGameButton.IsHitTestVisible = false;
             ReturnToGameButton.Style = FindResource("MenuButtonNotClickable") as Style;
             Bar.Visibility = Visibility.Collapsed;
-            //Grids["GameMap"].Visibility = Visibility.Collapsed;
             GameScroll.Content = Grids["Observer"];
             _manager.PopulateObserverLoadGameListGrid();
             Observing = false;
         }
-
-        private void ShowObserverWindow()
-        {
-            SideGrid.Visibility = Visibility.Collapsed;
-            Grids["GameMap"].Visibility = Visibility.Visible;
-            Bar.Visibility = Visibility.Visible;
-        }
-
+        
         private void DisplayGameProperties(Game game)
         {
             int currentCash = game.Map.AvailableMoney - game.PlacedObjects.Sum(o => o.GameObject.Price);
@@ -304,6 +296,13 @@ namespace baUHInia.Playground.View
             _manager.PopulateObserverLoadGameListGrid();
             SideGrid.Visibility = Visibility.Collapsed;
             GameScroll.Content = Grids["Observer"];
+        }
+
+        private void OpenObservedGameTab()
+        {
+            SideGrid.Visibility = Visibility.Collapsed;
+            Bar.Visibility = Visibility.Visible;
+            GameScroll.Content = Grids["GameMap"];
         }
 
         //=====================================// GRID CREATION //=====================================//

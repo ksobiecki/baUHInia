@@ -48,8 +48,10 @@ namespace baUHInia.Playground.View
         private Grid GameMapGrid { get; set; }
         
         private Map LoadedMap { get; set; }
-        private int LoadedMapID { get; set; }
+        private int LoadedMapId { get; set; }
         private int InitialPlacerCount { get; set; }
+        
+        private List<TileCategory> LoadedTileCategories { get; set; }
 
         public UserGameWindow(LoginData credentials)
         {
@@ -97,8 +99,8 @@ namespace baUHInia.Playground.View
         private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
         {
             TileCategory category = !(CategorySelector.SelectedItem is string item)
-                ? ResourceHolder.Get.GetFirstTileCategory()
-                : ResourceHolder.Get.GetCategoryByName(item);
+                ? LoadedTileCategories[0]
+                : LoadedTileCategories.First(c => c.Name == item);
             _selectorGridCreator.CreateSelectionPanel(category, this);
         }
 
@@ -120,8 +122,7 @@ namespace baUHInia.Playground.View
 
         private void CreateSelectorGrid()
         {
-            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
-            _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
+            _selectorGridCreator = new AdminSelectorGridCreator(this, LoadedTileCategories);
         }
 
         public void UpdateSelectionWindow(TileObject tileObject)
@@ -176,18 +177,18 @@ namespace baUHInia.Playground.View
             InitializeInteractionChangers();
         }
 
-        private void UpdateSelectorComboBox(ResourceType type)
+        private void UpdateSelectorComboBox()
         {
-            ResourceHolder.Get.ChangeResourceType(type);
+            ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> rootCategories = ResourceHolder.Get.GetSelectedCategories();
             
-            List<TileCategory> categories = rootCategories
+            LoadedTileCategories = rootCategories
                 .Select(c => new TileCategory(c.Name, new List<TileObject>(c.TileObjects)))
                 .ToList();
 
             List<TileObject> tileObjects = AvailableObjects.Select(o => o.TileObject).ToList();
 
-            foreach (TileCategory tileCategory in categories)
+            foreach (TileCategory tileCategory in LoadedTileCategories)
             {
                 var objectsToRemove = tileCategory.TileObjects.Where(t => !tileObjects.Contains(t)).ToList();
                 foreach (TileObject tileObject in objectsToRemove)
@@ -196,12 +197,12 @@ namespace baUHInia.Playground.View
                 }
             }
 
-            categories.RemoveAll(c => c.TileObjects.Count == 0);
+            LoadedTileCategories.RemoveAll(c => c.TileObjects.Count == 0);
             
-            CategorySelector.ItemsSource = categories.Select(c => c.Name).ToList();
+            CategorySelector.ItemsSource = LoadedTileCategories.Select(c => c.Name).ToList();
             CategorySelector.SelectedIndex = 0;
-            _selectorGridCreator.UpdateTileGroup(categories);
-            _selectorGridCreator.CreateSelectionPanel(categories[0], this);
+            _selectorGridCreator.UpdateTileGroup(LoadedTileCategories);
+            _selectorGridCreator.CreateSelectionPanel(LoadedTileCategories[0], this);
         }
 
         private void CreateLoadWindow(object source, RoutedEventArgs args)
@@ -267,7 +268,7 @@ namespace baUHInia.Playground.View
             try
             {
                 LoadedMap = _manager.LoadMap(out int mapId);
-                LoadedMapID = mapId;
+                LoadedMapId = mapId;
             }
             catch (Exception) { return; }
             PrepareLoadedMap(null, null);
@@ -303,7 +304,7 @@ namespace baUHInia.Playground.View
             creator.InitializeElementsLayer(GameScroll.Content as Grid, Selection, BoardDensity);
             Selection.TileObject = AvailableObjects[0].TileObject;
             UpdateSelectionWindow(AvailableObjects[0].TileObject);
-            UpdateSelectorComboBox(ResourceType.Foliage);
+            UpdateSelectorComboBox();
         }
 
         private void SaveGame(object sender, RoutedEventArgs args)
@@ -312,7 +313,7 @@ namespace baUHInia.Playground.View
             int newCount = PlacedObjects.Count - InitialPlacerCount;
             PlacedObjects = PlacedObjects.GetRange(InitialPlacerCount, newCount);
 
-            try { _manager.SaveGame(this,LoadedMapID); }
+            try { _manager.SaveGame(this,LoadedMapId); }
             catch (Exception)
             {
                 PlacedObjects = allPlacements;
@@ -392,10 +393,6 @@ namespace baUHInia.Playground.View
             AdminTitle.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#CCCCCC");
             AdminButton.Click += ChangeGameMode;
             AdminImage.Opacity = 1.0f;
-        }
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            //Application.Current.Shutdown();
         }
     }
 }

@@ -4,9 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="HeatIsland" Name="Window" Width="800" Height="600"
-        Closed="Window_Closed">
-    <!--Dodałem takie coś wyżej żeby aplikacje zamykało :3-->
+        Title="HeatIsland" Name="Window" Width="800" Height="600">
 
 	<Window.Resources>
 		<Grid x:Key="LoadMapTemplate">
@@ -50,7 +48,7 @@
 					<Button Content="Powrót" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="240,0,0,5" Height="40" Style="{StaticResource MenuButton}" Click="ReturnToMenu">
 						<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 					</Button>
-					<Button Content="Przejrzyj" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="40,0,0,5" Height="40" Style="{StaticResource MenuButton}" Click="ShowObserver">
+					<Button Content="Przejrzyj" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="40,0,0,5" Height="40" Style="{StaticResource MenuButton}" Click="ObserveGame">
 						<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 					</Button>
 				</Grid>
@@ -122,7 +120,7 @@
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
 						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" Text="WCZYTAJ MAPĘ" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/loadmap.ico"/>
-						<Button Click="CreateLoadWindow" Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<Button Click="OpenLoadMapTab" Content="Wczytaj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -135,7 +133,7 @@
 						<Button Click="CreateNewMap" Content="Utwórz" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="20,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
-						<Button Name="ReturnToGameButton" Content="Wróć" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#AAAAAA" Margin="0,245,20,0" Height="40" Style="{StaticResource MenuButtonNotClickable}">
+						<Button Name="ReturnToGameButton" Content="Wróć" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#AAAAAA" Margin="0,245,20,0" Height="40" Style="{StaticResource MenuButtonNotClickable}" Click="OpenGameTab" IsHitTestVisible="False">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -145,7 +143,7 @@
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
 						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="WYJŚCIE"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/logout.ico"/>
-						<Button Click="ReturnToLoginWindow" Content="Wyloguj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<Button Click="ExitApplication" Content="Wyjdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -165,7 +163,7 @@
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
 						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="TRYB OBSERWATORA"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/observe.ico"/>
-						<Button Click="CreateLoadObserverWindow" Content="Obserwuj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<Button Click="OpenObserverTab" Content="Obserwuj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>
@@ -199,7 +197,6 @@
 				<RowDefinition Height="35"/>
 				<RowDefinition Height="35"/>
 				<RowDefinition Height="35"/>
-				<RowDefinition Height="35"/>
 				<RowDefinition Height="25"/>
 				<RowDefinition Height="20"/>
 				<RowDefinition Height="20"/>
@@ -211,43 +208,38 @@
 
 			<TextBlock Text="TRYB KREACJI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="Silver"/>
 
-			<Button Grid.Row="1" Content="ZAPISZ" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Style="{StaticResource MenuButton}" Click="OpenSelectorTab">
+			<Button Grid.Row="1" Content="ZAPISZ" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Style="{StaticResource MenuButton}" Click="OpenAdminTab">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			
-			<Button Content="WCZYTAJ" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="2" Style="{StaticResource MenuButton}" Click="CreateLoadWindow">
+			<Button Content="OD NOWA" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="2" Style="{StaticResource MenuButton}" Click="CreateNewMap">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			<Button Content="OD NOWA" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="3" Style="{StaticResource MenuButton}" Click="NewMap">
+			<Button Content="MENU" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="3" Style="{StaticResource MenuButton}" Click="ReturnToMenu">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
 			</Button>
 			
-			<Button Content="MENU" Width="115"  Height="30" FontSize="14" FontWeight="Bold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="4" Style="{StaticResource MenuButton}" Click="ReturnToMenu">
-				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="19"/></Style></Button.Resources>
-			</Button>
-			
-			<Button HorizontalAlignment="Left" Content="USUWANIE" Width="55"  Height="30" FontSize="9" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="5" Style="{StaticResource DeleteButton}" Margin="12,0,0,0" Name="DeleteButton">
+			<Button HorizontalAlignment="Left" Content="USUWANIE" Width="55"  Height="30" FontSize="9" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="4" Style="{StaticResource DeleteButton}" Margin="12,0,0,0" Name="DeleteButton">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 			</Button>
 			
-			<Button HorizontalAlignment="Right" Content="BLOKADA" Width="55"  Height="30" FontSize="9" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="5" Style="{StaticResource AvailableButton}" Margin="0,0,14,0" Name="PlaceableButton">
+			<Button HorizontalAlignment="Right" Content="BLOKADA" Width="55"  Height="30" FontSize="9" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="4" Style="{StaticResource AvailableButton}" Margin="0,0,14,0" Name="PlaceableButton">
 				<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 			</Button>
 			
-			<TextBlock Grid.Row="6" Text="TRYB:" Foreground="#DDDDDD" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
-			<TextBlock Grid.Row="6" Text="STAWIANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0" Name="ModeText"/>
+			<TextBlock Grid.Row="5" Text="TRYB:" Foreground="#DDDDDD" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
+			<TextBlock Grid.Row="5" Text="STAWIANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,0,0,0" Name="ModeText"/>
 			
-			<TextBlock Grid.Row="7" Text="LMB: POJEDYŃCZO" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="FirstTip"/>
-			<TextBlock Grid.Row="8" Text="RMB: MALOWANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="SecondTip"/>
-			<TextBlock Grid.Row="9" Text="NIEDOSTĘPNE DLA OBIEKTÓW" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="ThirdTip"/>
+			<TextBlock Grid.Row="6" Text="LMB: POJEDYŃCZO" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="FirstTip"/>
+			<TextBlock Grid.Row="7" Text="RMB: MALOWANIE" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="SecondTip"/>
+			<TextBlock Grid.Row="8" Text="NIEDOSTĘPNE DLA OBIEKTÓW" Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Name="ThirdTip"/>
 			
-			<Button HorizontalAlignment="Left" Content="Terrain" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="10" Style="{StaticResource TerrainButton}" Margin="0,0,0,0" Name="TerrainSwitch"/>
-			<Button HorizontalAlignment="Center" Content="Structure" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="10" Style="{StaticResource StructureButton}" Margin="0,0,0,0" Name="StructureSwitch"/>
-			<Button HorizontalAlignment="Right" Content="Foliage" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="10" Style="{StaticResource FoliageButton}" Margin="0,0,0,0" Name="FoliageSwitch"/>
+			<Button HorizontalAlignment="Left" Content="Terrain" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="9" Style="{StaticResource TerrainButton}" Margin="0,0,0,0" Name="TerrainSwitch"/>
+			<Button HorizontalAlignment="Center" Content="Structure" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="9" Style="{StaticResource StructureButton}" Margin="0,0,0,0" Name="StructureSwitch"/>
+			<Button HorizontalAlignment="Right" Content="Foliage" Width="46"  Height="30" FontSize="10" FontWeight="DemiBold" Foreground="#DDDDDD" BorderThickness="0" Grid.Row="9" Style="{StaticResource FoliageButton}" Margin="0,0,0,0" Name="FoliageSwitch"/>
 			
-			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="11" 
+			<ComboBox Name="CategorySelector" SelectedIndex="1" Grid.Row="10" 
 			          SelectionChanged="ChangeDropdownSelection" 
 			          FontStretch="Expanded" Background="#6688CC"
 			          Foreground="#DDDDDD"
@@ -267,7 +259,7 @@
 				</ComboBox.ItemContainerStyle>
 			</ComboBox>
 
-			<ScrollViewer x:Name="SelectorScroll" Grid.Row="12" VerticalAlignment="Stretch" Background="#888888">
+			<ScrollViewer x:Name="SelectorScroll" Grid.Row="11" VerticalAlignment="Stretch" Background="#888888">
 				<Grid Name="AdminSelectorGrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			</ScrollViewer>
 			

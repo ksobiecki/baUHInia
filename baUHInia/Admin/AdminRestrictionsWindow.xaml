@@ -97,7 +97,6 @@
                         VerticalAlignment="Center"
                         Height="30" Background="#003049" BorderThickness="0" />
             </Border>
-
         </Grid>
     </Border>
 

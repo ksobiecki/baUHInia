@@ -9,17 +9,19 @@ using System.Threading.Tasks;
 
 namespace baUHInia.Simulation 
 {
+    
     class Score : ISimulate
     {
-        BazaDanych database = BazaDanych.GetBazaDanych();
+       // BazaDanych database = BazaDanych.GetBazaDanych();
 
         public Score(ITileBinder tileBinder, int boardDensity) {
             this.simulation = new Simulation(tileBinder, boardDensity);
+            
         }
         Simulation simulation;
         
-
-
+        
+        
         public int SimulationScore() {
 
             
@@ -60,57 +62,64 @@ namespace baUHInia.Simulation
             for (int i = 0; i < simulation.avgFieldsTemp.Count; i++)
             {
       
-                float tmpValueTemp = (simulation.avgFieldsTemp[i] - airTemperature) < 0 ? 0 : simulation.avgFieldsTemp[i] - airTemperature;
+                float tmpValueTemp = (simulation.avgFieldsTemp[i] - airTemperature) < 0 ? 0 : (simulation.avgFieldsTemp[i] - airTemperature);
 
-                if (tmpValueTemp < 0)
+               /* if (tmpValueTemp == 0)
                 {
                     scoreFinal += 1;
-                }
-                else if (tmpValueTemp <= 0.5)
+                }*/
+                //else if (tmpValueTemp > 0 && tmpValueTemp <= 0.5)
+                
+              if (tmpValueTemp <= 0.4)
                 {
                     scoreFinal += 4;
                     scoreTmp += 4;
                 }
-                else if (tmpValueTemp > 0.5 && tmpValueTemp <= 1.0)
+                else if (tmpValueTemp > 0.4 && tmpValueTemp <= 0.8)
                 {
                     scoreFinal += 3;
                     scoreTmp += 3;
                 }
-                else if (tmpValueTemp > 1.0 && tmpValueTemp <= 2.0)
+                else if (tmpValueTemp > 0.8 && tmpValueTemp <= 1.5)
                 {
                     scoreFinal += 2;
                     scoreTmp += 2;
                 }
-                else if (tmpValueTemp > 2.0 && tmpValueTemp <= 3.0)
+                else if (tmpValueTemp > 1.5 && tmpValueTemp <= 2.5)
                 {
                     scoreFinal += 1;
                     scoreTmp += 1;
                 }
-                else if (tmpValueTemp > 3.5)
+                else if (tmpValueTemp > 2.5)
                 {
                     scoreFinal += 0;
                     scoreTmp += 0;
                 }
                   
 
-                    averageResult += tmpValueTemp;
+                averageResult += tmpValueTemp;
             }
 
 
-            if (simulation.avgFieldsTemp.Count / 200 > 0 && (averageResult - airTemperature) < 3.0) {
-
+            if (simulation.avgFieldsTemp.Count / 200 > 0 && (averageResult - airTemperature) < 3.0) 
+            {
                 scoreFinal += simulation.avgFieldsTemp.Count / 200 * 10;
             }
 
+            foreach (float itf in simulation.avgFieldsTemp) {
+                //Console.WriteLine("Temperatura: " + itf);
+            }
          
           
             if (scoreFinal > 10000)
                 scoreFinal = 10000;
+            
+            
+            
             int userID = simulation.ITileBinder.Credentials.UserID;
-            //int gameID = database.GetMapID;
-
+            
             Console.WriteLine("ScoreFinal: " + scoreFinal);
-            //database.SetScoreInFinniszedGame(gameID, scoreFinal, userID)
+            //database.SetScoreInFinniszedGame(gameId, scoreFinal, userID);
 
             return scoreFinal;
             

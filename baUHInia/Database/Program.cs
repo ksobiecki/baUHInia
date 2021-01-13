@@ -534,10 +534,12 @@ namespace baUHInia.Database
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    int wynik = reader.GetInt32(0);  //wynik
-                    string mapa = reader.GetString(1); //nazwa mapy 
-                    string user = reader.GetString(2); //nazwa uzytkownika
-                    userScores.Add(new Statistics.Statistics.UserScore(mapa, user, wynik.ToString()));
+                    if(reader.GetInt32(0) != null){
+                        int wynik = reader.GetInt32(0);  //wynik
+                        string mapa = reader.GetString(1); //nazwa mapy 
+                        string user = reader.GetString(2); //nazwa uzytkownika
+                        userScores.Add(new Statistics.Statistics.UserScore(mapa, user, wynik.ToString()));
+                    }
                 }
                 Rozlacz();
             }

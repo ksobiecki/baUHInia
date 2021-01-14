@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using baUHInia.Admin;
 using baUHInia.Authorisation;
 using baUHInia.MapLogic.Manager;
 using baUHInia.MapLogic.Model;
@@ -30,37 +29,26 @@ namespace baUHInia.Playground.View
         private const byte BoardDensity = 50;
 
         private ISelectionWindowCreator _selectionWindowCreator;
-
         private ISelectorGridCreator _selectorGridCreator;
-
         private IGameGridCreator _gameGridCreator;
-
         private IGameMapManager _manager;
-
         private ISimulate _simulator;
-
-        private Grid MenuGrid { get; set; }
-
-        private Grid SaveGameGrid { get; set; }
-
-        private Grid LoadGameGrid { get; set; }
-        private Grid LoadMapGrid { get; set; }
-        private Grid GameMapGrid { get; set; }
         
+        private Dictionary<string, Grid> Grids { get; set; }
+
+        private List<TileCategory> LoadedTileCategories { get; set; }
         private Map LoadedMap { get; set; }
         private int LoadedMapId { get; set; }
         private int InitialPlacerCount { get; set; }
         
-        private List<TileCategory> LoadedTileCategories { get; set; }
 
         public UserGameWindow(LoginData credentials)
         {
             InitializeComponent();
-            StoreMenuGrid();
             InitializeProperties(credentials);
-            AddLoadCardAndInitializeManager();
+            InitializeInteractionChangers();
             AdjustWindowSizeAndPosition();
-            AddLoadCardAndInitializeManager();
+            InitializeGrids();
         }
 
         //========================= INTERFACE IMPLEMENTATIONS ========================//
@@ -77,60 +65,16 @@ namespace baUHInia.Playground.View
 
         //============================ PREDEFINED ACTIONS ============================//
 
-        private void StoreMenuGrid() => MenuGrid = GameScroll.Content as Grid;
-
-        private void BackToGame(object sender, RoutedEventArgs args)
+        
+        private void InitializeGrids()
         {
-            ChangeDisplayMode(true);
-            GameScroll.Content = GameMapGrid;
+            Grids = new Dictionary<string, Grid> {{"Menu", GameScroll.Content as Grid}};
+            CreateGameTab();
+            CreateLoadMapTab();
+            CreateLoadGameTab();
+            CreateSaveGameTab();
         }
-
-        private void AdjustWindowSizeAndPosition()
-        {
-            WindowState = WindowState.Maximized;
-            Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
-        }
-
-        private void InitializeInteractionChangers()
-        {
-            DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
-        }
-
-        private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
-        {
-            TileCategory category = !(CategorySelector.SelectedItem is string item)
-                ? LoadedTileCategories[0]
-                : LoadedTileCategories.First(c => c.Name == item);
-            _selectorGridCreator.CreateSelectionPanel(category, this);
-        }
-
-        private void CreateGameBoard()
-        {
-            UserReturnText.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#CCCCCC");
-            UserReturnImg.Opacity = 1.0f;
-            UserReturnBtn.Style = FindResource("MenuButton") as Style;
-            UserReturnBtn.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#DDDDDD");
-            UserReturnBtn.Click += BackToGame;
-
-            ChangeDisplayMode(true);
-            TileGrid = new Tile[BoardDensity, BoardDensity];
-            TileObject tileObject = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
-            _gameGridCreator = new PlacerGridCreator(this, BoardDensity, tileObject);
-            _gameGridCreator.CreateElementsInWindow(this, BoardDensity);
-            GameMapGrid = GameScroll.Content as Grid;
-        }
-
-        private void CreateSelectorGrid()
-        {
-            _selectorGridCreator = new AdminSelectorGridCreator(this, LoadedTileCategories);
-        }
-
-        public void UpdateSelectionWindow(TileObject tileObject)
-        {
-            GameObject gameObject = AvailableObjects.FirstOrDefault(a => a.TileObject == tileObject);
-            _selectionWindowCreator.UpdateSelectionWindow(SelectionGrid, gameObject);
-        }
-
+        
         public void ChangeInteractionMode(string text, Brush color)
         {
             string[] strings = text.Split('/');
@@ -143,39 +87,62 @@ namespace baUHInia.Playground.View
                 (color, color, color, color);
         }
 
-        //============================== INITIAL WINDOW ==============================//
-
-        private void AddLoadCardAndInitializeManager()
+        private void AdjustWindowSizeAndPosition()
         {
-            _manager = new GameMapManager(Credentials);
-            //TODO:
-            //InitialMapGrid.Children.Add(_manager.GetMapLoadGrid());
+            WindowState = WindowState.Maximized;
+            Window.MaxHeight = SystemParameters.WorkArea.Height + 14.0;
         }
+        
+        private void InitializeInteractionChangers()
+        {
+            DeleteButton.Click += (o, args) => Selection.ChangeState(State.Remove);
+        }
+
+        private void ChangeDropdownSelection(object sender, SelectionChangedEventArgs e)
+        {
+            TileCategory category = !(CategorySelector.SelectedItem is string item)
+                ? LoadedTileCategories[0]
+                : LoadedTileCategories.First(c => c.Name == item);
+            _selectorGridCreator.CreateSelectionPanel(category, this);
+        }
+        
+        private void UnlockReturnGameButton()
+        {
+            if ((bool) UserReturnBtn.Tag) return;
+            UserReturnText.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#CCCCCC");
+            UserReturnImg.Opacity = 1.0f;
+            UserReturnBtn.Style = FindResource("MenuButton") as Style;
+            UserReturnBtn.Foreground = (SolidColorBrush) new BrushConverter().ConvertFromString("#DDDDDD");
+            UserReturnBtn.Click += OpenGameTab;
+            UserReturnBtn.Tag = true;
+        }
+
+        public void UpdateSelectionWindow(TileObject tileObject)
+        {
+            GameObject gameObject = AvailableObjects.FirstOrDefault(a => a.TileObject == tileObject);
+            _selectionWindowCreator.UpdateSelectionWindow(SelectionGrid, gameObject);
+        }
+
+        //============================== INITIAL WINDOW ==============================//
 
         private void InitializeProperties(LoginData credentials)
         {
             Credentials = credentials;
             PlacedObjects = new List<Placement>();
-            //AvailableObjects = new List<GameObject>();
 
             AccountName.Text += "\t\t" + credentials.name;
             AccountType.Text += "\t" + (credentials.isAdmin ? "WŁADZE MIASTA" : "MIESZKANIEC");
             Mode.Text += "\t\t" + "MIESZKAŃCA";
+            UserReturnBtn.Tag = false;
 
             UnlockAdminFeatures(credentials.isAdmin);
 
             _selectionWindowCreator = new VerticalSelectionWindowCreator();
             _simulator = new Score(this, BoardDensity);
+            _manager = new GameMapManager(Credentials);
         }
 
         //=============================== FUNCTIONALITY ==============================//
-
-        private void CreateNewMap(object sender, RoutedEventArgs args)
-        {
-            CreateGameBoard();
-            CreateSelectorGrid();
-            InitializeInteractionChangers();
-        }
 
         private void UpdateSelectorComboBox()
         {
@@ -199,112 +166,77 @@ namespace baUHInia.Playground.View
 
             LoadedTileCategories.RemoveAll(c => c.TileObjects.Count == 0);
             
+            Selection.AssignSelection(LoadedTileCategories[0].TileObjects[0]);
             CategorySelector.ItemsSource = LoadedTileCategories.Select(c => c.Name).ToList();
             CategorySelector.SelectedIndex = 0;
             _selectorGridCreator.UpdateTileGroup(LoadedTileCategories);
             _selectorGridCreator.CreateSelectionPanel(LoadedTileCategories[0], this);
         }
-
-        private void CreateLoadWindow(object source, RoutedEventArgs args)
-        {
-            if (LoadMapGrid == null)
-            {
-                LoadMapGrid = Resources["LoadMapTemplate"] as Grid;
-                Border border = LoadMapGrid.Children[0] as Border;
-                Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
-                ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
-            }
-
-            _manager.PopulatePlayLoadMapListGrid();
-
-            GameScroll.Content = LoadMapGrid;
-        }
         
-        private void CreateLoadGameWindow(object source, RoutedEventArgs args)
+        private void ClearMap()
         {
-            if (LoadGameGrid == null)
+            int count = BoardDensity * BoardDensity * 2;
+            Grids["GameMap"].Children.RemoveRange(count, Grids["GameMap"].Children.Count - count);
+            PlacedObjects.Clear();
+            Selection.PersistBaseLayer(false);
+            Selection.Reset();
+            AvailableObjects = null;
+            string str = "Plain Grass";
+            TileObject grass = ResourceHolder.Get.GetTerrainTileObject(str);
+            foreach (Tile tile in TileGrid)
             {
-                LoadGameGrid = Resources["LoadGameTemplate"] as Grid;
-                Border border = LoadGameGrid.Children[0] as Border;
-                Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
-                ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = MenuGrid; };
+                Button button = tile.GetUiElement() as Button;
+                if (tile.GetTextureName() != "grass.png") tile.Change(grass[0], str);
+                if (!button.IsHitTestVisible) button.IsHitTestVisible = true;
             }
-
-            _manager.PopulateUserLoadGameListGrid();
-            GameScroll.Content = LoadGameGrid;
         }
 
-        private void CreateSaveWindow(object source, RoutedEventArgs args)
-        {
-            if (SaveGameGrid == null)
-            {
-                SaveGameGrid = Resources["SaveGameTemplate"] as Grid;
-                Border border = SaveGameGrid.Children[0] as Border;
-                Grid innerGrid = border.Child as Grid;
-                ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
-                ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
-                {
-                    GameScroll.Content = GameMapGrid;
-                    ChangeDisplayMode(true);
-                };
-            }
-
-            _manager.PopulateSaveGameListGrid();
-
-            ChangeDisplayMode(false);
-            GameScroll.Content = SaveGameGrid;
-        }
-
-        private void Simulate(object sender, RoutedEventArgs args)
-        {
+        private void Simulate(object sender, RoutedEventArgs args) =>
             Points.Text = _simulator.SimulationScore().ToString(); 
-        }
+        
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
-            if (LoadedMap != null) ClearMap();
             try
             {
                 LoadedMap = _manager.LoadMap(out int mapId);
                 LoadedMapId = mapId;
             }
             catch (Exception) { return; }
-            PrepareLoadedMap(null, null);
+            PrepareLoadedMap();
+            CurrentCash.Text = AvailableFounds.ToString();
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
         {
-            if (LoadedMap != null) ClearMap();
             Game game;
             
             try { game = _manager.LoadGame(); }
             catch (Exception) { return; }
             
             LoadedMap = game.Map;
-            PrepareLoadedMap(null, null);
+            PrepareLoadedMap();
+            CurrentCash.Text = int.MaxValue.ToString();
             _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
+            
+            int cost = game.PlacedObjects.Sum(p => p.GameObject.Price);
+            CurrentCash.Text = (LoadedMap.AvailableMoney - cost).ToString();
         }
 
-        private void PrepareLoadedMap(object sender, RoutedEventArgs args)
+        private void PrepareLoadedMap()
         {
-            AvailableObjects = null;
-            Selection = new Selection(null, this);
-            CreateNewMap(null, null);
+            ClearMap();
+            OpenGameTab(null, null);
+            Selection.PersistBaseLayer(true);
+            
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, LoadedMap);
-            GameMapGrid = GameScroll.Content as Grid;
+            PlacerGridCreator.InitializeElementsLayer(GameScroll.Content as Grid, Selection, BoardDensity);
+            
             InitialPlacerCount = PlacedObjects.Count;
-
-            ChangeDisplayMode(true);
-            AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
+            AllCash.Text = AvailableFounds.ToString();
             MapName.Text = LoadedMap.Name;
-
-            PlacerGridCreator creator = _gameGridCreator as PlacerGridCreator;
-            creator.InitializeElementsLayer(GameScroll.Content as Grid, Selection, BoardDensity);
-            Selection.TileObject = AvailableObjects[0].TileObject;
-            UpdateSelectionWindow(AvailableObjects[0].TileObject);
             UpdateSelectorComboBox();
+            UnlockReturnGameButton();
         }
 
         private void SaveGame(object sender, RoutedEventArgs args)
@@ -320,33 +252,88 @@ namespace baUHInia.Playground.View
                 return;
             }
             ChangeDisplayMode(true);
-            GameScroll.Content = GameMapGrid;
-            
+            GameScroll.Content = Grids["GameMap"];
             PlacedObjects = allPlacements;
-            Console.WriteLine("Passed saving");
+        }
+        
+        //======================================// GRID SWITCH //======================================//
+
+        private void OpenGameTab(object source, RoutedEventArgs args)
+        {
+            ChangeDisplayMode(true);
+            GameScroll.Content = Grids["GameMap"];
         }
 
-        private void SaveStateAsJpg(object sender, RoutedEventArgs args)
+        private void OpenLoadMapTab(object source, RoutedEventArgs args)
         {
-            RenderTargetBitmap renderTargetBitmap = ImageWriter.CopyAsBitmap(GameScroll.Content as Grid);
-            byte[] bytes = ImageWriter.Encode(renderTargetBitmap, new JpegBitmapEncoder());
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            ChangeDisplayMode(false);
+            _manager.PopulateEditLoadMapListGrid();
+            GameScroll.Content = Grids["LoadMap"];
+        }
+        
+        private void OpenLoadGameTab(object source, RoutedEventArgs args)
+        {
+            ChangeDisplayMode(false);
+            _manager.PopulateObserverLoadGameListGrid();
+            GameScroll.Content = Grids["LoadGame"];
+        }
+
+        private void OpenSaveGameTab(object source, RoutedEventArgs args)
+        {
+            ChangeDisplayMode(false);
+            _manager.PopulateSaveGameListGrid();
+            GameScroll.Content = Grids["SaveGame"];
+        }
+
+        //=====================================// GRID CREATION //=====================================//
+        
+        private void CreateGameTab()
+        {
+            TileObject dirt = ResourceHolder.Get.GetTerrainTileObject("Plain Dirt");
+            Selection = new Selection(dirt, this);
+            
+            TileObject grass = ResourceHolder.Get.GetTerrainTileObject("Plain Grass");
+            TileGrid = new Tile[BoardDensity, BoardDensity];
+            
+            List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
+            _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
+            
+            _gameGridCreator = new PlacerGridCreator(this, BoardDensity, grass);
+            Grids["GameMap"] = _gameGridCreator.CreateElementsInWindow(this, BoardDensity); 
+        }
+        
+        private void CreateLoadMapTab()
+        {
+            Grids.Add("LoadMap", Resources["LoadMapTemplate"] as Grid);
+            Border border = Grids["LoadMap"].Children[0] as Border;
+            Grid innerGrid = border.Child as Grid;
+            ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
+            ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = Grids["Menu"];
+        }
+
+        private void CreateLoadGameTab()
+        {
+            Grids.Add("LoadGame", Resources["LoadGameTemplate"] as Grid);
+            Border border = Grids["LoadGame"].Children[0] as Border;
+            Grid innerGrid = border.Child as Grid;
+            ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
+            ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = Grids["Menu"]; };
+        }
+
+        private void CreateSaveGameTab()
+        {
+            Grids.Add("SaveGame", Resources["SaveGameTemplate"] as Grid);
+            Border border = Grids["SaveGame"].Children[0] as Border;
+            Grid innerGrid = border.Child as Grid;
+            ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameSaveGrid());
+            ((Button) innerGrid.Children[3]).Click += (sender, arg) =>
             {
-                DefaultExt = ".jpeg",
-                FileName = LoadedMap.Name,
-                Title = "Zapisz zrzut mapy jako",
-                AddExtension = true,
-                OverwritePrompt = true
+                GameScroll.Content = Grids["GameMap"];
+                ChangeDisplayMode(true);
             };
-            if (saveFileDialog.ShowDialog() == true) File.WriteAllBytes(saveFileDialog.FileName, bytes);
         }
-
-        private void ClearMap()
-        {
-            CreateGameBoard();
-            Selection.Reset();
-            PlacedObjects.Clear();
-        }
+        
+        //=====================================// OTHER WINDOWS //=====================================//
 
         private void ShowStatistics(object sender, RoutedEventArgs args)
         {
@@ -363,28 +350,29 @@ namespace baUHInia.Playground.View
         private void ReturnToMenu(object sender, RoutedEventArgs args)
         {
             ChangeDisplayMode(false);
-            GameScroll.Content = MenuGrid;
+            GameScroll.Content = Grids["Menu"];
         }
 
-        private void ReturnToLoginWindow(object sender, RoutedEventArgs args)
-        {
-            try
-            {
-                Close();
-                Authorisation.Authorisation authorization = new Authorisation.Authorisation();
-                authorization.Show();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            
-        }
+        private void ExitApplication(object sender, RoutedEventArgs args) => Application.Current.Shutdown();
 
         private void ChangeDisplayMode(bool visible) =>
             Bar.Visibility = SideGrid.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-
-
+        
+        private void SaveStateAsJpg(object sender, RoutedEventArgs args)
+        {
+            RenderTargetBitmap renderTargetBitmap = ImageWriter.CopyAsBitmap(GameScroll.Content as Grid);
+            byte[] bytes = ImageWriter.Encode(renderTargetBitmap, new JpegBitmapEncoder());
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = ".jpeg",
+                FileName = LoadedMap.Name,
+                Title = "Zapisz zrzut mapy jako",
+                AddExtension = true,
+                OverwritePrompt = true
+            };
+            if (saveFileDialog.ShowDialog() == true) File.WriteAllBytes(saveFileDialog.FileName, bytes);
+        }
+        
         private void UnlockAdminFeatures(bool isAdmin)
         {
             if (!isAdmin) return;

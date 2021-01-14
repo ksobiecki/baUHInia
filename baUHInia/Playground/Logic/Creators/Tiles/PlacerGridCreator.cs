@@ -53,6 +53,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             tileBinder.Selection.ChangeState(State.Place);
             Placement[] placers = map.PlacedObjects ?? new Placement[0];
             CreateElementsInWindow(tileBinder, placers);
+            tileBinder.Selection.CallDeselect();
             return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
 
@@ -60,6 +61,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         {
             Placement[] placers = game.PlacedObjects ?? new Placement[0];
             CreateElementsInWindow(tileBinder, placers);
+            tileBinder.Selection.CallDeselect();
         }
 
         //============================= GAME GRID ================================//
@@ -107,9 +109,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             }
         }
 
-        public void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
+        public static void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
         {
-            //TODO: change
             List<Element>[,] elementsLayers = new List<Element>[boardDensity, boardDensity];
             for (int i = 0; i < boardDensity; i++)
             {

@@ -15,7 +15,6 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             Selection.ApplyTiles(sender as Button, Keyboard.Modifiers == ModifierKeys.Control);
         }
 
-
         public override void OnFieldMouseEnter(object sender, MouseEventArgs mouseEventArgs)
         {
             Button button = sender as Button;

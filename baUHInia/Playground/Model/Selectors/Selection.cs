@@ -22,6 +22,8 @@ namespace baUHInia.Playground.Model.Selectors
 
         private IOperator[] Operators { get; }
         private IOperator CurrentOperator { get; set; }
+        
+        private List<Element>[,] PersistedLayers { get; set; }
 
 
         public Selection(TileObject tileObject, ITileBinder binder)
@@ -52,6 +54,8 @@ namespace baUHInia.Playground.Model.Selectors
             }
         }
 
+        public void CallDeselect() => CurrentOperator.DeselectOperator();
+
         public void ChangeState(State state)
         {
             SelectionState = state;
@@ -73,6 +77,12 @@ namespace baUHInia.Playground.Model.Selectors
             }
 
             CurrentOperator.SelectOperator();
+        }
+
+        public void PersistBaseLayer(bool save)
+        {
+            if (save) PersistedLayers = ElementsLayers;
+            else ElementsLayers = PersistedLayers ?? ElementsLayers;
         }
 
         public void ApplyTiles(Button button, bool rmb) => CurrentOperator.ApplyTiles(button, rmb);

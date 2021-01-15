@@ -12,52 +12,36 @@ namespace baUHInia.Simulation
     
     class Score : ISimulate
     {
+        //DATABASE
+        BazaDanych database = BazaDanych.GetBazaDanych();
+        
+        //SIMULATION
+        Simulation simulation;
+        
+        //VARIABLES - Score
+        
+        float averageResult = 0;
+        int scoreFinal = 0;
+        int scoreTmp = 0;
+        
        // BazaDanych database = BazaDanych.GetBazaDanych();
 
         public Score(ITileBinder tileBinder, int boardDensity) {
             this.simulation = new Simulation(tileBinder, boardDensity);
             
         }
-        Simulation simulation;
-        
-        
-        
+            
+        //METHOD CALCULATE SCORE
         public int SimulationScore() {
 
             
             simulation.Sim();
-
             float airTemperature = simulation.AirTemperature;
-
-            float averageResult = 0;
-            int scoreFinal = 0;
-            int scoreTmp = 0;
-            int placementsReserved = 0;
-            int NotPlaceable = 0;
-
-
-
-            for (int i = 0; i < simulation.BoardDensity; i++)
-            {
-                for (int j = 0; j < simulation.BoardDensity; j++)
-                {
-
-                    if (!simulation.ITileBinder.TileGrid[i, j].Placeable)
-                    {
-                        NotPlaceable++;
-                        
-                        foreach (Placement it in simulation.ITileBinder.PlacedObjects)
-                        {
-                            if (i == it.Position.x || j == it.Position.y)
-                            {
-                                placementsReserved++;
-                            }
-                        }
-                    }
-                }
-            }
-
-            Console.WriteLine(placementsReserved);
+            
+            averageResult = 0;
+            scoreFinal = 0;
+            scoreTmp = 0;
+             
 
             for (int i = 0; i < simulation.avgFieldsTemp.Count; i++)
             {
@@ -106,27 +90,21 @@ namespace baUHInia.Simulation
                 scoreFinal += simulation.avgFieldsTemp.Count / 200 * 10;
             }
 
-            foreach (float itf in simulation.avgFieldsTemp) {
-                //Console.WriteLine("Temperatura: " + itf);
-            }
-         
-          
             if (scoreFinal > 10000)
                 scoreFinal = 10000;
             
-            
-            
-            int userID = simulation.ITileBinder.Credentials.UserID;
-            
             Console.WriteLine("ScoreFinal: " + scoreFinal);
-            //database.SetScoreInFinniszedGame(gameId, scoreFinal, userID);
 
             return scoreFinal;
             
-
-
         }
-
         
+        
+        //METHOD SEND RESULT TO DATABASE 
+        public void ScoreToDatabase(int gameID)
+        {
+            int userID = simulation.ITileBinder.Credentials.UserID;
+            database.SetScoreInFinniszedGame(gameID, scoreFinal, userID);
+        }
     }
 }

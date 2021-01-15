@@ -10,6 +10,7 @@ namespace baUHInia.Simulation
     public interface ISimulate
     {  
         int SimulationScore();
-        
+        void ScoreToDatabase(int gameID);
+
     }
 }

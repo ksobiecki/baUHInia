@@ -29,6 +29,7 @@ namespace baUHInia.Simulation
 
         public List<(int, int)> shadowedTiles = new List<(int, int)>();
         public List<(int, int, float, int)> warmerFields = new List<(int, int, float, int)>();
+        public List<(int, int, float, int)> warmerFields2 = new List<(int, int, float, int)>();
         public List<(int, int, float)> coolerFields = new List<(int, int, float)>();
         public List<float> avgFieldsTemp = new List<float>();
 
@@ -50,7 +51,9 @@ namespace baUHInia.Simulation
 
         //wsolczynniki temperatury dla 'plytek'
         private const float _asphaltTempValue = 0.95f;
-        private const float _dirtTempValue = 0.55f;
+        private const float _dirtTempValue = 0.35f;
+        private const float _railsTempValue = 0.60f;
+        private const float _pavementTempValue = 0.72f;
         //############
 
         //obiekt postawiony, wysokosc, wspolczynnik do obliczen, czy obiekt jest obiektem naturalnym
@@ -123,7 +126,8 @@ namespace baUHInia.Simulation
                 {
 
                     float tmpHeightCurrentObject = 0;
-                    tmpHeightCurrentObject = it.Item2/_dimensionField;
+                  
+                    tmpHeightCurrentObject = it.Item2 * _dimensionField;
 
                     int iterator = 1;
                     int tmpShadowFieldsTemp = (int)((int)(tmpHeightCurrentObject * _shadowLength) % _dimensionField) > 5 ?
@@ -265,8 +269,6 @@ namespace baUHInia.Simulation
             }
         }
 
-        
-        public List<(int, int, float, int)> warmerFields2 = new List<(int, int, float, int)>();
         //sortowanie i usuwanie powtorzen
         public void WarmCoolerFieldsSort()
         {
@@ -276,12 +278,8 @@ namespace baUHInia.Simulation
                 return result == 0 ? x.Item1.CompareTo(y.Item1) : result;
             });
             
-            
-            
             warmerFields = warmerFields.Distinct().ToList();
-            
-            
-            
+          
             for (int i = 0; i < warmerFields.Count; i++)
             {
                 int distanceTmp = warmerFields[i].Item4;
@@ -341,12 +339,12 @@ namespace baUHInia.Simulation
                         {
                             if (it.Item4)
                             {
-                                tempTemperature = _airTemperature - 5 * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
+                                tempTemperature = _airTemperature + 1.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
                             }
 
                             else 
                             {
-                                tempTemperature = _airTemperature + 5 * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
+                                tempTemperature = _airTemperature + 3.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
                             }
                               
                         }
@@ -363,22 +361,16 @@ namespace baUHInia.Simulation
 
                     else if (ITileBinder.TileGrid[i, j].GetName().Contains("Dirt"))
                     {
-
-                        tempTemperature += 0.3f * _dirtTempValue;
-
+                        tempTemperature += 1.0f * _dirtTempValue;
                     }
                     else if (ITileBinder.TileGrid[i, j].GetName().Contains("Rail"))
                     {
-
-                        tempTemperature += 0.5f * _dirtTempValue;
-
+                        tempTemperature += 1.0f * _railsTempValue;
                     }
                     else if (ITileBinder.TileGrid[i, j].GetName().Contains("Pavement") &&
                              ITileBinder.TileGrid[i, j].GetName().Contains("pavement"))
                     {
-
-                        tempTemperature += 0.6f * _dirtTempValue;
-
+                        tempTemperature += 1.0f * _pavementTempValue;
                     }
                     
                     
@@ -386,7 +378,7 @@ namespace baUHInia.Simulation
                     {
                         if (warmerFields[a].Item1 == j && warmerFields[a].Item2 == i)
                         {
-                            tempTemperature += (4.2f * warmerFields[a].Item3);
+                            tempTemperature += (2.2f * warmerFields[a].Item3);
                         }
                     }
 
@@ -395,9 +387,8 @@ namespace baUHInia.Simulation
                     {
                         if (coolerFields[a].Item1 == j && coolerFields[a].Item2 == i)
                         {
-                            tempTemperature -= (3.2f *  coolerFields[a].Item3);
+                            tempTemperature -= (2.2f *  coolerFields[a].Item3);
                             Console.WriteLine(coolerFields[a].Item3);
-                           
                         }
                     }
            

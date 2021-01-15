@@ -179,6 +179,15 @@ namespace baUHInia.MapLogic.Manager
             Map map = LoadMap(out int mapId);
 
             Game game = new Game(ChoiceId, gameName, placedObjects, map);
+            
+            foreach (Placement placement in game.PlacedObjects)
+            {
+                GameObject gameObject = map.AvailableTiles
+                    .First(t => t.TileObject.Name == placement.GameObject.TileObject.Name);
+                
+                placement.GameObject.Price = gameObject.Price;
+                placement.GameObject.ChangeValue = gameObject.ChangeValue;
+            }
 
             Choice = "";
             ChoiceId = -1;
@@ -233,7 +242,7 @@ namespace baUHInia.MapLogic.Manager
             return map;
         }
 
-        public bool SaveGame(ITileBinder tileBinder, int mapID)
+        public void SaveGame(ITileBinder tileBinder, int mapID)
         {
             if (Choice == "")
             {
@@ -243,23 +252,15 @@ namespace baUHInia.MapLogic.Manager
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            int result = db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID, false);
+            int result = db.CheckGameNameOccupation(Choice, Credentials.UserID);
 
-            if (result != 0) // Result equal to 0 is a successful write.
+            if (result == 0)
             {
-                if (result != 33) // 33 - Game already exists, other code means diffrent issue.
-                {
-                    return false;
-                }
-                else
-                {
-                    bool result2 = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID);
-
-                    if (!result2)
-                    {
-                        return false;
-                    }
-                }
+                result = db.addGame(Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID, Publish);
+            }
+            else
+            {
+                result = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID, Publish) ? 0 : -1;
             }
 
             Choice = "";
@@ -267,12 +268,13 @@ namespace baUHInia.MapLogic.Manager
             SaveGameCheckBox.IsChecked = false;
             Publish = false;
 
-            GameList = db.getGameList();
-
-            return true;
+            if (result != 0)
+            {
+                throw new Exception("Wystąpił problem przy zapisie gry.");
+            }
         }
 
-        public bool SaveMap(ITileBinder tileBinder)
+        public void SaveMap(ITileBinder tileBinder)
         {
             if (Choice == "")
             {
@@ -318,7 +320,10 @@ namespace baUHInia.MapLogic.Manager
             SaveMapCheckBox.IsChecked = false;
             Publish = false;
 
-            return true;
+            if (result != 0)
+            {
+                throw new Exception("Wystąpił problem przy zapisie mapy.");
+            }
         }
 
         private Grid CreateContainerGrid()

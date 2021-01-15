@@ -17,11 +17,13 @@ namespace baUHInia.Playground.Model.Selectors
         public ITileBinder Binder { get; }
         public TileObject TileObject { get; set; }
         public List<Element>[,] ElementsLayers { get; set; }
-        public LinkedList<Placer> ChangedPlacers { get; private set; }
+        public LinkedList<Placer> ChangedPlacers { get; }
         public State SelectionState { get; private set; }
 
         private IOperator[] Operators { get; }
         private IOperator CurrentOperator { get; set; }
+        
+        private List<Element>[,] PersistedLayers { get; set; }
 
 
         public Selection(TileObject tileObject, ITileBinder binder)
@@ -38,9 +40,21 @@ namespace baUHInia.Playground.Model.Selectors
         public void Reset()
         {
             SelectionState = State.Place;
-            ChangedPlacers = new LinkedList<Placer>();
             ChangeState(State.Place);
+            ChangedPlacers.Clear();
+            foreach (List<Element> layers in ElementsLayers)
+            {
+                if (layers.Count > 1) layers.RemoveRange(1, layers.Count - 1);
+                Element element = layers[0];
+                Image image = element.GetUiElement() as Image;
+                (element.TileObject, element.Root) = (null, null);
+                (element.Placeable, image.Source) = (true, null);
+                element.Change(null, "Plain Grass");
+                element.AcceptChange();
+            }
         }
+
+        public void CallDeselect() => CurrentOperator.DeselectOperator();
 
         public void ChangeState(State state)
         {
@@ -63,6 +77,12 @@ namespace baUHInia.Playground.Model.Selectors
             }
 
             CurrentOperator.SelectOperator();
+        }
+
+        public void PersistBaseLayer(bool save)
+        {
+            if (save) PersistedLayers = ElementsLayers;
+            else ElementsLayers = PersistedLayers ?? ElementsLayers;
         }
 
         public void ApplyTiles(Button button, bool rmb) => CurrentOperator.ApplyTiles(button, rmb);

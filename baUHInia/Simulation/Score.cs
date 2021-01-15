@@ -24,13 +24,13 @@ namespace baUHInia.Simulation
         int scoreFinal = 0;
         int scoreTmp = 0;
         
-        
+       // BazaDanych database = BazaDanych.GetBazaDanych();
+
         public Score(ITileBinder tileBinder, int boardDensity) {
             this.simulation = new Simulation(tileBinder, boardDensity);
             
         }
             
-        
         //METHOD CALCULATE SCORE
         public int SimulationScore() {
 
@@ -48,6 +48,11 @@ namespace baUHInia.Simulation
       
                 float tmpValueTemp = (simulation.avgFieldsTemp[i] - airTemperature) < 0 ? 0 : (simulation.avgFieldsTemp[i] - airTemperature);
 
+               /* if (tmpValueTemp == 0)
+                {
+                    scoreFinal += 1;
+                }*/
+                //else if (tmpValueTemp > 0 && tmpValueTemp <= 0.5)
                 
               if (tmpValueTemp <= 0.4)
                 {
@@ -85,13 +90,10 @@ namespace baUHInia.Simulation
                 scoreFinal += simulation.avgFieldsTemp.Count / 200 * 10;
             }
 
-            
             if (scoreFinal > 10000)
                 scoreFinal = 10000;
             
-            
             Console.WriteLine("ScoreFinal: " + scoreFinal);
-            
 
             return scoreFinal;
             

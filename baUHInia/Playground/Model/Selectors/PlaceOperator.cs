@@ -71,7 +71,7 @@ namespace baUHInia.Playground.Model.Selectors
 
         public void SelectOperator() { }
 
-        public void DeselectOperator() { }
+        public void DeselectOperator() => _currentTile = null;
 
         private void UpdateChangedTileList(Placer tileAtCoords, int index)
         {

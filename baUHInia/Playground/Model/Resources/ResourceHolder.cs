@@ -101,7 +101,7 @@ namespace baUHInia.Playground.Model.Resources
                    new TileCategory("", new List<TileObject>());
         }
 
-        private static IEnumerable<string> GetCategoryNames(IEnumerable<TileCategory> categories)
+        public static IEnumerable<string> GetCategoryNames(IEnumerable<TileCategory> categories)
         {
             List<string> names = categories.Select(c => c.Name).ToList();
             TextInfo info = new CultureInfo("en-US",false).TextInfo;

@@ -57,7 +57,11 @@ namespace baUHInia.Admin
         {
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
-            
+
+            foreach (var VARIABLE in _savedGameObjects)
+            {
+                Console.WriteLine();
+            }
             List<GameObject> allGameObjects = new List<GameObject>();
             foreach (var category in categoryList)
             {
@@ -124,7 +128,7 @@ namespace baUHInia.Admin
             foreach (var gameObject in savedGameObjects)
             {
                 Console.WriteLine(
-                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
+                    $"HideSelectedObjects {gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
                 _allGameObjects.ChangeAvailability(gameObject);
             }
         }
@@ -229,6 +233,7 @@ namespace baUHInia.Admin
             {
                 if (flag)
                 {
+                    Console.WriteLine("_savedGameObjects zapisane aktualne obiekty");
                     _savedGameObjects = _availableForUserGameObjects.GetGameObjects().ToList();
                 }              
             }
@@ -251,6 +256,7 @@ namespace baUHInia.Admin
                 AvailableForUserGameObjectsGrid,
                 this
             );
+            HideSelectedObjects(_savedGameObjects);
             _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
             _availableForUserGameObjects.CreateGrid();
             OnObjectClick(_selectedObject);

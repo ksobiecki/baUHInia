@@ -423,23 +423,16 @@ namespace baUHInia.Database
         {
             try
             {
-                if (CheckGameNameOccupation(nazwa, user_id) == 0)
-                {
-                    Polacz();
-                    sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracza,serial,map_id,nazwa,isPublic) values(@gracz,@serial,@mapa,@nazwa,@isPublic)");
-                    sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
-                    sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
-                    sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
-                    sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
-                    sqlDataAdapter.InsertCommand.Parameters.Add("@isPublic", SqlDbType.Bit).Value = isPublic;
-                    sqlDataAdapter.InsertCommand.Connection = polaczenie;
-                    sqlDataAdapter.InsertCommand.ExecuteNonQuery();
-                    Rozlacz();
-                }
-                else
-                {
-                    return 33;
-                }
+                Polacz();
+                sqlDataAdapter.InsertCommand = new SqlCommand("insert into Gry (id_gracza,serial,map_id,nazwa,isPublic) values(@gracz,@serial,@mapa,@nazwa,@isPublic)");
+                sqlDataAdapter.InsertCommand.Parameters.Add("@gracz", SqlDbType.Int).Value = user_id;
+                sqlDataAdapter.InsertCommand.Parameters.Add("@serial", SqlDbType.VarChar).Value = game_contents;
+                sqlDataAdapter.InsertCommand.Parameters.Add("@nazwa", SqlDbType.VarChar).Value = nazwa;
+                sqlDataAdapter.InsertCommand.Parameters.Add("@mapa", SqlDbType.Int).Value = map_id;
+                sqlDataAdapter.InsertCommand.Parameters.Add("@isPublic", SqlDbType.Bit).Value = isPublic;
+                sqlDataAdapter.InsertCommand.Connection = polaczenie;
+                sqlDataAdapter.InsertCommand.ExecuteNonQuery();
+                Rozlacz();
             }
             catch (SqlException)
             {
@@ -448,7 +441,7 @@ namespace baUHInia.Database
             return 0;
         }
 
-        private int CheckGameNameOccupation(String nazwa, int gracz)
+        public int CheckGameNameOccupation(String nazwa, int gracz)
         {
             int code = 0;
             try
@@ -571,17 +564,18 @@ namespace baUHInia.Database
             }
         }
 
-        public bool updateGame(int palyerID, string json, string gameName, int mapID)
+        public bool updateGame(int palyerID, string json, string gameName, int mapID, bool isPublic)
         {
             try
             {
                 Polacz();
-                string query = "update Gry set serial = @json, map_id = @map_id where nazwa = @gameName and id_gracza = @palyerID";
+                string query = "update Gry set serial = @json, map_id = @map_id, isPublic = @isPublic where nazwa = @gameName and id_gracza = @palyerID";
                 SqlCommand sqlCommand = new SqlCommand(query, polaczenie);
                 sqlCommand.Parameters.AddWithValue("@json", json);
                 sqlCommand.Parameters.AddWithValue("@map_id", mapID);
                 sqlCommand.Parameters.AddWithValue("@gameName", gameName);
                 sqlCommand.Parameters.AddWithValue("@palyerID", palyerID);
+                sqlCommand.Parameters.AddWithValue("@isPublic", isPublic);
                 sqlCommand.ExecuteNonQuery();
                 Rozlacz();
                 return true;

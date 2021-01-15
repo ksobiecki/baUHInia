@@ -30,12 +30,11 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         //============================= IMPLEMENTATIONS ================================//
 
-        public void CreateElementsInWindow(ITileBinder tileBinder, int boardDensity)
+        public Grid CreateElementsInWindow(ITileBinder tileBinder, int boardDensity)
         {
             Grid gameGrid = new Grid {Width = BoardResolution.x, Height = BoardResolution.y};
-            tileBinder.GameViewer.Content = gameGrid;
-
             _tileCreator.GameGrid = gameGrid;
+
             for (int i = 0; i < _boardDensity; i++)
             {
                 gameGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -44,28 +43,17 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
             FillGameGridWithTiles(tileBinder.TileGrid);
             InitializeElementsLayer(gameGrid, tileBinder.Selection, boardDensity);
+            return gameGrid;
         }
 
         public List<GameObject> LoadMapIntoTheGameGrid(ITileBinder tileBinder, Map map)
         {
-            Grid gameGrid = new Grid {Width = BoardResolution.x, Height = BoardResolution.y};
-            tileBinder.GameViewer.Content = gameGrid;
-
-            _tileCreator.GameGrid = gameGrid;
-            for (int i = 0; i < _boardDensity; i++)
-            {
-                gameGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                gameGrid.RowDefinitions.Add(new RowDefinition());
-            }
-
             tileBinder.AvailableFounds = map.AvailableMoney;
             FillGameGridWithTiles(tileBinder, map);
-            //TODO: maybe change
-            InitializeElementsLayer(gameGrid, tileBinder.Selection, map.TileGrid.GetUpperBound(0));
-
             tileBinder.Selection.ChangeState(State.Place);
             Placement[] placers = map.PlacedObjects ?? new Placement[0];
             CreateElementsInWindow(tileBinder, placers);
+            tileBinder.Selection.CallDeselect();
             return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
 
@@ -73,6 +61,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         {
             Placement[] placers = game.PlacedObjects ?? new Placement[0];
             CreateElementsInWindow(tileBinder, placers);
+            tileBinder.Selection.CallDeselect();
         }
 
         //============================= GAME GRID ================================//
@@ -88,7 +77,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 tileBinder.Selection.ApplyTiles(btn, false);
                 tileBinder.Selection.ChangedPlacers.Clear();
             }
-            
+
             (int x, int y) = placers.LastOrDefault()?.Position ?? (-1, -1);
             if (x != -1) tileBinder.TileGrid[y, x].ShowIfAvailable(1.0, null, null);
         }
@@ -112,27 +101,16 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 {
                     string imagePath = map.Indexer[map.TileGrid[i, j]];
                     (TileObject to, BitmapImage bi) = ResourceHolder.Get.GetTerrainPair(imagePath);
-                    Tile tile = _tileCreator.CreateBehavioralTileInGameGrid(j, i, to);
-                    tile.SwapTexture(bi);
+                    Tile tile = tileBinder.TileGrid[i, j]; 
                     tile.Placeable = map.PlacableGrid[i, j];
-                    tileBinder.TileGrid[i, j] = tile;
+                    tile.SwapTexture(bi);
+                    tile.TileObject = to;
                 }
             }
         }
 
-        private void FillGameGridWithTiles(ITileBinder tileBinder, Game game)
+        public static void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
         {
-            //TODO: implement
-        }
-
-        private void PlaceTile(Tile tileField, string tileName, bool placeable)
-        {
-            //TODO: implement
-        }
-
-        public void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)
-        {
-            //TODO: change
             List<Element>[,] elementsLayers = new List<Element>[boardDensity, boardDensity];
             for (int i = 0; i < boardDensity; i++)
             {
@@ -146,7 +124,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                     elementsLayers[i, j] = new List<Element> {new Element(image, null)};
                 }
             }
-            
+
             selection.ElementsLayers = elementsLayers;
         }
     }

@@ -331,7 +331,7 @@ namespace baUHInia.MapLogic.Manager
             return new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch
+                VerticalAlignment = VerticalAlignment.Stretch,
             };
         }
 
@@ -341,12 +341,24 @@ namespace baUHInia.MapLogic.Manager
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Bottom,
+                Background = (Brush)new BrushConverter().ConvertFrom("#FF949494"),
                 Height = 30,
-                Background = Brushes.Blue,
+            };
+
+            Label nameLabel = new Label
+            {
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                Background = (Brush)new BrushConverter().ConvertFrom("#FF898989"),
+                Margin = new Thickness(0, 0, 0, 0),
+                Width = 60,
+                Content = "Nazwa:"
             };
 
             Grid publishGrid = CreatePublishGrid(ref publishCheckBox, listGrid, mode);
-
+            nameGrid.Children.Add(nameLabel);
             nameGrid.Children.Add(publishGrid);
 
             return nameGrid;
@@ -359,9 +371,10 @@ namespace baUHInia.MapLogic.Manager
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(0, 0, 80, 0),
-                Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7"),
+                Margin = new Thickness(60, 0, 80, 0),
+                Background = (Brush)new BrushConverter().ConvertFrom("#FF949494"),
                 Padding = new Thickness(5, 0, 5, 0),
+                BorderThickness = new Thickness(0, 0, 0, 0)
             };
             nameTextBox.TextChanged += (s, a) => { NameTextChanged(s, listGrid); };
 
@@ -375,7 +388,7 @@ namespace baUHInia.MapLogic.Manager
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Width = 80,
-                Background = (Brush)new BrushConverter().ConvertFrom("#FFA0A0A0")
+                Background = (Brush)new BrushConverter().ConvertFrom("#FF898989")
             };
 
             publishCheckBox = new CheckBox
@@ -408,8 +421,8 @@ namespace baUHInia.MapLogic.Manager
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
+                Background = (Brush)new BrushConverter().ConvertFrom("#FF949494"),
                 Height = 30,
-                Background = Brushes.Gray
             };
 
             TextBox searchTextBox = new TextBox
@@ -418,8 +431,9 @@ namespace baUHInia.MapLogic.Manager
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Margin = new Thickness(0, 0, 50, 0),
                 Padding = new Thickness(5, 0, 5, 0),
+                Background = (Brush)new BrushConverter().ConvertFrom("#FF949494"),
+                BorderThickness = new Thickness(0, 0, 0, 0),
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Background = (Brush)new BrushConverter().ConvertFrom("#FFA7A7A7")
             };
             searchTextBox.TextChanged += SearchTextChanged;
 

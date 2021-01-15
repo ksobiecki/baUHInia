@@ -252,23 +252,15 @@ namespace baUHInia.MapLogic.Manager
             JObject jsonGame = new JObject();
             SerializationHelper.JsonAddPlacements(jsonGame, tileBinder.PlacedObjects);
 
-            int result = db.addGame(tileBinder.Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID, false);
+            int result = db.CheckGameNameOccupation(Choice, Credentials.UserID);
 
-            if (result != 0) // Result equal to 0 is a successful write.
+            if (result == 0)
             {
-                if (result != 33) // 33 - Game already exists, other code means diffrent issue.
-                {
-                    return false;
-                }
-                else
-                {
-                    bool result2 = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID);
-
-                    if (!result2)
-                    {
-                        return false;
-                    }
-                }
+                result = db.addGame(Credentials.UserID, Choice, jsonGame.ToString(Formatting.None), mapID, Publish);
+            }
+            else
+            {
+                result = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID, Publish) ? 0 : -1;
             }
 
             Choice = "";
@@ -276,7 +268,10 @@ namespace baUHInia.MapLogic.Manager
             SaveGameCheckBox.IsChecked = false;
             Publish = false;
 
-            GameList = db.getGameList();
+            if (result != 0)
+            {
+                return false;
+            }
 
             return true;
         }
@@ -326,6 +321,11 @@ namespace baUHInia.MapLogic.Manager
             ChoiceId = -1;
             SaveMapCheckBox.IsChecked = false;
             Publish = false;
+
+            if (result != 0)
+            {
+                return false;
+            }
 
             return true;
         }

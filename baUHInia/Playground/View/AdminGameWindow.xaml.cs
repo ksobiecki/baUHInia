@@ -143,6 +143,7 @@ namespace baUHInia.Playground.View
         {
             ClearMap();
             UpdateSelectorComboBox(ResourceType.Terrain);
+            AvailableObjects.Clear();
             _admin = new AdminRestrictionsWindow(this);
             Grids["Admin"] = CreateAdminTab();
             ShowGameBoard();

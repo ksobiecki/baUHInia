@@ -242,7 +242,7 @@ namespace baUHInia.MapLogic.Manager
             return map;
         }
 
-        public bool SaveGame(ITileBinder tileBinder, int mapID)
+        public void SaveGame(ITileBinder tileBinder, int mapID)
         {
             if (Choice == "")
             {
@@ -270,13 +270,11 @@ namespace baUHInia.MapLogic.Manager
 
             if (result != 0)
             {
-                return false;
+                throw new Exception("Wystąpił problem przy zapisie gry.");
             }
-
-            return true;
         }
 
-        public bool SaveMap(ITileBinder tileBinder)
+        public void SaveMap(ITileBinder tileBinder)
         {
             if (Choice == "")
             {
@@ -324,10 +322,8 @@ namespace baUHInia.MapLogic.Manager
 
             if (result != 0)
             {
-                return false;
+                throw new Exception("Wystąpił problem przy zapisie mapy.");
             }
-
-            return true;
         }
 
         private Grid CreateContainerGrid()

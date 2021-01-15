@@ -600,7 +600,7 @@ namespace baUHInia.MapLogic.Manager
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Background = (Brush) new BrushConverter().ConvertFrom("#FF878787"),
+                Background = (Brush) new BrushConverter().ConvertFrom("#FF9A9A9A"),
                 BorderThickness = new Thickness(0, 1, 0, 0),
                 BorderBrush = (Brush) new BrushConverter().ConvertFrom("#FFA7A7A7"),
                 Foreground = Brushes.White,
@@ -630,7 +630,7 @@ namespace baUHInia.MapLogic.Manager
             foreach (Grid listItemGrid in listGrid.Children)
             {
                 Button listItemButton = (Button)listItemGrid.Children[0];
-                listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF878787");
+                listItemButton.Background = (Brush)new BrushConverter().ConvertFrom("#FF9A9A9A");
                 listItemButton.Foreground = Brushes.White;
             }
 

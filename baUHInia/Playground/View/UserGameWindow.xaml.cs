@@ -102,7 +102,7 @@ namespace baUHInia.Playground.View
         {
             TileCategory category = !(CategorySelector.SelectedItem is string item)
                 ? LoadedTileCategories[0]
-                : LoadedTileCategories.First(c => c.Name == item);
+                : LoadedTileCategories.First(c => c.Name == item.ToLowerInvariant().Replace(' ', '_'));
             _selectorGridCreator.CreateSelectionPanel(category, this);
         }
         
@@ -167,7 +167,9 @@ namespace baUHInia.Playground.View
             LoadedTileCategories.RemoveAll(c => c.TileObjects.Count == 0);
             
             Selection.AssignSelection(LoadedTileCategories[0].TileObjects[0]);
-            CategorySelector.ItemsSource = LoadedTileCategories.Select(c => c.Name).ToList();
+            IEnumerable<string> names = ResourceHolder.GetCategoryNames(LoadedTileCategories);
+
+            CategorySelector.ItemsSource = names;
             CategorySelector.SelectedIndex = 0;
             _selectorGridCreator.UpdateTileGroup(LoadedTileCategories);
             _selectorGridCreator.CreateSelectionPanel(LoadedTileCategories[0], this);

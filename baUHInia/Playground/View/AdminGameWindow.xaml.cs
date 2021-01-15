@@ -64,9 +64,12 @@ namespace baUHInia.Playground.View
 
         private void InitializeGrids()
         {
-            Grids = new Dictionary<string, Grid> {{"Menu", GameScroll.Content as Grid}};
+            Grids = new Dictionary<string, Grid>
+            {
+                {"Menu", GameScroll.Content as Grid},
+                {"Admin", CreateAdminTab()} 
+            };
             CreateGameTab();
-            CreateAdminTab();
             CreateLoadMapTab();
             CreateSaveMapTab();
             CreateObserverTab();
@@ -136,10 +139,12 @@ namespace baUHInia.Playground.View
 
         //=============================== FUNCTIONALITY ==============================//
 
-        private void CreateNewMap(object sender, RoutedEventArgs e)
+        private void CreateNewMap(object sender, RoutedEventArgs args)
         {
             ClearMap();
             UpdateSelectorComboBox(ResourceType.Terrain);
+            _admin = new AdminRestrictionsWindow(this);
+            Grids["Admin"] = CreateAdminTab();
             ShowGameBoard();
         }
 
@@ -175,6 +180,7 @@ namespace baUHInia.Playground.View
                 Button button = tile.GetUiElement() as Button;
                 if (tile.GetTextureName() != "grass.png") tile.Change(grass[0], str);
                 if (!button.IsHitTestVisible) button.IsHitTestVisible = true;
+                tile.Placeable = true;
             }
         }
 
@@ -190,9 +196,11 @@ namespace baUHInia.Playground.View
             
             ClearMap();
             ShowGameBoard();
+            UpdateSelectorComboBox(ResourceType.Terrain);
             AvailableObjects = _gameGridCreator.LoadMapIntoTheGameGrid(this, map);
-            SideGrid.Visibility = Visibility.Visible;
             _admin = new AdminRestrictionsWindow(this);
+            Grids["Admin"] = CreateAdminTab();
+            SideGrid.Visibility = Visibility.Visible;
         }
 
         private void SaveMap(object sender, RoutedEventArgs args)
@@ -322,7 +330,7 @@ namespace baUHInia.Playground.View
             Grids["GameMap"] = _gameGridCreator.CreateElementsInWindow(this, BoardDensity); 
         }
         
-        private void CreateAdminTab()
+        private Grid CreateAdminTab()
         {
             _admin.GetReturnButton().Click += (sender, eventArgs) =>
             {
@@ -339,9 +347,10 @@ namespace baUHInia.Playground.View
                 _manager.PopulateSaveMapListGrid();
                 OpenSaveMapTab();
             };
-            Grids.Add("Admin", _admin.GetAdminSelectorTableGrid());
-            Grids["Admin"].VerticalAlignment = VerticalAlignment.Center;
-            Grids["Admin"].HorizontalAlignment = HorizontalAlignment.Center;
+            Grid grid = _admin.GetAdminSelectorTableGrid();
+            grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
+            return grid;
         }
 
         private void CreateSaveMapTab()

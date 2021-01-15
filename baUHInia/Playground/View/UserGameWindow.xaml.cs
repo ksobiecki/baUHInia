@@ -188,6 +188,7 @@ namespace baUHInia.Playground.View
                 Button button = tile.GetUiElement() as Button;
                 if (tile.GetTextureName() != "grass.png") tile.Change(grass[0], str);
                 if (!button.IsHitTestVisible) button.IsHitTestVisible = true;
+                tile.Placeable = true;
             }
         }
 
@@ -203,8 +204,7 @@ namespace baUHInia.Playground.View
                 LoadedMapId = mapId;
             }
             catch (Exception) { return; }
-            PrepareLoadedMap();
-            CurrentCash.Text = AvailableFounds.ToString();
+            PrepareLoadedMap(null, null);
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
@@ -215,7 +215,7 @@ namespace baUHInia.Playground.View
             catch (Exception) { return; }
             
             LoadedMap = game.Map;
-            PrepareLoadedMap();
+            PrepareLoadedMap(null, null);
             CurrentCash.Text = int.MaxValue.ToString();
             _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
             
@@ -223,7 +223,7 @@ namespace baUHInia.Playground.View
             CurrentCash.Text = (LoadedMap.AvailableMoney - cost).ToString();
         }
 
-        private void PrepareLoadedMap()
+        private void PrepareLoadedMap(object source, RoutedEventArgs args)
         {
             ClearMap();
             OpenGameTab(null, null);
@@ -233,7 +233,7 @@ namespace baUHInia.Playground.View
             PlacerGridCreator.InitializeElementsLayer(GameScroll.Content as Grid, Selection, BoardDensity);
             
             InitialPlacerCount = PlacedObjects.Count;
-            AllCash.Text = AvailableFounds.ToString();
+            AllCash.Text = CurrentCash.Text = AvailableFounds.ToString();
             MapName.Text = LoadedMap.Name;
             UpdateSelectorComboBox();
             UnlockReturnGameButton();
@@ -267,14 +267,14 @@ namespace baUHInia.Playground.View
         private void OpenLoadMapTab(object source, RoutedEventArgs args)
         {
             ChangeDisplayMode(false);
-            _manager.PopulateEditLoadMapListGrid();
+            _manager.PopulatePlayLoadMapListGrid();
             GameScroll.Content = Grids["LoadMap"];
         }
         
         private void OpenLoadGameTab(object source, RoutedEventArgs args)
         {
             ChangeDisplayMode(false);
-            _manager.PopulateObserverLoadGameListGrid();
+            _manager.PopulateUserLoadGameListGrid();
             GameScroll.Content = Grids["LoadGame"];
         }
 

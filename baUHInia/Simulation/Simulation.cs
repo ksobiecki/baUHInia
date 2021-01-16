@@ -32,6 +32,8 @@ namespace baUHInia.Simulation
         public List<(int, int, float, int)> warmerFields2 = new List<(int, int, float, int)>();
         public List<(int, int, float)> coolerFields = new List<(int, int, float)>();
         public List<float> avgFieldsTemp = new List<float>();
+        public List<float> allFieldsHeated = new List<float>();
+        public List<float> allFieldsGood = new List<float>();
 
 
         //wartosci stale w projekcie takie jak: 
@@ -54,6 +56,7 @@ namespace baUHInia.Simulation
         private const float _dirtTempValue = 0.35f;
         private const float _railsTempValue = 0.60f;
         private const float _pavementTempValue = 0.72f;
+        private const float _buildingTempValue = 0.82f;
         //############
 
         //obiekt postawiony, wysokosc, wspolczynnik do obliczen, czy obiekt jest obiektem naturalnym
@@ -68,30 +71,32 @@ namespace baUHInia.Simulation
                 (byte, byte) dimObj = it.GameObject.TileObject.Sprite.SpriteWidthHeight();
                 
 
-                if(it.GameObject.TileObject.Tag.subCategory == "bushes")
+                if(it.GameObject.TileObject.Tag.category.Contains("bushes"))
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), it.GameObject.ChangeValue, true));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.4f + it.GameObject.ChangeValue/10, true));
                 }
                 else if (it.GameObject.TileObject.Tag.category == "coniferous_trees")
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), it.GameObject.ChangeValue, true));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.75f + it.GameObject.ChangeValue/10, true));
                 }
                 else if (it.GameObject.TileObject.Tag.category == "decidous_trees") 
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), it.GameObject.ChangeValue, true));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.85f + it.GameObject.ChangeValue/10, true));
                 }
                 else if (it.GameObject.TileObject.Tag.category == "miscellaneous")
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), it.GameObject.ChangeValue, true));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.10f + it.GameObject.ChangeValue/10, true));
+                    Console.WriteLine("wartosc: " + it.GameObject.ChangeValue);
+
+                }
+                else if (it.GameObject.TileObject.Tag.category.Contains("small_trees"))
+                {
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.53f + it.GameObject.ChangeValue/10, false));
                     
                 }
-                else if (it.GameObject.TileObject.Tag.category == "small_trees")
+                else if(it.GameObject.TileObject.Tag.category.Contains("buildings") || it.GameObject.TileObject.Tag.category.Contains("roofs"))
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), it.GameObject.ChangeValue, false));
-                }
-                else
-                {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), it.GameObject.ChangeValue, false));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.74f, false));
                 }
 
 
@@ -118,27 +123,33 @@ namespace baUHInia.Simulation
             {
 
                 //slonce od strony lewej
-                if (it.Item1.Position == (it.Item1.Position.x + 1, it.Item1.Position.y))
+                if (it.Item1.Position == (it.Item1.Position.x + 1, it.Item1.Position.y) )
                 {
                     continue;
                 }
                 else
-                {
+                { 
+                    if(it.Item4){
+                        float tmpHeightCurrentObject = 0;
 
-                    float tmpHeightCurrentObject = 0;
-                  
-                    tmpHeightCurrentObject = it.Item2 * _dimensionField;
+                        tmpHeightCurrentObject = it.Item2 + it.Item1.GameObject.ChangeValue;
 
-                    int iterator = 1;
-                    int tmpShadowFieldsTemp = (int)((int)(tmpHeightCurrentObject * _shadowLength) % _dimensionField) > 5 ?
-                        (int)(((tmpHeightCurrentObject * _shadowLength) / _dimensionField) + 1) :
-                        (int)((tmpHeightCurrentObject * _shadowLength) / _dimensionField);
+                        int iterator = 1;
+                        int tmpShadowFieldsTemp =
+                            (int) ((int) (tmpHeightCurrentObject * _shadowLength) % _dimensionField) > 5
+                                ? (int) (((tmpHeightCurrentObject * _shadowLength) / _dimensionField) + 1)
+                                : (int) ((tmpHeightCurrentObject * _shadowLength) / _dimensionField);
+
+                        tmpShadowFieldsTemp += (int)it.Item1.GameObject.ChangeValue + (int)it.Item2/2;
+                        
+                        while ((iterator <= tmpShadowFieldsTemp) && (it.Item1.Position.x + iterator < BoardDensity))
+                        {
+
+                            shadowedTiles.Add(((it.Item1.Position.x + iterator), it.Item1.Position.y));
+                            iterator++;
 
 
-                    while ((iterator <= tmpShadowFieldsTemp) && (it.Item1.Position.x + iterator < BoardDensity))
-                    {
-                        shadowedTiles.Add(((it.Item1.Position.x + iterator), it.Item1.Position.y));
-                        iterator++;
+                        }
                     }
                 }
 
@@ -164,7 +175,7 @@ namespace baUHInia.Simulation
 
                     int startX = _placementsExtends[it].Item1.Position.Item1 - distance;
                     int startY = _placementsExtends[it].Item1.Position.Item2 - distance;
-
+                    //distance = 0;
 
                     for (int i = 2*distance+1; i>0; i--) 
                     {
@@ -176,8 +187,7 @@ namespace baUHInia.Simulation
                                     startY != _placementsExtends[it].Item1.Position.Item2)
                                 {
                                     coolerFields.Add((startX, startY, _placementsExtends[it].Item3));
-                                    //coolerFields.Add((startX, startY, _placementsExtends[it].Item1.GameObject.ChangeValue));
-                                   
+
                                 }
                             }
 
@@ -190,8 +200,7 @@ namespace baUHInia.Simulation
                 else 
                 {
                     distance = ((int)((int)_solarRadiationDiffuse / (_dimensionField * _dimensionField))) + ((int) (_placementsExtends[it].Item2/2));
-                    Console.WriteLine(distance);
-                
+
                     for (int it2 = it + 1; it2 < _placementsExtends.Count; it2++)
                     {
                         //int distanceObjects = 0;
@@ -324,7 +333,7 @@ namespace baUHInia.Simulation
 
         public void CalculateHeat() 
         {
- 
+    
 
             for (int i = 0; i < BoardDensity; i++)
             {
@@ -332,45 +341,51 @@ namespace baUHInia.Simulation
                 {
                    float tempTemperature = AirTemperature;
 
-
-                    foreach (Tuple<Placement, float, float, bool> it in _placementsExtends)
+                   foreach (Tuple<Placement, float, float, bool> it in _placementsExtends)
                     {
                         if (it.Item1.Position == (j, i))
                         {
                             if (it.Item4)
                             {
-                                tempTemperature = _airTemperature + 1.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
+                                tempTemperature = _airTemperature - 4.0f * it.Item3;
+                                //Console.WriteLine(it.Item1.GameObject.TileObject.Name);
                             }
 
                             else 
                             {
-                                tempTemperature = _airTemperature + 3.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
+                                tempTemperature = _airTemperature + 2.0f * it.Item3 + it.Item1.GameObject.ChangeValue / 10;
                             }
                               
                         }
                     }
 
 
-                    if (ITileBinder.TileGrid[i, j].GetName().Contains("Asphalt") ||
-                        ITileBinder.TileGrid[i, j].GetName().Contains("Road"))
+                    if (ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("roads") ||
+                        ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("asphalt"))
                     {
 
-                        tempTemperature += 1.2f * _asphaltTempValue;
+                        tempTemperature += 4.0f * _asphaltTempValue;
 
                     }
-
-                    else if (ITileBinder.TileGrid[i, j].GetName().Contains("Dirt"))
+                    else if (ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("terrain"))
                     {
-                        tempTemperature += 1.0f * _dirtTempValue;
+                        tempTemperature += 3.0f * _dirtTempValue;
                     }
-                    else if (ITileBinder.TileGrid[i, j].GetName().Contains("Rail"))
+                    
+                    else if (ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("Rail"))
                     {
-                        tempTemperature += 1.0f * _railsTempValue;
+                        tempTemperature += 3.5f * _railsTempValue;
                     }
-                    else if (ITileBinder.TileGrid[i, j].GetName().Contains("Pavement") &&
-                             ITileBinder.TileGrid[i, j].GetName().Contains("pavement"))
+                    else if (ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("Pavement") ||
+                             ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("pavement"))
                     {
-                        tempTemperature += 1.0f * _pavementTempValue;
+                        tempTemperature += 3.8f * _pavementTempValue;
+                        
+                    }
+                    else if (ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("roofs") ||
+                             ITileBinder.TileGrid[i, j].TileObject.Tag.category.Contains("buildings"))
+                    {
+                        tempTemperature += 4.4f * _buildingTempValue;
                     }
                     
                     
@@ -378,8 +393,16 @@ namespace baUHInia.Simulation
                     {
                         if (warmerFields[a].Item1 == j && warmerFields[a].Item2 == i)
                         {
-                            tempTemperature += (2.2f * warmerFields[a].Item3);
+                            tempTemperature += (4.4f * warmerFields[a].Item3);
+                            
                         }
+                        
+                        
+                    }
+
+                    if (tempTemperature > _airTemperature)
+                    {
+                        allFieldsHeated.Add(tempTemperature);
                     }
 
 
@@ -387,20 +410,26 @@ namespace baUHInia.Simulation
                     {
                         if (coolerFields[a].Item1 == j && coolerFields[a].Item2 == i)
                         {
-                            tempTemperature -= (2.2f *  coolerFields[a].Item3);
-                            Console.WriteLine(coolerFields[a].Item3);
+                            tempTemperature -= (4.2f *  coolerFields[a].Item3);
                         }
                     }
-           
+
+                    
+
                     for (int a = 0; a < shadowedTiles.Count; a++)
                     {
                         if (shadowedTiles[a].Item1 == j && shadowedTiles[a].Item2 == i)
                         {
-                            tempTemperature = tempTemperature - 0.4f;
+                            tempTemperature = tempTemperature - 1.0f;
+                            
                         }
                     }
-
-
+                    
+                    if (tempTemperature <= _airTemperature)
+                    {
+                        allFieldsGood.Add(tempTemperature);
+                    }
+                
                     if (tempTemperature == 25.0f)
                     {
                         tempTemperature = AirTemperature;
@@ -408,8 +437,9 @@ namespace baUHInia.Simulation
                     }
                     else 
                     {
+                        //avgFieldsTemp.Add(tempTemperature);
                         avgFieldsTemp.Add(tempTemperature);
-                       
+                        
                     }
                     
 
@@ -425,9 +455,13 @@ namespace baUHInia.Simulation
             warmerFields.Clear();
             coolerFields.Clear();
             avgFieldsTemp.Clear();
+            allFieldsHeated.Clear();
+            allFieldsGood.Clear();
             _placementsExtends.Clear();
 
             placements = ITileBinder.PlacedObjects;
+            
+            //Console.WriteLine(_placementsExtends.Count);
 
             PlacementsExtendsSet(placements);
             SortPlacements();
@@ -437,16 +471,10 @@ namespace baUHInia.Simulation
             CalculateHeat();
 
             float Result = 0;
-
             
-            foreach (float it in avgFieldsTemp) {
-                Result += it;
-            }
-            
-            //Console.WriteLine("Ile avg " + avgFieldsTemp.Count);
             Result = ((Result / avgFieldsTemp.Count) + _airTemperature) / 2;
             Console.WriteLine("wynik: " + Result);
-           // Console.WriteLine(BoardDensity);
+           
 
         }
         

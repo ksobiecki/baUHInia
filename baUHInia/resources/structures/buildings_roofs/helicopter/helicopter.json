@@ -1,0 +1,27 @@
+﻿{
+  "Name": "Helicopter Roof",
+  "Group": null,
+  "IsElement": true,
+  "Offsets": [
+    {
+      "I": 0,
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "I": 1,
+      "X": 1,
+      "Y": 0
+    },
+    {
+      "I": 2,
+      "X": 0,
+      "Y": 1
+    },
+    {
+      "I": 3,
+      "X": 1,
+      "Y": 1
+    }
+  ]
+}

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Controls;
 using baUHInia.Playground.Model.Tiles;
-using baUHInia.Playground.Model.Utility;
 using baUHInia.Playground.Model.Wrappers;
 
 namespace baUHInia.Playground.Model.Selectors
@@ -71,9 +70,9 @@ namespace baUHInia.Playground.Model.Selectors
             Element parentElement = elements.First(e => e.Root.X == e.GetCoords().x && e.Root.Y == e.GetCoords().y);
             
             (int x, int y) parent = parentElement.GetCoords();
-            foreach (Offset offset in pointedObject.Config.Offsets)
+            for (int i = 0; i < parentElement.TileObject.Config.Offsets.Length; i++)
             {
-                (int x, int y) = _selection.GetCoords(parentElement, offset.I);
+                (int x, int y) = _selection.GetCoords(parentElement, i);
                 if (Selection.IsOutsideGrid(x, y, _selection.ElementsLayers)) continue;
                 List<Element> layers = _selection.ElementsLayers[y, x];
                 Element childElement = layers.Find(e => e.Root.X == parent.x && e.Root.Y == parent.y);

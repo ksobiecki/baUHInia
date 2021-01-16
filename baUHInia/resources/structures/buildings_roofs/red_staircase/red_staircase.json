@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Red Staircase",
+  "Group": null,
+  "IsElement": true,
+  "Offsets": [
+    {
+      "I": 0,
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "I": 1,
+      "X": 1,
+      "Y": 0
+    }
+  ]
+}

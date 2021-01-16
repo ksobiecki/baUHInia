@@ -57,7 +57,7 @@ namespace baUHInia.Admin
         {
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
-            
+
             List<GameObject> allGameObjects = new List<GameObject>();
             foreach (var category in categoryList)
             {
@@ -71,6 +71,7 @@ namespace baUHInia.Admin
                     );
                 }
             }
+
             return allGameObjects.ToArray();
         }
 
@@ -92,7 +93,7 @@ namespace baUHInia.Admin
             if (_selectedObject.GameObject.ChangeValue == 0 || _selectedObject.GameObject.Price == 0)
             {
                 System.Windows.MessageBox.Show("Prosze najpierw zapisać zmiany", "Nie zapisano zmian",
-                    (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
+                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
             }
             else
             {
@@ -116,15 +117,14 @@ namespace baUHInia.Admin
                     _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
                 }
             }
-           
         }
 
-        private void HideSelectedObjects( List<GameObject> savedGameObjects)
+        private void HideSelectedObjects(List<GameObject> savedGameObjects)
         {
             foreach (var gameObject in savedGameObjects)
             {
                 Console.WriteLine(
-                    $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
+                    $"HideSelectedObjects {gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
                 _allGameObjects.ChangeAvailability(gameObject);
             }
         }
@@ -145,7 +145,8 @@ namespace baUHInia.Admin
                 Console.WriteLine(
                     $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
             }
-            if(price == 0)
+
+            if (price == 0)
             {
                 _selectedObject.GameObject.Price = 0;
                 notes.Add("cena");
@@ -154,69 +155,73 @@ namespace baUHInia.Admin
             {
                 _selectedObject.GameObject.Price = price;
             }
+
             if (ratio == 0.00)
             {
-                _selectedObject.GameObject.ChangeValue = (float)0.00;
+                _selectedObject.GameObject.ChangeValue = (float) 0.00;
                 notes.Add("wpływ na temperaturę");
             }
             else
             {
                 _selectedObject.GameObject.ChangeValue = ratio;
             }
-            if(notes.Count == 0)
+
+            if (notes.Count == 0)
             {
                 Console.WriteLine("Po zmianie");
                 foreach (var gameObject in _savedGameObjects)
                 {
                     Console.WriteLine(
                         $"{gameObject.TileObject.Name}, price {gameObject.Price}, val {gameObject.ChangeValue}");
-                }             
+                }
             }
             else
             {
-                foreach(var n in notes)
+                foreach (var n in notes)
                 {
-                    if(notes.IndexOf(n) > 0)
+                    if (notes.IndexOf(n) > 0)
                     {
                         note += ", ";
                     }
+
                     note += n;
                 }
+
                 System.Windows.MessageBox.Show("Niepoprawne wartości:" + note + ".", "Błąd wpisanych wartości",
-                (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
+                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
                 _objectDetails.Display(_selectedObject);
             }
-            
-          
         }
 
         public Grid GetAdminSelectorTableGrid() => AdminRestrictionsGrid;
 
 
-        public List<GameObject> GetModifiedAvailableObjects() => _savedGameObjects;
+        public List<GameObject> GetModifiedAvailableObjects()
+        {
+            return _availableForUserGameObjects.GetGameObjects().ToList().Count < 3
+                ? _availableForUserGameObjects.GetGameObjects().ToList()
+                : _savedGameObjects;
+        }
 
 
         public void Save(object obj, RoutedEventArgs routedEventArgs)
         {
-            bool flag = true;
-
             if (int.TryParse(AdminBudget.Text, out _budget))
             {
                 _budget = int.Parse(AdminBudget.Text);
                 _savedBudget = _budget;
                 if (_budget == 0 || _budget > Int32.MaxValue)
                 {
-                    System.Windows.MessageBox.Show("Budżet musi być wartością dodatnią.\nProsze wpisać poprawną wartość", "Błąd wpisanych wartości",
-                    (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
-                    //tutaj ma sie robic cos zeby ta funkcja z zapisywaniem mapy sie nie wywolywala
-                    flag = false;
+                    System.Windows.MessageBox.Show(
+                        "Budżet musi być wartością dodatnią.\nProsze wpisać poprawną wartość",
+                        "Błąd wpisanych wartości",
+                        (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
                 }
             }
             else
             {
                 System.Windows.MessageBox.Show("Prosze wpisać poprawną wartość budżetu", "Błąd wpisanych wartości",
-                    (MessageBoxButton)MessageBoxButtons.OK, (MessageBoxImage)MessageBoxIcon.Error);
-                flag = false;
+                    (MessageBoxButton) MessageBoxButtons.OK, (MessageBoxImage) MessageBoxIcon.Error);
             }
 
             if (_availableForUserGameObjects.GameObjectsList.Count < 3)
@@ -227,10 +232,7 @@ namespace baUHInia.Admin
             }
             else
             {
-                if (flag)
-                {
-                    _savedGameObjects = _availableForUserGameObjects.GetGameObjects().ToList();
-                }              
+                _savedGameObjects = _availableForUserGameObjects.GetGameObjects().ToList();
             }
         }
 
@@ -251,6 +253,7 @@ namespace baUHInia.Admin
                 AvailableForUserGameObjectsGrid,
                 this
             );
+            HideSelectedObjects(_savedGameObjects);
             _allGameObjects.CreateGridWithCategoryBreaks(GetCategoryBreakLineIndex());
             _availableForUserGameObjects.CreateGrid();
             OnObjectClick(_selectedObject);

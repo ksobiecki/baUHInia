@@ -41,7 +41,7 @@ namespace baUHInia.Simulation
             float airTemperature = simulation.AirTemperature;
 
             float averageResult = 0;
-            int scoreFinal = 0;
+             scoreFinal = 0;
             int scoreTmp = 0;
             int placementsReserved = 0;
             int NotPlaceable = 0;

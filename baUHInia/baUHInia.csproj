@@ -297,6 +297,16 @@
     <Resource Include="resources\foliage\small_trees\dark_thuja\dark_thuja.json" />
     <Resource Include="resources\foliage\small_trees\light_hornbeam\light_hornbeam.json" />
     <Resource Include="resources\foliage\small_trees\light_thuja\light_thuja.json" />
+    <Resource Include="resources\structures\benches\bench_down\1_bench_down.png" />
+    <Resource Include="resources\structures\benches\bench_down\2_bench_down.png" />
+    <Resource Include="resources\structures\benches\bench_down\bench_down.json" />
+    <Resource Include="resources\structures\benches\bench_left\1_bench_left.png" />
+    <Resource Include="resources\structures\benches\bench_left\2_bench_left.png" />
+    <Resource Include="resources\structures\benches\bench_left\bench_left.json" />
+    <Resource Include="resources\structures\benches\bench_right\1_bench_right.png" />
+    <Resource Include="resources\structures\benches\bench_right\2_bench_right.png" />
+    <Resource Include="resources\structures\benches\bench_right\bench_right.json" />
+    <Resource Include="resources\structures\benches\bench_up\bench_up.json" />
     <Resource Include="resources\structures\buildings_colored_parts\balcony_bottom\balcony_bottom.json" />
     <Resource Include="resources\structures\buildings_colored_parts\balcony_bottom\balcony_bottom.png" />
     <Resource Include="resources\structures\buildings_colored_parts\balcony_middle\balcony_middle.json" />
@@ -1292,6 +1302,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\structures\buildings_gray_prefabs\wide_small\3_wide_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\terrain\terrain\water\water.json" />
+    <Resource Include="resources\terrain\terrain\water\water.png" />
+    <Resource Include="resources\terrain\terrain\water_down\water_down.json" />
+    <Resource Include="resources\terrain\terrain\water_down\water_down.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_bottom\water_grass_bottom.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_bottom\water_grass_bottom.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_bottom_left\water_grass_bottom_left.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_bottom_left\water_grass_bottom_left.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_bottom_right\water_grass_bottom_right.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_bottom_right\water_grass_bottom_right.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_left\water_grass_left.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_left\water_grass_left.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_right\water_grass_right.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_right\water_grass_right.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_top\water_grass_top.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_top\water_grass_top.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_top_left\water_grass_top_left.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_top_left\water_grass_top_left.png" />
+    <Resource Include="resources\terrain\terrain\water_grass_top_right\water_grass_top_right.json" />
+    <Resource Include="resources\terrain\terrain\water_grass_top_right\water_grass_top_right.png" />
+    <Resource Include="resources\terrain\terrain\water_rocks\water_rocks.json" />
+    <Resource Include="resources\terrain\terrain\water_rocks\water_rocks.png" />
+    <Resource Include="resources\terrain\terrain\water_up\water_up.json" />
+    <Resource Include="resources\terrain\terrain\water_up\water_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\structures\benches\bench_up\1_bench_up.png" />
+    <Resource Include="resources\structures\benches\bench_up\2_bench_up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

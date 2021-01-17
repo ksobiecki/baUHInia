@@ -142,7 +142,7 @@
 					<Grid Height="300" Width="250"  Background="#4466AA"  HorizontalAlignment="Center">
 						<TextBlock HorizontalAlignment="Center" Margin="0,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Foreground="#CCCCCC" Text="WYJŚCIE"/>
 						<Image HorizontalAlignment="Center" Height="148"  VerticalAlignment="Top" Width="148" Margin="0,70,0,0" Source="/baUHInia;component/res/logout.ico"/>
-						<Button Click="ExitApplication" Content="Wyloguj" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
+						<Button Click="ExitApplication" Content="Wyjdź" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="100" BorderThickness="0" FontSize="18" FontWeight="Bold" Foreground="#DDDDDD" Margin="0,245,0,0" Height="40" Style="{StaticResource MenuButton}">
 							<Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style></Button.Resources>
 						</Button>
 					</Grid>

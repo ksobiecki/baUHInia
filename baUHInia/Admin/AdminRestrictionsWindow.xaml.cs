@@ -55,6 +55,7 @@ namespace baUHInia.Admin
 
         private GameObject[] InitializeGameObjects()
         {
+            ResourceType currentType = ResourceHolder.Get.CurrentType; 
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
 
@@ -71,12 +72,14 @@ namespace baUHInia.Admin
                     );
                 }
             }
-
+            
+            ResourceHolder.Get.ChangeResourceType(currentType);
             return allGameObjects.ToArray();
         }
 
         private List<int> GetCategoryBreakLineIndex()
         {
+            ResourceType currentType = ResourceHolder.Get.CurrentType;
             ResourceHolder.Get.ChangeResourceType(ResourceType.Foliage);
             List<TileCategory> categoryList = ResourceHolder.Get.GetSelectedCategories();
             List<int> categoryBreakLineIndex = new List<int>();
@@ -85,6 +88,7 @@ namespace baUHInia.Admin
                 categoryBreakLineIndex.Add(categoryBreakLineIndex.LastOrDefault() + category.TileObjects.Count);
             }
 
+            ResourceHolder.Get.ChangeResourceType(currentType);
             return categoryBreakLineIndex;
         }
 

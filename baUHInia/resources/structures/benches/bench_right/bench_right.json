@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Bench Right",
+  "Group": null,
+  "IsElement": true,
+  "Offsets": [
+    {
+      "I": 1,
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "I": 0,
+      "X": 0,
+      "Y": 1
+    }
+  ]
+}

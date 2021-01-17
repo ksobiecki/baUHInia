@@ -218,6 +218,7 @@ namespace baUHInia.Playground.View
             catch (Exception) { return; }
             
             LoadedMap = game.Map;
+            LoadedMapId = game.MapID;
             PrepareLoadedMap(null, null);
             CurrentCash.Text = int.MaxValue.ToString();
             _gameGridCreator.LoadGameIntoTheGameGrid(this, game);
@@ -249,15 +250,19 @@ namespace baUHInia.Playground.View
             int newCount = PlacedObjects.Count - InitialPlacerCount;
             PlacedObjects = PlacedObjects.GetRange(InitialPlacerCount, newCount);
 
-            try { _manager.SaveGame(this, LoadedMapId); }
-            catch (Exception)
+            int gameId;
+            try { _manager.SaveGame(this, LoadedMapId, out gameId); }
+            catch (Exception e)
             {
                 PlacedObjects = allPlacements;
+                Console.WriteLine(e);
                 return;
             }
             ChangeDisplayMode(true);
             GameScroll.Content = Grids["GameMap"];
             PlacedObjects = allPlacements;
+            Simulate(null, null);
+            _simulator.ScoreToDatabase(gameId);
         }
         
         //======================================// GRID SWITCH //======================================//

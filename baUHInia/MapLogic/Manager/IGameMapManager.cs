@@ -13,7 +13,7 @@ namespace baUHInia.MapLogic.Manager
         Map LoadMap(out int mapID);
         Game LoadGame();
         void SaveMap(ITileBinder tileBinder);
-        void SaveGame(ITileBinder tileBinder, int mapID);
+        void SaveGame(ITileBinder tileBinder, int mapID, out int gameId);
         void PopulateSaveMapListGrid();
         void PopulateEditLoadMapListGrid();
         void PopulatePlayLoadMapListGrid();

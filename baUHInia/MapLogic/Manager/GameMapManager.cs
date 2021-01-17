@@ -178,7 +178,7 @@ namespace baUHInia.MapLogic.Manager
 
             Map map = LoadMap(out int mapId);
 
-            Game game = new Game(ChoiceId, gameName, placedObjects, map);
+            Game game = new Game(mapId, gameName, placedObjects, map);
             
             foreach (Placement placement in game.PlacedObjects)
             {
@@ -242,7 +242,7 @@ namespace baUHInia.MapLogic.Manager
             return map;
         }
 
-        public void SaveGame(ITileBinder tileBinder, int mapID)
+        public void SaveGame(ITileBinder tileBinder, int mapID, out int gameId)
         {
             if (Choice == "")
             {
@@ -260,7 +260,7 @@ namespace baUHInia.MapLogic.Manager
             }
             else
             {
-                result = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID, Publish) ? 0 : -1;
+                result = db.updateGame(Credentials.UserID, jsonGame.ToString(Formatting.None), Choice, mapID, Publish);
             }
 
             Choice = "";
@@ -268,10 +268,12 @@ namespace baUHInia.MapLogic.Manager
             SaveGameCheckBox.IsChecked = false;
             Publish = false;
 
-            if (result != 0)
+            if (result == 1)
             {
                 throw new Exception("Wystąpił problem przy zapisie gry.");
             }
+
+            gameId = result;
         }
 
         public void SaveMap(ITileBinder tileBinder)

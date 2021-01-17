@@ -247,7 +247,7 @@ namespace baUHInia.Playground.View
             int newCount = PlacedObjects.Count - InitialPlacerCount;
             PlacedObjects = PlacedObjects.GetRange(InitialPlacerCount, newCount);
 
-            try { _manager.SaveGame(this,LoadedMapId); }
+            try { _manager.SaveGame(this, LoadedMapId); }
             catch (Exception)
             {
                 PlacedObjects = allPlacements;

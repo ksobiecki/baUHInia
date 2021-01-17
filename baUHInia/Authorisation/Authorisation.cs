@@ -364,11 +364,12 @@ namespace baUHInia.Authorisation
         public void ShowAddQuestionDialog()
         {
             AddQuestion aq = new AddQuestion();
+            SHA256 mySHA256 = SHA256.Create();
 
             if (aq.ShowDialog(this) == DialogResult.OK)
             {
                 this.pytanie = aq.questionBox.Text;
-                this.odpowiedz = aq.answerBox.Text;
+                this.odpowiedz = ComputeSha256Hash(aq.answerBox.Text);
             }
             Console.WriteLine(this.pytanie);
             Console.WriteLine(this.odpowiedz);
@@ -378,12 +379,12 @@ namespace baUHInia.Authorisation
         public void ShowVerifyQuestionDialog()
         {
             VerifyQuestion vq = new VerifyQuestion();
-
+            SHA256 mySHA256 = SHA256.Create();
             vq.verifyQuestionBox.Text = this.pytanie;
 
             if (vq.ShowDialog(this) == DialogResult.OK)
             {
-                this.odpowiedz = vq.verifyAnswerBox.Text;
+                this.odpowiedz = ComputeSha256Hash(vq.verifyAnswerBox.Text);
             }
             
             Console.WriteLine(this.odpowiedz);

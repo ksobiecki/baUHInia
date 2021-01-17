@@ -58,6 +58,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.changePasswdBttn);
             this.Controls.Add(this.newPasswordBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "NewPassword";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Podaj nowe hasło";

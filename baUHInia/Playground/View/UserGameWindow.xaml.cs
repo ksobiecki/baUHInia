@@ -194,9 +194,16 @@ namespace baUHInia.Playground.View
             }
         }
 
-        private void Simulate(object sender, RoutedEventArgs args) =>
-            Points.Text = _simulator.SimulationScore().ToString(); 
-        
+        private void Simulate(object sender, RoutedEventArgs args)
+        {
+            List<Placement> allPlacements = PlacedObjects;
+            int newCount = PlacedObjects.Count - LoadedMap.PlacedObjects.Length;
+
+            PlacedObjects = PlacedObjects.GetRange(LoadedMap.PlacedObjects.Length, newCount);
+            Points.Text = _simulator.SimulationScore().ToString();
+            PlacedObjects = allPlacements;
+        }
+
 
         private void LoadMap(object sender, RoutedEventArgs args)
         {
@@ -207,6 +214,7 @@ namespace baUHInia.Playground.View
             }
             catch (Exception) { return; }
             PrepareLoadedMap(null, null);
+            Simulate(null, null);
         }
         
         private void LoadGame(object sender, RoutedEventArgs args)
@@ -223,6 +231,7 @@ namespace baUHInia.Playground.View
             
             int cost = game.PlacedObjects.Sum(p => p.GameObject.Price);
             CurrentCash.Text = (LoadedMap.AvailableMoney - cost).ToString();
+            Simulate(null, null);
         }
 
         private void PrepareLoadedMap(object source, RoutedEventArgs args)

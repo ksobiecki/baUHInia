@@ -255,12 +255,12 @@ namespace baUHInia.Playground.View
         private void CalculatePoints(int mapPlacersCount)
         {
             ISimulate simulate = new Score(this, BoardDensity);
-            List<Placement> allPlacements = PlacedObjects;
-            int newCount = PlacedObjects.Count - mapPlacersCount;
+            //List<Placement> allPlacements = PlacedObjects;
+            //int newCount = PlacedObjects.Count - mapPlacersCount;
 
-            PlacedObjects = PlacedObjects.GetRange(mapPlacersCount, newCount);
+            //PlacedObjects = PlacedObjects.GetRange(mapPlacersCount, newCount);
             Points.Text = simulate.SimulationScore().ToString();
-            PlacedObjects = allPlacements;
+            //PlacedObjects = allPlacements;
         }
 
         private void RemoveButtonsBehaviour()

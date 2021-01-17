@@ -96,13 +96,11 @@ namespace baUHInia.Simulation
                 else if(it.GameObject.TileObject.Tag.category.Contains("buildings_gray") || it.GameObject.TileObject.Tag.category.Contains("roofs"))
                 {
                     _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.80f, false));
-                    Console.WriteLine("szare");
                 }
                 else if(it.GameObject.TileObject.Tag.category.Contains("buildings_colored") )
                 {
                     _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.75f, false));
-                    Console.WriteLine("kolorowe");
-                    Console.WriteLine((int)(dimObj.Item2));
+                   
                 }
 
 
@@ -398,10 +396,10 @@ namespace baUHInia.Simulation
                     
                     for (int a = 0; a < warmerFields.Count; a++)
                     {
-                        if (warmerFields[a].Item1 == j && warmerFields[a].Item2 == i)
+                        if (warmerFields[a].Item1 == i && warmerFields[a].Item2 == j)
                         {
                             tempTemperature += (4.4f * warmerFields[a].Item3);
-                            Console.WriteLine("cieple pola: " + j + " " + i);
+                            
                         }
                         
                         

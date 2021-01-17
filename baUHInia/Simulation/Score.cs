@@ -68,7 +68,7 @@ namespace baUHInia.Simulation
                 }
             }
 
-            Console.WriteLine(placementsReserved);
+         
 
             for (int i = 0; i < simulation.avgFieldsTemp.Count; i++)
             {
@@ -114,10 +114,7 @@ namespace baUHInia.Simulation
             }
             
 
-            foreach (float itf in simulation.avgFieldsTemp) {
-                //Console.WriteLine("Temperatura: " + itf);
-            }
-         
+           
           
             if (scoreFinal > 10000)
                 scoreFinal = 10000;

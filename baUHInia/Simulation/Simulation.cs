@@ -86,17 +86,23 @@ namespace baUHInia.Simulation
                 else if (it.GameObject.TileObject.Tag.category == "miscellaneous")
                 {
                     _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.10f + it.GameObject.ChangeValue/10, true));
-                    Console.WriteLine("wartosc: " + it.GameObject.ChangeValue);
-
+                    
                 }
                 else if (it.GameObject.TileObject.Tag.category.Contains("small_trees"))
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.53f + it.GameObject.ChangeValue/10, false));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.59f + it.GameObject.ChangeValue/10, true));
                     
                 }
-                else if(it.GameObject.TileObject.Tag.category.Contains("buildings") || it.GameObject.TileObject.Tag.category.Contains("roofs"))
+                else if(it.GameObject.TileObject.Tag.category.Contains("buildings_gray") || it.GameObject.TileObject.Tag.category.Contains("roofs"))
                 {
-                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.74f, false));
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.80f, false));
+                    Console.WriteLine("szare");
+                }
+                else if(it.GameObject.TileObject.Tag.category.Contains("buildings_colored") )
+                {
+                    _placementsExtends.Add(new Tuple<Placement, float, float, bool>(it, (int)(dimObj.Item2), 0.75f, false));
+                    Console.WriteLine("kolorowe");
+                    Console.WriteLine((int)(dimObj.Item2));
                 }
 
 
@@ -248,6 +254,7 @@ namespace baUHInia.Simulation
                                     warmerFields.Add((_placementsExtends[it].Item1.Position.x + xIle, _placementsExtends[it].Item1.Position.y + yIle,
                                              _placementsExtends[it].Item3,distance));
                                             
+                                            
                                 }
 
 
@@ -394,7 +401,7 @@ namespace baUHInia.Simulation
                         if (warmerFields[a].Item1 == j && warmerFields[a].Item2 == i)
                         {
                             tempTemperature += (4.4f * warmerFields[a].Item3);
-                            
+                            Console.WriteLine("cieple pola: " + j + " " + i);
                         }
                         
                         

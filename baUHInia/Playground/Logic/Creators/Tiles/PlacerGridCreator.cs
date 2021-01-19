@@ -54,6 +54,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
             Placement[] placers = map.PlacedObjects ?? new Placement[0];
             CreateElementsInWindow(tileBinder, placers);
             tileBinder.Selection.CallDeselect();
+            MakeNotPlaceable(tileBinder, map);
             return map.AvailableTiles?.ToList() ?? new List<GameObject>();
         }
 
@@ -101,12 +102,19 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 {
                     string imagePath = map.Indexer[map.TileGrid[i, j]];
                     (TileObject to, BitmapImage bi) = ResourceHolder.Get.GetTerrainPair(imagePath);
-                    Tile tile = tileBinder.TileGrid[i, j]; 
-                    tile.Placeable = map.PlacableGrid[i, j];
+                    Tile tile = tileBinder.TileGrid[i, j];
+                    //tile.Placeable = map.PlacableGrid[i, j];
                     tile.SwapTexture(bi);
                     tile.TileObject = to;
                 }
             }
+        }
+
+        private void MakeNotPlaceable(ITileBinder tileBinder, Map map)
+        {
+            for (int i = 0; i < _boardDensity; i++)
+            for (int j = 0; j < _boardDensity; j++)
+                tileBinder.TileGrid[i, j].Placeable = map.PlacableGrid[i, j];
         }
 
         public static void InitializeElementsLayer(Grid gameGrid, Selection selection, int boardDensity)

@@ -9,7 +9,7 @@ namespace baUHInia.Playground.Model.Resources
 {
     public class ResourceHolder
     {
-        public readonly List<TileCategory> Terrain;
+        private List<TileCategory> Terrain { get; }
         private List<TileCategory> Structures { get; }
         private List<TileCategory> Foliage { get; }
 
@@ -43,7 +43,7 @@ namespace baUHInia.Playground.Model.Resources
             switch (CurrentType)
             {
                 case ResourceType.Terrain: return GetSpecificCategory(Terrain, name);
-                case ResourceType.Structure: return GetSpecificCategory(Structures, name); 
+                case ResourceType.Structure: return GetSpecificCategory(Structures, name);
                 default: return GetSpecificCategory(Foliage, name);
             }
         }
@@ -81,11 +81,9 @@ namespace baUHInia.Playground.Model.Resources
             return (tileObject, bitmapImage);
         }
 
-        public TileObject GetPlaceableTileObject(string name)
-        {
-            return FindInGroup(Structures, name) ?? FindInGroup(Foliage, name);
-        }
-
+        public TileObject GetPlaceableTileObject(string name) =>
+            FindInGroup(Structures, name) ?? FindInGroup(Foliage, name);
+        
         private static ResourceHolder InitializeInstance()
         {
             List<TileCategory> terrain = ResourceLoader.LoadTileCategories("terrain");

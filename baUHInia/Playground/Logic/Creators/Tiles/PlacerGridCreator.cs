@@ -86,12 +86,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         private void FillGameGridWithTiles(Tile[,] tileFields)
         {
             for (int i = 0; i < _boardDensity; i++)
-            {
-                for (int j = 0; j < _boardDensity; j++)
-                {
-                    tileFields[i, j] = _tileCreator.CreateBehavioralTileInGameGrid(j, i, _tileObject);
-                }
-            }
+            for (int j = 0; j < _boardDensity; j++)
+                tileFields[i, j] = _tileCreator.CreateBehavioralTileInGameGrid(j, i, _tileObject);
         }
 
         private void FillGameGridWithTiles(ITileBinder tileBinder, Map map)
@@ -103,7 +99,6 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                     string imagePath = map.Indexer[map.TileGrid[i, j]];
                     (TileObject to, BitmapImage bi) = ResourceHolder.Get.GetTerrainPair(imagePath);
                     Tile tile = tileBinder.TileGrid[i, j];
-                    //tile.Placeable = map.PlacableGrid[i, j];
                     tile.SwapTexture(bi);
                     tile.TileObject = to;
                 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,9 +44,7 @@ namespace baUHInia.Playground.Model.Selectors
         public void RedoChanges()
         {
             foreach (Placer temporaryTile in _selection.ChangedPlacers)
-            {
                 temporaryTile.RevertChange();
-            }
 
             _selection.ChangedPlacers.Clear();
         }
@@ -59,7 +56,6 @@ namespace baUHInia.Playground.Model.Selectors
             bool isElement = config.IsElement;
             for (int i = 0; i < config.Offsets.Length; i++)
             {
-                //TODO: all stacked up
                 (int x, int y) = pos != null
                     ? (pos.Value.x + config.Offsets[i].X, pos.Value.y - config.Offsets[i].Y)
                     : _selection.GetCoords(hoveredTile, i);

@@ -28,7 +28,6 @@ namespace baUHInia.Playground.Logic.Creators.Selector
         public Button CreateSelectorTile(string elementName, BitmapImage image, (string cat, string subCat) tag)
         {
             Button button = CreateSelector(elementName, image);
-            //RenderOptions.SetBitmapScalingMode(button, BitmapScalingMode.NearestNeighbor);
             button.Click += OnSelectorMouseClick;
             button.Tag = tag;
             return button;
@@ -53,7 +52,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         private void OnSelectorMouseClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            Button senderButton = sender as Button;
+            if (!(sender is Button senderButton)) return;
             (string category, string subCategory) = ((string, string)) senderButton.Tag;
             
             TileObject tileObject = _tileCategories

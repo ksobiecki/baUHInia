@@ -37,10 +37,9 @@ namespace baUHInia.Playground.Logic.Loaders
         private static List<TileObject> LoadTileObjects(ResourceCollection resources, int index)
         {
             List<TileObject> tileObjects = new List<TileObject>();
-            string[] subCategories = resources.SubCategories(index);
-            for (int i = 0; i < subCategories.Length; i++)
+            IEnumerable<string> subCategories = resources.SubCategories(index);
+            foreach (string subCategory in subCategories)
             {
-                string subCategory = subCategories[i];
                 string[] elementsOfSubCategory = resources.ElementsOfSubcategory(subCategory);
                 string config = resources.GetPossibleConfig(subCategory);
                 if (config == null) throw new FileNotFoundException($"All tiles must have json file: {subCategory}");
@@ -49,8 +48,9 @@ namespace baUHInia.Playground.Logic.Loaders
                     resources.Categories[index], subCategory, ResourceDir
                 );
                 Sprite sprite = new Sprite(elementsOfSubCategory, configInstance?.Offsets, bitmaps);
-                TileObject tileObject =
-                    new TileObject((resources.Categories[index], subCategory), sprite, configInstance);
+                TileObject tileObject = new TileObject(
+                    (resources.Categories[index], subCategory), sprite, configInstance
+                );
                 tileObjects.Add(tileObject);
             }
 
@@ -59,7 +59,6 @@ namespace baUHInia.Playground.Logic.Loaders
 
         private static Config LoadConfig(string config)
         {
-            //TODO: refactor extract to other class
             string uri = ResourceDir + "resources/" + config;
             StreamResourceInfo resourceStream = Application.GetResourceStream(new Uri(uri));
             using (StreamReader reader = new StreamReader(resourceStream.Stream))
@@ -73,8 +72,8 @@ namespace baUHInia.Playground.Logic.Loaders
         private static string[] GetResourceNames()
         {
             Assembly assembly = Assembly.GetEntryAssembly();
-            string resName = assembly.GetName().Name + ".g.resources";
-            using (Stream stream = assembly.GetManifestResourceStream(resName))
+            string resName = assembly?.GetName().Name + ".g.resources";
+            using (Stream stream = assembly?.GetManifestResourceStream(resName))
             using (ResourceReader reader = new ResourceReader(stream ?? throw new NullReferenceException()))
             {
                 return reader.Cast<DictionaryEntry>().Select(entry => (string) entry.Key).ToArray();
@@ -89,10 +88,9 @@ namespace baUHInia.Playground.Logic.Loaders
                 select tileObject.Config.Name).ToList();
 
             var groups = configs.GroupBy(s => s).Where(g => g.Count() > 1).ToArray();
-            if (groups.Length != 0)
-            {
-                throw new DuplicateNameException($"There can't be 2 elements with same name: {groups[0].Key}");
-            }
+            if (groups.Length == 0) return;
+            string message = $"There can't be 2 elements with same name: {groups[0].Key}";
+            throw new DuplicateNameException(message);
         }
     }
 }

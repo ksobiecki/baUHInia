@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model.Tiles;
@@ -17,7 +18,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             _selectorCreator = selectorCreator;
         }
 
-        public void CreateTilesInsideSubGrid(TileObject[] tileObjects)
+        public void CreateTilesInsideSubGrid(IEnumerable<TileObject> tileObjects)
         {
             int j = 0;
             int i = 0;

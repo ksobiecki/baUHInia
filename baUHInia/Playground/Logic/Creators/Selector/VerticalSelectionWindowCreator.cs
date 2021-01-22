@@ -50,23 +50,23 @@ namespace baUHInia.Playground.Logic.Creators.Selector
 
         private void PutCostWidthHeightAndStats(GameObject gameObject)
         {
-            (byte x, byte y) tuple = gameObject.TileObject.Sprite.SpriteWidthHeight();
-            tuple.x++;
-            tuple.y++;
+            (byte x, byte y) = gameObject.TileObject.Sprite.SpriteWidthHeight();
+            x++;
+            y++;
 
             TextBlock[] blocks =
             {
                 (TextBlock) _grid.Children[2],
                 (TextBlock) _grid.Children[3],
                 (TextBlock) _grid.Children[4],
-                (TextBlock) _grid.Children[5],
+                (TextBlock) _grid.Children[5]
             };
             string[] strings =
             {
                 $"Kwota: {gameObject.Price}",
                 $"Zacienienie: {gameObject.ChangeValue}",
-                $"Szerokość: {tuple.x}",
-                $"Wysokość: {tuple.y}"
+                $"Szerokość: {x}",
+                $"Wysokość: {y}"
             };
 
             for (int i = 0; i < strings.Length; i++) blocks[i].Text = strings[i];

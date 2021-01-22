@@ -15,17 +15,13 @@ namespace baUHInia.Playground.Model
         Tile[,] TileGrid { get; }
         
         List<Placement> PlacedObjects { get; }
-        
-        ScrollViewer GameViewer { get; }
-        
+
         Grid SelectorGrid { get; }
         
         List<GameObject> AvailableObjects { get; }
         
         LoginData Credentials { get; }
-        
-        bool IsInAdminMode { get; }
-        
+
         int AvailableFounds { get; set; }
 
         void ChangeInteractionMode(string text, Brush color);

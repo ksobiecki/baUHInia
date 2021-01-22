@@ -49,15 +49,12 @@ namespace baUHInia.Playground.View
         public Selection Selection { get; private set; }
         public Tile[,] TileGrid { get; private set; }
         public List<Placement> PlacedObjects { get; private set; }
-        public ScrollViewer GameViewer => GameScroll;
         public Grid SelectorGrid => AdminSelectorGrid;
         public List<GameObject> AvailableObjects { get; private set; }
         public LoginData Credentials { get; private set; }
 
-        public bool IsInAdminMode { get; } = true;
         public int AvailableFounds { get; set; }
 
-        private int MapId { get; set; }
         private bool Observing { get; set; }
 
         //============================ PREDEFINED ACTIONS ============================//
@@ -111,7 +108,7 @@ namespace baUHInia.Playground.View
             TileCategory category = !(CategorySelector.SelectedItem is string item)
                 ? ResourceHolder.Get.GetFirstTileCategory()
                 : ResourceHolder.Get.GetCategoryByName(item);
-            _selectorGridCreator.CreateSelectionPanel(category, this);
+            _selectorGridCreator.CreateSelectionPanel(category);
         }
 
         private void UnlockReturnToMapButton()
@@ -165,22 +162,23 @@ namespace baUHInia.Playground.View
             CategorySelector.ItemsSource = strings;
             CategorySelector.SelectedIndex = 0;
             _selectorGridCreator.UpdateTileGroup(categories);
-            _selectorGridCreator.CreateSelectionPanel(category, this);
+            _selectorGridCreator.CreateSelectionPanel(category);
         }
 
         private void ClearMap()
         {
-            int count = BoardDensity * BoardDensity * 2;
+            const int count = BoardDensity * BoardDensity * 2;
+            const string str = "Plain Grass";
+            
             Grids["GameMap"].Children.RemoveRange(count, Grids["GameMap"].Children.Count - count);
             PlacedObjects.Clear();
             Selection.Reset();
-            string str = "Plain Grass";
             TileObject grass = ResourceHolder.Get.GetTerrainTileObject(str);
             foreach (Tile tile in TileGrid)
             {
                 Button button = tile.GetUiElement() as Button;
                 if (tile.GetTextureName() != "grass.png") tile.Change(grass[0], str);
-                if (!button.IsHitTestVisible) button.IsHitTestVisible = true;
+                if (button != null && !button.IsHitTestVisible) button.IsHitTestVisible = true;
                 tile.Placeable = true;
             }
         }
@@ -188,11 +186,7 @@ namespace baUHInia.Playground.View
         private void LoadMap(object sender, RoutedEventArgs args)
         {
             Map map;
-            try
-            {
-                map = _manager.LoadMap(out int mapId);
-                MapId = mapId;
-            }
+            try { map = _manager.LoadMap(out int _); }
             catch (Exception) { return; }
             
             ClearMap();
@@ -229,7 +223,7 @@ namespace baUHInia.Playground.View
             
             OpenObservedGameTab();
             DisplayGameProperties(game);
-            CalculatePoints(game.Map.PlacedObjects.Length);
+            CalculatePoints();
             RemoveButtonsBehaviour();
         }
 
@@ -252,24 +246,17 @@ namespace baUHInia.Playground.View
             GameName.Text = game.Name;
         }
 
-        private void CalculatePoints(int mapPlacersCount)
+        private void CalculatePoints()
         {
             ISimulate simulate = new Score(this, BoardDensity);
-            //List<Placement> allPlacements = PlacedObjects;
-            //int newCount = PlacedObjects.Count - mapPlacersCount;
-
-            //PlacedObjects = PlacedObjects.GetRange(mapPlacersCount, newCount);
             Points.Text = simulate.SimulationScore().ToString();
-            //PlacedObjects = allPlacements;
         }
 
         private void RemoveButtonsBehaviour()
         {
             foreach (Tile tile in TileGrid)
-            {
-                Button button = tile.GetUiElement() as Button;
-                button.IsHitTestVisible = false;
-            }
+                if (tile.GetUiElement() is Button button) 
+                    button.IsHitTestVisible = false;
         }
 
         //======================================// GRID SWITCH //======================================//
@@ -325,7 +312,7 @@ namespace baUHInia.Playground.View
             TileGrid = new Tile[BoardDensity, BoardDensity];
             
             List<TileCategory> categories = ResourceHolder.Get.GetSelectedCategories();
-            _selectorGridCreator = new AdminSelectorGridCreator(this, categories);
+            _selectorGridCreator = new PlacerSelectorGridCreator(this, categories);
             
             _gameGridCreator = new PlacerGridCreator(this, BoardDensity, grass);
             Grids["GameMap"] = _gameGridCreator.CreateElementsInWindow(this, BoardDensity); 
@@ -353,30 +340,30 @@ namespace baUHInia.Playground.View
             grid.HorizontalAlignment = HorizontalAlignment.Center;
             return grid;
         }
-
+        
         private void CreateSaveMapTab()
         {
             Grids.Add("SaveMap", Resources["SaveMapTemplate"] as Grid);
             Border border = Grids["SaveMap"].Children[0] as Border;
-            Grid innerGrid = border.Child as Grid;
+            if (!(border?.Child is Grid innerGrid)) return;
             ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapSaveGrid());
             ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = Grids["Admin"];
         }
-
+        
         private void CreateLoadMapTab()
         {
             Grids.Add("LoadMap", Resources["LoadMapTemplate"] as Grid);
             Border border = Grids["LoadMap"].Children[0] as Border;
-            Grid innerGrid = border.Child as Grid;
+            if (!(border?.Child is Grid innerGrid)) return;
             ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetMapLoadGrid());
             ((Button) innerGrid.Children[3]).Click += (sender, arg) => GameScroll.Content = Grids["Menu"];
         }
-
+        
         private void CreateObserverTab()
         {
             Grids.Add("Observer", Resources["LoadObserverTemplate"] as Grid);
             Border border = Grids["Observer"].Children[0] as Border;
-            Grid innerGrid = border.Child as Grid;
+            if (!(border?.Child is Grid innerGrid)) return;
             ((Grid) innerGrid.Children[1]).Children.Add(_manager.GetGameLoadGrid());
             ((Button) innerGrid.Children[3]).Click += (sender, arg) => { GameScroll.Content = Grids["Menu"]; };
         }

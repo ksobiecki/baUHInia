@@ -48,7 +48,7 @@ namespace baUHInia.Playground.Model.Selectors
                 Element element = layers[0];
                 Image image = element.GetUiElement() as Image;
                 (element.TileObject, element.Root) = (null, null);
-                (element.Placeable, image.Source) = (true, null);
+                if (image != null) (element.Placeable, image.Source) = (true, null);
                 element.Change(null, "Plain Grass");
                 element.AcceptChange();
             }
@@ -60,6 +60,7 @@ namespace baUHInia.Playground.Model.Selectors
         {
             SelectionState = state;
             CurrentOperator.DeselectOperator();
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (SelectionState)
             {
                 case State.Place:
@@ -95,9 +96,9 @@ namespace baUHInia.Playground.Model.Selectors
 
         public (int x, int y) GetCoords(Placer tileBeforeOffset, int offsetIndex)
         {
-            (int x, int y) baseCoords = tileBeforeOffset.GetCoords();
+            (int x, int y) = tileBeforeOffset.GetCoords();
             Offset offset = TileObject.Config.Offsets[offsetIndex];
-            return (baseCoords.x + offset.X, baseCoords.y - offset.Y);
+            return (x + offset.X, y - offset.Y);
         }
 
         public bool IsUserWindow() => Binder.GetType() == typeof(UserGameWindow);
@@ -106,7 +107,7 @@ namespace baUHInia.Playground.Model.Selectors
         {
             if (!IsUserWindow()) return true;
             TextBlock currentCash = ((UserGameWindow) Binder).CurrentCash;
-            int cost = Binder.AvailableObjects?.FirstOrDefault(a => a.TileObject == TileObject).Price ?? 0;
+            int cost = Binder.AvailableObjects?.FirstOrDefault(a => a.TileObject == TileObject)?.Price ?? 0;
             int money = int.Parse(currentCash.Text) - (buy ? cost : -cost);
 
             if (money < 0)
@@ -125,7 +126,7 @@ namespace baUHInia.Playground.Model.Selectors
             TileObject = tileObject;
             if (!IsUserWindow()) return;
             UserGameWindow window = Binder as UserGameWindow;
-            window.UpdateSelectionWindow(tileObject);
+            window?.UpdateSelectionWindow(tileObject);
         }
 
         public static bool IsOutsideGrid(int x, int y, object[,] grid) =>

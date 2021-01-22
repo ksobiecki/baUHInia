@@ -1,7 +1,8 @@
-﻿using baUHInia.Playground.Model.Utility;
+using baUHInia.Playground.Model.Utility;
 
 namespace baUHInia.Playground.Logic.Utils
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class Config
     {
         public string Name { get; }

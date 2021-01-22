@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace baUHInia.Playground.Logic.Utils
 {
-    public class ImageWriter
+    public static class ImageWriter
     {
         public static RenderTargetBitmap CopyAsBitmap(FrameworkElement frameworkElement)
         {

@@ -8,24 +8,33 @@ using baUHInia.Playground.Model.Tiles;
 
 namespace baUHInia.Playground.Logic.Creators.Selector
 {
-    public abstract class VerticalSelectorGridCreator : ISelectorGridCreator
+    public class PlacerSelectorGridCreator : ISelectorGridCreator
     {
         private readonly SelectorCreator _selectorCreator;
         private SelectorGridFiller _selectorGridFiller;
 
         private readonly Grid _selectorGrid;
 
-        protected VerticalSelectorGridCreator(ITileBinder binder, List<TileCategory> categories)
+        public PlacerSelectorGridCreator(ITileBinder binder, List<TileCategory> categories)
         {
             _selectorCreator = new SelectorCreator(binder.Selection, categories);
             _selectorGrid = binder.SelectorGrid;
             _selectorGrid.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        public abstract void CreateSelectionPanel(TileCategory tileCategory, ITileBinder tileBinder);
+        public void CreateSelectionPanel(TileCategory tileCategory)
+        {
+            ClearSelectorGrid();
+            int gridRowIndex = 0;
+
+            IEnumerable<string> groups = GetGroups(tileCategory);
+            IEnumerable<TileObject> otherObjects = GetStandaloneObjects(tileCategory);
+            CreateGroups(groups, tileCategory.TileObjects, ref gridRowIndex);
+            CreateStandaloneObjects(otherObjects, ref gridRowIndex);
+        }
         public void UpdateTileGroup(List<TileCategory> categories) => _selectorCreator.UpdateTileGroup(categories);
 
-        protected void CreateGroups(IEnumerable<string> groups, List<TileObject> tileObjects, ref int rowIndex)
+        private void CreateGroups(IEnumerable<string> groups, List<TileObject> tileObjects, ref int rowIndex)
         {
             foreach (string group in groups)
             {
@@ -39,7 +48,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             }
         }
 
-        protected void CreateStandaloneObjects(TileObject[] otherObjects, ref int gridRowIndex)
+        private void CreateStandaloneObjects(IEnumerable<TileObject> otherObjects, ref int gridRowIndex)
         {
             foreach (TileObject otherObject in otherObjects)
             {
@@ -52,7 +61,7 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             }
         }
 
-        protected void ClearSelectorGrid()
+        private void ClearSelectorGrid()
         {
             _selectorGrid.Children.Clear();
             _selectorGrid.RowDefinitions.Clear();
@@ -87,9 +96,22 @@ namespace baUHInia.Playground.Logic.Creators.Selector
             for (int i = 0; i <= height; i++) selectorGrid.RowDefinitions.Add(new RowDefinition());
             for (int i = 0; i <= width; i++) selectorGrid.ColumnDefinitions.Add(new ColumnDefinition());
         }
+        
+        //===================================== HELPERS =====================================//
 
         private static TileObject[] GetElementsOfGroup(IEnumerable<TileObject> tileObjects, string group) => tileObjects
             .Where(o => o.Config.Group == group)
             .ToArray();
+        
+        private static IEnumerable<string> GetGroups(TileCategory tileCategory) => tileCategory.TileObjects
+            .Where(o => o.Config.Group != null)
+            .Select(o => o.Config.Group)
+            .Distinct()
+            .ToArray();
+
+        private static IEnumerable<TileObject> GetStandaloneObjects(TileCategory tileCategory) => 
+            tileCategory.TileObjects
+                .Where(o => o.Config.Group == null)
+                .ToArray();
     }
 }

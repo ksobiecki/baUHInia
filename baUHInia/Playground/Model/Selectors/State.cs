@@ -4,6 +4,6 @@
     {
         Place,
         Remove,
-        Block,
+        Block
     }
 }

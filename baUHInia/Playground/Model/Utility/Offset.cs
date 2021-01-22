@@ -1,12 +1,10 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace baUHInia.Playground.Model.Utility
+﻿namespace baUHInia.Playground.Model.Utility
 {
     public class Offset
     {
-        public int I { get; set; }
-        public sbyte X { get; set; }
-        public sbyte Y { get; set; }
+        public int I { get; }
+        public sbyte X { get; }
+        public sbyte Y { get; }
 
         public Offset(int i, sbyte x, sbyte y)
         {

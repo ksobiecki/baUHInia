@@ -25,8 +25,6 @@ namespace baUHInia.Playground.Model.Tiles
             Placeable = true;
         }
 
-        public string GetName() => _currentTag;
-
         public string GetTextureName()
         {
             string path = CurrentTexture.ToString();

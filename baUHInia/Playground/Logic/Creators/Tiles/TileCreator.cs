@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using baUHInia.Playground.Model.Selectors;
 using baUHInia.Playground.Model.Tiles;
 
@@ -12,11 +11,8 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
         public Grid GameGrid { get; set; }
         private readonly ITileBehaviourSetter _behaviourSetter;
 
-        public TileCreator(Selection selection, Tile[,] tileGrid)
-        {
-            //TODO: check
-            _behaviourSetter = new GameTileBehaviourSetter(selection, tileGrid);
-        }
+        public TileCreator(Selection selection, Tile[,] tileGrid) =>
+            _behaviourSetter = new PlacerTileBehaviourSetter(selection, tileGrid);
 
         //============================ COMPLEX TILE CREATION ============================//
 
@@ -34,7 +30,7 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
 
         //============================ TILE CREATION ============================//
 
-        private static Button CreateButton(string elementName, BitmapImage image)
+        private static Button CreateButton(string elementName, ImageSource image)
         {
             Image imageWrapper = new Image {Source = image};
             RenderOptions.SetBitmapScalingMode(imageWrapper, BitmapScalingMode.NearestNeighbor);
@@ -44,15 +40,13 @@ namespace baUHInia.Playground.Logic.Creators.Tiles
                 Content = imageWrapper,
                 Background = Brushes.Transparent,
                 BorderBrush = Brushes.Transparent,
-                //TODO:
                 Margin = new Thickness(-0.59, 0, -0.59, 0),
                 Padding = new Thickness(-1.2),
                 Tag = elementName
-                /*BorderThickness = new Thickness(1.2),*/
             };
         }
 
-        private void ApplyBehaviourToTile(Button button)
+        private void ApplyBehaviourToTile(UIElement button)
         {
             button.MouseEnter += _behaviourSetter.OnFieldMouseEnter;
             button.MouseLeave += _behaviourSetter.OnFieldMouseLeave;

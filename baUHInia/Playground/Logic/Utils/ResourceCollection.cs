@@ -12,7 +12,7 @@ namespace baUHInia.Playground.Logic.Utils
         private readonly string[] _imageNames;
 
         private string[] _elementsOfCategory;
-        private string _package;
+        private readonly string _package;
 
         public ResourceCollection(string[] resources, string package)
         {
@@ -26,7 +26,7 @@ namespace baUHInia.Playground.Logic.Utils
             Categories = StringUtils.GetCategories(_imageNames);
         }
 
-        public string[] SubCategories(int categoryIndex)
+        public IEnumerable<string> SubCategories(int categoryIndex)
         {
             UpdateElementsOfCategory(categoryIndex);
             return _elementsOfCategory
@@ -47,10 +47,7 @@ namespace baUHInia.Playground.Logic.Utils
                         int valY = int.Parse(y.Substring(0, y.IndexOf('_')));
                         return valX > valY ? 1 : valX == valY ? 0 : -1;
                     }
-                    catch (Exception)
-                    {
-                        return string.CompareOrdinal(x, y);
-                    }
+                    catch (Exception) { return string.CompareOrdinal(x, y); }
                 }))
             .ToArray();
 

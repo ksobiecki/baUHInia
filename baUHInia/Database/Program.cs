@@ -11,7 +11,7 @@ namespace baUHInia.Database
 {
     class BazaDanych
     {
-        private SqlConnection polaczenie = new SqlConnection("Server=tcp:bauhiniaserver.database.windows.net,1433;Initial Catalog=baUHInia;Persist Security Info=False;User ID=qutlet;Password=hdmi007X;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        private SqlConnection polaczenie = new SqlConnection("Server=tcp:kochamchmurki.database.windows.net,1433;Initial Catalog=db4io;Persist Security Info=False;User ID=ilovechmurki;Password=xXJarson99Xx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;MultipleActiveResultSets=true;Connection Timeout=30;");
         private SqlCommand komendaSQL = new SqlCommand();
         private SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 

@@ -343,6 +343,7 @@ namespace baUHInia.Database
             }
             catch (SqlException)
             {
+                Rozlacz();
                 return null;
             }
             return vs.ToArray();

@@ -11,7 +11,7 @@ namespace baUHInia.Database
 {
     class BazaDanych
     {
-        private SqlConnection polaczenie = new SqlConnection("Server=tcp:kochamchmurki.database.windows.net,1433;Initial Catalog=db4io;Persist Security Info=False;User ID=ilovechmurki;Password=xXJarson99Xx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;MultipleActiveResultSets=true;Connection Timeout=30;");
+        private SqlConnection polaczenie = new SqlConnection("Server=tcp:kochamchmurki.database.windows.net,1433;Initial Catalog=db4io;Persist Security Info=False;User ID=ilovechmurki;Password=xXJarson99Xx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         private SqlCommand komendaSQL = new SqlCommand();
         private SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
 
@@ -341,8 +341,9 @@ namespace baUHInia.Database
                 }
                 Rozlacz();
             }
-            catch (SqlException)
+            catch (SqlException e)
             {
+                Console.WriteLine(e);
                 Rozlacz();
                 return null;
             }
@@ -437,8 +438,9 @@ namespace baUHInia.Database
                 gameId = Convert.ToInt32(sqlDataAdapter.InsertCommand.ExecuteScalar());
                 Rozlacz();
             }
-            catch (SqlException)
+            catch (SqlException e)
             {
+                Console.WriteLine(e);
                 return 1;
             }
 
